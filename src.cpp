@@ -6,11 +6,16 @@
 #include <cryptopp/filters.h>
 #include <cryptopp/modes.h>
 #include <cryptopp/osrng.h>
+#include <algorithm>
+#include <numeric>
+#include <cryptopp/hex.h>
 
 using namespace std;
 using namespace CryptoPP;
 
 #define ll long long int
+#define all(v) v.begin(),v.end()
+#define endl '\n'
 
 string outputDirectory = "./resources/";
 
@@ -60,7 +65,7 @@ vector<char> encryptImage(const vector<char> &data, const SecByteBlock &key, con
         cerr << e.what() << endl;
         exit(1);
     }
-    return vector<char>(encrypted.begin(), encrypted.end());
+    return vector<char>(all(encrypted));
 }
 
 vector<char> decryptImage(const vector<char> &data, const SecByteBlock &key, const CryptoPP::byte iv[AES::BLOCKSIZE]) {
@@ -77,7 +82,7 @@ vector<char> decryptImage(const vector<char> &data, const SecByteBlock &key, con
         cerr << e.what() << endl;
         exit(1);
     }
-    return vector<char>(decrypted.begin(), decrypted.end());
+    return vector<char>(all(decrypted));
 }
 
 double NPCR(const vector<char> &img1, const vector<char> &img2) {
@@ -101,7 +106,7 @@ double UACI(const vector<char> &img1, const vector<char> &img2) {
     }
     double s(0);
     for(ll o = 0; o < img1.size();o++) {
-        s+=abs(img1[o]-'0' - img2[o]-'0')/255.0;
+        s+=abs(static_cast<unsigned char>(img1[o]) - static_cast<unsigned char>(img2[o]))/255.0;
     }
     return (s/img1.size())*100.0;
 }
@@ -116,7 +121,7 @@ double hammingDistance(const vector<char> &img1, const vector<char> &img2) {
     ll dist(0);
     for(int o = 0; o < img1.size();o++)
     {
-        ll x = (img1[o] - '0') ^ (img2[o]-'0');
+        ll x = (static_cast<unsigned char>(img1[o])) ^ (static_cast<unsigned char>(img2[o]));
         for(int bit = 0; bit < 8;bit++) {
             dist += (x >> bit) &1;
         }
@@ -124,8 +129,52 @@ double hammingDistance(const vector<char> &img1, const vector<char> &img2) {
     return (dist/ (double) (img1.size()*8)) * 100;
 }
 
+vector<ll> getFreq(const vector<char> &img) {
+    vector<ll> freq(256,0);
+    for(int o = 0; o < img.size();o++)
+        freq[static_cast<unsigned int>(static_cast<unsigned char>(img[o]))]++;
+    return freq;
+}
+
+// map<ll,ll> getFreq(const vector<char> &img) {
+//     map<ll,ll> mp;
+//     for(int o = 0; o < img.size();o++)
+//         mp[static_cast<unsigned int>(static_cast<unsigned char>(img[o]))]++;
+//     return mp;
+// }
+
+// vector<ll> freq(vector<char> &original, vector<char> &encrypted) {
+//     vector<ll> ogFreq = getFreq(original),encFreq = getFreq(encrypted);
+// }
+
+bool chiSqaure(const vector<ll> &freq) {
+    const ll sum = accumulate(all(freq), 0);
+    const double expectedFreq = (double) sum/256.0;
+    double s(0);
+    for(ll el : freq) {
+        double x = el - expectedFreq;
+        s+=((x*x)/expectedFreq);
+    }
+    const double criticalVal = 293.2478; 
+    cout << s;
+    return s < criticalVal;
+}
+
+//Helper functions.
+
+void printKey(const SecByteBlock &key) {
+    string hexKey;
+    HexEncoder encoder;
+
+    encoder.Attach(new StringSink(hexKey));
+    encoder.Put(key,key.size());
+    encoder.MessageEnd();
+
+    cout << hexKey << endl;
+} 
+
 int main() {
-    string imagePath = "./Sasha.jpg";
+    string imagePath = "./neon.jpg";
     string encryptedPath = outputDirectory + "encrypted_img.jpeg";
     string decryptedPath = outputDirectory + "decrypted_img.jpeg";
 
@@ -165,6 +214,9 @@ int main() {
     cout << "NPCR: " << NPCR(encryptedImg,encryptedModifiedImg) << '%' << endl;
     cout << "UACI: " << UACI(encryptedImg,encryptedModifiedImg) << '%' << endl;
     cout << "HD: " << hammingDistance(encryptedImg,encryptedModifiedImg) << '%' << endl;
+
+    vector<ll> d = getFreq(encryptedImg);
+    cout << "ChiSqaure: " << (chiSqaure(d)? " Uniform" : " Not uniform") << endl;
 
     return 0;
 }
