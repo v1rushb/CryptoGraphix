@@ -19,7 +19,7 @@ using namespace CryptoPP;
 
 string outputDirectory = "./resources/";
 
-vector<char> readImage(const string &imagePath) {
+vector<unsigned char> readImage(const string &imagePath) {
     ifstream file(imagePath, ios::binary);
     if (!file) {
         cout << "Cannot open the image with path: " << imagePath << endl;
@@ -29,22 +29,22 @@ vector<char> readImage(const string &imagePath) {
     streamsize size = file.tellg();
     file.seekg(0, ios::beg);
 
-    vector<char> buffer(size);
-    if (!file.read(buffer.data(), size)) {
+    vector<unsigned char> buffer(size);
+    if (!file.read(reinterpret_cast<char*>(buffer.data()), size)) {
         cout << "Cannot read the image with path: " << imagePath << endl;
         return {};
     }
     return buffer;
 }
 
-bool writeImage(const string &distPath, const vector<char> &imageData) {
+bool writeImage(const string &distPath, const vector<unsigned char> &imageData) {
     ofstream file(distPath, ios::binary | ios::out);
     if (!file) {
         cout << "Cannot open the file for writing: " << distPath << endl;
         return false;
     }
 
-    if (!file.write(imageData.data(), imageData.size())) {
+    if (!file.write(reinterpret_cast<const char*>(imageData.data()), imageData.size())) {
         cout << "Cannot write to file: " << distPath << endl;
         return false;
     }
@@ -174,7 +174,7 @@ void printKey(const SecByteBlock &key) {
 } 
 
 int main() {
-    string imagePath = "./neon.jpg";
+    string imagePath = "./besho.jpeg";
     string encryptedPath = outputDirectory + "encrypted_img.jpeg";
     string decryptedPath = outputDirectory + "decrypted_img.jpeg";
 
@@ -182,8 +182,8 @@ int main() {
         filesystem::create_directory(outputDirectory);
     }
 
-    vector<char> imageData = readImage(imagePath);
-    vector<char> modifiedImageData = imageData;
+    vector<unsigned char> imageData = readImage(imagePath);
+    vector<unsigned char> modifiedImageData = imageData;
     modifiedImageData[0] ^= 1;
     if (imageData.empty()) {
         cout << "Failed to read image." << endl;
@@ -211,12 +211,12 @@ int main() {
         return 1;
     }
 
-    cout << "NPCR: " << NPCR(encryptedImg,encryptedModifiedImg) << '%' << endl;
-    cout << "UACI: " << UACI(encryptedImg,encryptedModifiedImg) << '%' << endl;
-    cout << "HD: " << hammingDistance(encryptedImg,encryptedModifiedImg) << '%' << endl;
+    // cout << "NPCR: " << NPCR(encryptedImg,encryptedModifiedImg) << '%' << endl;
+    // cout << "UACI: " << UACI(encryptedImg,encryptedModifiedImg) << '%' << endl;
+    // cout << "HD: " << hammingDistance(encryptedImg,encryptedModifiedImg) << '%' << endl;
 
-    vector<ll> d = getFreq(encryptedImg);
-    cout << "ChiSqaure: " << (chiSqaure(d)? " Uniform" : " Not uniform") << endl;
+    // vector<ll> d = getFreq(encryptedImg);
+    // cout << "ChiSqaure: " << (chiSqaure(d)? " Uniform" : " Not uniform") << endl;
 
     return 0;
 }
