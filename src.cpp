@@ -9,6 +9,10 @@
 #include <algorithm>
 #include <numeric>
 #include <cryptopp/hex.h>
+#include <cryptopp/cryptlib.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/ccm.h>
+#include <cryptopp/base64.h>
 #include <opencv2/opencv.hpp>
 
 using namespace std;
@@ -20,38 +24,8 @@ using namespace CryptoPP;
 
 const string outputDirectory = "./resources/";
 const string src = "./assets/";
-
-// vector<unsigned char> readImage(const string &imagePath) {
-//     ifstream file(imagePath, ios::binary);
-//     if (!file) {
-//         cout << "Cannot open the image with path: " << imagePath << endl;
-//         return {};
-//     }
-//     file.seekg(0, ios::end);
-//     streamsize size = file.tellg();
-//     file.seekg(0, ios::beg);
-
-//     vector<unsigned char> buffer(size);
-//     if (!file.read(reinterpret_cast<char*>(buffer.data()), size)) {
-//         cout << "Cannot read the image with path: " << imagePath << endl;
-//         return {};
-//     }
-//     return buffer;
-// }
-
-// bool writeImage(const string &distPath, const vector<unsigned char> &imageData) {
-//     ofstream file(distPath, ios::binary | ios::out);
-//     if (!file) {
-//         cout << "Cannot open the file for writing: " << distPath << endl;
-//         return false;
-//     }
-
-//     if (!file.write(reinterpret_cast<const char*>(imageData.data()), imageData.size())) {
-//         cout << "Cannot write to file: " << distPath << endl;
-//         return false;
-//     }
-//     return true;
-// }
+const string beforeDir = outputDirectory + "before/";
+const string afterDir = outputDirectory + "after/";
 
 cv::Mat readImage(const string &imagePath) {
     cv::Mat image = cv::imread(imagePath,cv::IMREAD_COLOR);
@@ -64,6 +38,12 @@ cv::Mat readImage(const string &imagePath) {
 void writeImage(const string &outputPath, const cv::Mat &image) {
     if (!filesystem::exists(outputDirectory)) {
         filesystem::create_directory(outputDirectory);
+    }
+    if(!filesystem::exists(beforeDir)) {
+        filesystem::create_directory(beforeDir);
+    }
+    if(!filesystem::exists(afterDir)) {
+        filesystem::create_directory(afterDir);
     }
 
     if(!cv::imwrite(outputPath,image)) {
@@ -97,22 +77,27 @@ vector<unsigned char> encryptImage(const vector<unsigned char> &data, const SecB
 
 vector<unsigned char> vectorize(const cv::Mat &image) {
     vector<unsigned char> buffer;
-    const string ext = ".jpg";
+    const string ext = ".png";
     if(!cv::imencode(ext,image,buffer)) {
         throw runtime_error("Failed to encode.");
     }
     return buffer;
 }
 
-cv::Mat matricize(const vector<unsigned char> &data) {
-    cv:: Mat image= cv::imdecode(cv::Mat(data),cv::IMREAD_UNCHANGED);
-    if(image.empty()) {
-        throw runtime_error("Failed to decode.");
+cv::Mat matricize(const vector<unsigned char> &data, int width, int height) {
+    if (data.size() < static_cast<size_t>(width * height)) {
+        throw runtime_error("Not enough data for the specified dimensions.");
+    }
+
+    cv::Mat image = cv::Mat(height, width, CV_8UC3, const_cast<unsigned char*>(data.data()));
+
+    if (image.empty()) {
+        throw runtime_error("Failed to create MATRIX");
     }
     return image;
 }
 
-vector<char> decryptImage(const vector<char> &data, const SecByteBlock &key, const CryptoPP::byte iv[AES::BLOCKSIZE]) {
+vector<char> decryptImage(const vector<unsigned char> &data, const SecByteBlock &key, const CryptoPP::byte iv[AES::BLOCKSIZE]) {
     string decrypted;
     try {
         CBC_Mode<AES>::Decryption decryptor;
@@ -129,7 +114,7 @@ vector<char> decryptImage(const vector<char> &data, const SecByteBlock &key, con
     return vector<char>(all(decrypted));
 }
 
-double NPCR(const vector<char> &img1, const vector<char> &img2) {
+double NPCR(const vector<unsigned char> &img1, const vector<unsigned char> &img2) {
     if(img1.size() - img2.size())
     {
         cerr << "SizeDifferenceException" << endl;
@@ -142,7 +127,7 @@ double NPCR(const vector<char> &img1, const vector<char> &img2) {
     return (diff / (double) img1.size()) * 100.0;
 }
 
-double UACI(const vector<char> &img1, const vector<char> &img2) {
+double UACI(const vector<unsigned char> &img1, const vector<unsigned char> &img2) {
     if(img1.size()-img2.size())
     {
         cerr << "SizeDifferenceException" << endl;
@@ -155,7 +140,7 @@ double UACI(const vector<char> &img1, const vector<char> &img2) {
     return (s/img1.size())*100.0;
 }
 
-double hammingDistance(const vector<char> &img1, const vector<char> &img2) {
+double hammingDistance(const vector<unsigned char> &img1, const vector<unsigned char> &img2) {
     if(img1.size()-img2.size()) 
     {
         cerr << "SizeDiffernceException" << endl;
@@ -173,10 +158,10 @@ double hammingDistance(const vector<char> &img1, const vector<char> &img2) {
     return (dist/ (double) (img1.size()*8)) * 100;
 }
 
-vector<ll> getFreq(const vector<char> &img) {
+vector<ll> getFreq(const vector<unsigned char> &img) {
     vector<ll> freq(256,0);
     for(int o = 0; o < img.size();o++)
-        freq[static_cast<unsigned int>(static_cast<unsigned char>(img[o]))]++;
+        freq[static_cast<unsigned int>(img[o])]++;
     return freq;
 }
 
@@ -217,20 +202,49 @@ void printKey(const SecByteBlock &key) {
     cout << hexKey << endl;
 } 
 
+string base64Encode(const vector<unsigned char>& data) {
+    string encoded;
+    ArraySource(data.data(), data.size(), true,
+                new Base64Encoder(
+                    new StringSink(encoded),
+                    false
+                ));
+    return encoded;
+}
+
+vector<unsigned char> base64Decode(const string& encoded) {
+    string decoded;
+    StringSource(encoded, true,
+                 new Base64Decoder(
+                     new StringSink(decoded)
+                 ));
+    return vector<unsigned char>(all(decoded));
+}
+
 int32_t main() {
     const string str = "neon.jpg";
-    string imagePath = src + str;
-    string encryptedPath = outputDirectory + "encrypted_img.jpeg";
-    string decryptedPath = outputDirectory + "decrypted_img.jpeg";
+    const string imagePath = src + str;
+    const string encryptedPath = outputDirectory +"before/" + "encrypted_img.jpeg";
+    const string decryptedPath = outputDirectory + "after/" +"decrypted_img.jpeg";
+    const string modifiedDecryptedPath = outputDirectory + "after/" +"decrypted_img2.jpeg";
     cv::Mat colorImage = readImage(imagePath);
     if(colorImage.empty()) {
         cout << "Empty image" << endl;
         return -1;
     }
     cv::Mat modifiedColorImage = colorImage.clone();
+    //Writing both images before encyrption on path: ./resources/before
+    writeImage(encryptedPath,colorImage);
+    const string modifiedEncryptedPath = outputDirectory + "before/encrypted_img2.jpeg";
     modifyImage(modifiedColorImage);
+    writeImage(modifiedEncryptedPath,modifiedColorImage);
 
-    vector<unsigned char> imageDate = vectorize(colorImage);
+    vector<unsigned char> imageVector = vectorize(colorImage);
+    cout << imageVector.size() << endl;
+    // cout << colorImage.total() * colorImage.elemSize() << endl;
+    vector<unsigned char> modifiedImageVector = vectorize(modifiedColorImage);
+    cout << modifiedImageVector.size() << endl;
+    // cout << modifiedColorImage.total() * modifiedColorImage.elemSize() << endl;
 
     // cv::Vec3b pixelValue = colorImage.at<cv::Vec3b>(1,1);
     // for(int o = 0; o < colorImage.rows;o++) {
@@ -249,12 +263,26 @@ int32_t main() {
     CryptoPP::byte iv[AES::BLOCKSIZE];
     prng.GenerateBlock(iv, sizeof(iv));
 
-    vector<unsigned char> encryptedData= encryptImage(colorImage,key,iv);
-    cv::Mat decryptedImage = matricize(encryptedData);
-    
-    writeImage(encryptedPath,decryptedImage);
-    // writeImage(encryptedPath,colorImage);
+    vector<unsigned char> encryptedImage= encryptImage(imageVector,key,iv);
+    vector<unsigned char> modifiedEncryptedImage = encryptImage(modifiedImageVector,key,iv);
+    string encode = base64Encode(encryptedImage);
+    vector<unsigned char> firstImage(all(encode));
+    cv::Mat decryptedImage = matricize(firstImage,256,256); // change dims.
+    string encode2 = base64Encode(modifiedEncryptedImage);
+    vector<unsigned char> secondImage(all(encode2));
+    cv::Mat decryptedImage2 = matricize(secondImage,256,256); //change dims;
 
+    writeImage(decryptedPath,decryptedImage);
+    writeImage(modifiedDecryptedPath,decryptedImage2);
 
+    cout << "NPCR: " << NPCR(imageVector,modifiedImageVector) << endl;
+    cout << "UACI: " << UACI(imageVector,modifiedImageVector) << endl;
+    cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << endl;
+
+    vector<ll> d = getFreq(imageVector);
+    for(ll &el : d)
+        cout << el << ' ';
+    cout << endl;
+    cout << "ChiSqaure: " << (chiSqaure(d)? " Uniform" : " Not uniform") << endl;
     return 0;
 }
