@@ -84,10 +84,10 @@ vector<unsigned char> vectorize(const cv::Mat &image) {
     return buffer;
 }
 
-cv::Mat matricize(const vector<unsigned char> &data, int width, int height) {
-    if (data.size() < static_cast<size_t>(width * height)) {
-        throw runtime_error("Not enough data for the specified dimensions.");
-    }
+cv::Mat matricize(const vector<unsigned char> &data, int height, int width) {
+    // if (data.size() < static_cast<size_t>(width * height)) {
+    //     throw runtime_error("Not enough data for the specified dimensions.");
+    // }
 
     cv::Mat image = cv::Mat(height, width, CV_8UC3, const_cast<unsigned char*>(data.data()));
 
@@ -158,10 +158,22 @@ double hammingDistance(const vector<unsigned char> &img1, const vector<unsigned 
     return (dist/ (double) (img1.size()*8)) * 100;
 }
 
-vector<ll> getFreq(const vector<unsigned char> &img) {
+vector<ll> getFreq(const cv::Mat &img) {
     vector<ll> freq(256,0);
-    for(int o = 0; o < img.size();o++)
-        freq[static_cast<unsigned int>(img[o])]++;
+    const bool channels = (img.channels() != 1);
+    for(int o = 0; o < img.rows;o++) {
+        for(int i = 0; i < img.cols;i++) {
+            if(channels) {
+                cv::Vec3b pixel = img.at<cv::Vec3b>(o,i);
+                for(int x = 0; x < img.channels();x++) {
+                    freq[pixel[x]]++;
+                }
+            } else {
+                uchar val = img.at<uchar>(o,i);
+                freq[val]++;
+            }
+        }
+    }
     return freq;
 }
 
@@ -176,7 +188,7 @@ vector<ll> getFreq(const vector<unsigned char> &img) {
 //     vector<ll> ogFreq = getFreq(original),encFreq = getFreq(encrypted);
 // }
 
-bool chiSqaure(const vector<ll> &freq) {
+bool chiSquare(const vector<ll> &freq) {
     const ll sum = accumulate(all(freq), 0);
     const double expectedFreq = (double) sum/256.0;
     double s(0);
@@ -267,22 +279,22 @@ int32_t main() {
     vector<unsigned char> modifiedEncryptedImage = encryptImage(modifiedImageVector,key,iv);
     string encode = base64Encode(encryptedImage);
     vector<unsigned char> firstImage(all(encode));
-    cv::Mat decryptedImage = matricize(firstImage,256,256); // change dims.
+    cv::Mat decryptedImage = matricize(firstImage,colorImage.rows,colorImage.cols); // change dims.
     string encode2 = base64Encode(modifiedEncryptedImage);
     vector<unsigned char> secondImage(all(encode2));
-    cv::Mat decryptedImage2 = matricize(secondImage,256,256); //change dims;
+    cv::Mat decryptedImage2 = matricize(secondImage,modifiedColorImage.rows,modifiedColorImage.cols); //change dims;
 
     writeImage(decryptedPath,decryptedImage);
     writeImage(modifiedDecryptedPath,decryptedImage2);
 
-    cout << "NPCR: " << NPCR(imageVector,modifiedImageVector) << endl;
-    cout << "UACI: " << UACI(imageVector,modifiedImageVector) << endl;
-    cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << endl;
+    cout << "NPCR: " << NPCR(imageVector,modifiedImageVector) << '%' <<endl;
+    cout << "UACI: " << UACI(imageVector,modifiedImageVector) << '%' << endl;
+    cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << '%' << endl;
 
-    vector<ll> d = getFreq(imageVector);
-    for(ll &el : d)
-        cout << el << ' ';
-    cout << endl;
-    cout << "ChiSqaure: " << (chiSqaure(d)? " Uniform" : " Not uniform") << endl;
+    vector<ll> d = getFreq(matricize(encryptedImage,colorImage.rows,colorImage.cols));
+    // for(auto &el : d)
+    //     cout << el << ' ';
+    // cout << endl;
+    cout << "ChiSqaure: " << (chiSquare(d)? " Uniform" : " Not uniform") << endl;
     return 0;
 }
