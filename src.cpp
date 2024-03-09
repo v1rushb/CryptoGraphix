@@ -14,6 +14,7 @@
 #include <cryptopp/ccm.h>
 #include <cryptopp/base64.h>
 #include <opencv2/opencv.hpp>
+#include <bitset>
 
 using namespace std;
 using namespace CryptoPP;
@@ -21,6 +22,7 @@ using namespace CryptoPP;
 #define ll long long int
 #define all(v) v.begin(),v.end()
 #define endl '\n'
+#define ull unsigned long long
 
 const string outputDirectory = "./resources/";
 const string src = "./assets/";
@@ -201,6 +203,76 @@ bool chiSquare(const vector<ll> &freq) {
     return s < criticalVal;
 }
 
+// void hideMessage(cv::Mat &img, const string message) {
+//     string str;
+//     for(char ch : message) {
+//         bitset<8> bits(static_cast<ull>(ch));
+//         str+= bits.to_string();
+//     }
+// }
+
+void hideMessage(cv::Mat &img, const string &message) {
+    if(message.size() > img.cols * img.rows) {
+        cerr << "Too large for LSB." << endl;
+        return;
+    }
+    string data;
+    for(char ch : message) {
+        bitset<8> bits(static_cast<ull>(ch));
+        data+=bits.to_string();
+    }
+
+    
+    int bitIndex(0);
+    for(int o = 0; o < img.rows && bitIndex < data.size(); o++) {
+        for(int i = 0; i  < img.cols && bitIndex < data.size();i++) {
+
+            if(img.channels() == 3) {
+                cv::Vec3b &pixel = img.at<cv::Vec3b>(o,i);
+                uchar &blue = pixel[0];
+                if(data[bitIndex] =='1') {
+                    blue |=1;
+                } else {
+                    blue &= ~1;
+                }
+            } else {
+                uchar &wb = img.at<uchar>(o,i);
+                if(data[bitIndex] =='1') {
+                    wb |=1;
+                } else {
+                    wb &= ~1;
+                }
+            }
+            ++bitIndex;
+        }
+    }
+}
+
+string extractMessage(const cv::Mat &img, int len) {
+    string data;
+    int bitIndex(0);
+    for(int o = 0; o < img.rows && bitIndex < len; o++) {
+        for(int i = 0; i  < img.cols && bitIndex < len;i++) {
+            if(img.channels() == 3) {
+            uchar blue = img.at<cv::Vec3b>(o,i)[0];
+            data += to_string(blue&1);
+            } else {
+                uchar wb = img.at<uchar>(o,i);
+                data+=to_string(wb&1);
+            }
+            ++bitIndex;             
+        }
+    }
+
+    string msg;
+    for(int o = 0; o < data.size();o+=8) {
+        bitset<8> bits(data.substr(o,8));
+        msg += static_cast<char>(bits.to_ulong());
+    }
+    return msg;
+}
+
+
 //Helper functions.
 
 void printKey(const SecByteBlock &key) {
@@ -287,14 +359,22 @@ int32_t main() {
     writeImage(decryptedPath,decryptedImage);
     writeImage(modifiedDecryptedPath,decryptedImage2);
 
+    const string secret = "Bashar Herbawi 211111";
+    hideMessage(colorImage,secret);
+    cv::imwrite("./check.jpg",colorImage);
+    string secret_message = extractMessage(colorImage,secret.size()*8);
+    cout << secret_message << endl;
+
+
+
     cout << "NPCR: " << NPCR(imageVector,modifiedImageVector) << '%' <<endl;
     cout << "UACI: " << UACI(imageVector,modifiedImageVector) << '%' << endl;
     cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << '%' << endl;
 
     vector<ll> d = getFreq(matricize(encryptedImage,colorImage.rows,colorImage.cols));
-    // for(auto &el : d)
-    //     cout << el << ' ';
-    // cout << endl;
+    for(auto &el : d)
+        cout << el << ' ';
+    cout << endl;
     cout << "ChiSqaure: " << (chiSquare(d)? " Uniform" : " Not uniform") << endl;
     return 0;
 }
