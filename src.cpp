@@ -19,10 +19,16 @@
 using namespace std;
 using namespace CryptoPP;
 
+#define send {ios_base::sync_with_stdio(false);}
+#define help {cin.tie(NULL);}
+#define pls  {cout.tie(0);}
 #define ll long long int
 #define all(v) v.begin(),v.end()
 #define endl '\n'
+#define debug(x)	cout<<'['<<#x<<" is "<<x<<"]"<<endl;
 #define ull unsigned long long
+#define frq(mp) {for(auto el : mp) cout << el.first << ' ' << el.second << endl;}
+#define fe(d)	for(auto &oI : d) {cout << oI << " ";} cout << endl;
 
 const string outputDirectory = "./resources/";
 const string src = "./assets/";
@@ -116,11 +122,11 @@ vector<char> decryptImage(const vector<unsigned char> &data, const SecByteBlock 
     return vector<char>(all(decrypted));
 }
 
-double NPCR(const vector<unsigned char> &img1, const vector<unsigned char> &img2) {
+
+double NPCR(vector<unsigned char> &img1, vector<unsigned char> &img2) {
     if(img1.size() - img2.size())
     {
-        cerr << "SizeDifferenceException" << endl;
-        exit(1);
+        throw runtime_error("SizeDifferenceException"); //do the exption.
     }
     
     ll diff(0);
@@ -272,6 +278,16 @@ string extractMessage(const cv::Mat &img, int len) {
     return msg;
 }
 
+double calculateCorrelation(const cv::Mat &img) {
+    ll sumx = sumy = sumxy = sumx2 = sumy2 = 0;
+    for(int o = 0; o < img.rows;o++) {
+        for(int i = 0; i < img.cols-1;i++) {
+            cv::Vec3b pixel = img.at<cv::Vec3b>(o,i);
+
+        }
+    }
+}
+
 
 //Helper functions.
 
@@ -304,9 +320,32 @@ vector<unsigned char> base64Decode(const string& encoded) {
                  ));
     return vector<unsigned char>(all(decoded));
 }
+SecByteBlock getNewKey(const SecByteBlock key) {
+    SecByteBlock newKey = key;
+    if(!newKey.size()) {
+        AutoSeededRandomPool prng;
+        prng.GenerateBlock(newKey,newKey.size());
+    }
+    newKey[newKey.size()-1] ^= 1;
+    return newKey;
+}
+
+void padVector(vector<unsigned char> &d, vector<unsigned char> &x) {
+    ll diff(d.size() - x.size());
+    bool ok = (diff <= 0);
+    diff = ok ? diff*-1 : diff;
+    if(ok) {
+        for(int o = 0; o < diff;o++)
+            d.push_back(0);
+    } else {
+        for(int o = 0; o < diff;o++)
+            x.push_back(0);
+    }
+}
 
 int32_t main() {
-    const string str = "neon.jpg";
+    send help pls;
+    const string str = "neon.PNG";
     const string imagePath = src + str;
     const string encryptedPath = outputDirectory +"before/" + "encrypted_img.jpeg";
     const string decryptedPath = outputDirectory + "after/" +"decrypted_img.jpeg";
@@ -365,16 +404,39 @@ int32_t main() {
     string secret_message = extractMessage(colorImage,secret.size()*8);
     cout << secret_message << endl;
 
+    padVector(imageVector,modifiedImageVector);
 
-
+    cout << "<<<<< Plain text sensitivity test >>>>>"  << endl;
     cout << "NPCR: " << NPCR(imageVector,modifiedImageVector) << '%' <<endl;
     cout << "UACI: " << UACI(imageVector,modifiedImageVector) << '%' << endl;
-    cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << '%' << endl;
+    cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << "%\n" << endl;
 
     vector<ll> d = getFreq(matricize(encryptedImage,colorImage.rows,colorImage.cols));
-    for(auto &el : d)
-        cout << el << ' ';
-    cout << endl;
+    //frq(d);
+    fe(d);
     cout << "ChiSqaure: " << (chiSquare(d)? " Uniform" : " Not uniform") << endl;
+
+    SecByteBlock key2 = getNewKey(key);
+    cv::Mat colorImage2 = colorImage.clone();
+    vector<unsigned char> image2Vector = vectorize(colorImage2);
+    vector<unsigned char> encryptedImage2 = encryptImage(image2Vector,key2,iv);
+    // string encodeImage2 = base64Encode(encryptedImage2);
+    // vector<unsigned char> secondImage2(all(encodeImage2));
+    // cv::Mat noisyEncryptedImage = matricize(,colorImage2.cols); //change dims;
+
+    padVector(imageVector,image2Vector);
+
+    cout << "\b<<<<< Key sensitivity >>>>>" << endl;
+    cout << imageVector.size() << ' ' << image2Vector.size() << endl;
+    cout << "NPCR: " << NPCR(imageVector, image2Vector) << "%\n";
+    cout << "UACI: " << UACI(imageVector,image2Vector) << "%\n";
+    cout << "Hamming Distance: " << hammingDistance(imageVector,image2Vector) << "%\n";
+    vector<ll> newFreq = getFreq(matricize(encryptedImage2, colorImage2.rows,colorImage2.cols));
+    // frq(newFreq);
+    fe(newFreq);
+    cout << "Chisqaure: " << (chiSquare(newFreq) ? " Uniform" : " Not Uniform") << endl;
+
+
+
     return 0;
 }
