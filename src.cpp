@@ -278,16 +278,120 @@ string extractMessage(const cv::Mat &img, int len) {
     return msg;
 }
 
-double calculateCorrelation(const cv::Mat &img) {
-    ll sumx = sumy = sumxy = sumx2 = sumy2 = 0;
+long double calculateHorizontalCorrelation(const cv::Mat &img, short channel) {
+    long double sumX = 0,sumY = 0, sumXY =0, sumX2 = 0, sumY2 = 0.0;
+    ll n(0);
     for(int o = 0; o < img.rows;o++) {
-        for(int i = 0; i < img.cols-1;i++) {
-            cv::Vec3b pixel = img.at<cv::Vec3b>(o,i);
-
+        for(int i = 0; i < img.cols;i++) {
+            uchar xPixel = img.at<cv::Vec3b>(o,i)[channel];
+            uchar yPixel = img.at<cv::Vec3b>(o,i+1)[channel];
+            sumX +=xPixel;
+            sumY +=yPixel;
+            sumXY += xPixel * yPixel;
+            sumX2 += pow(xPixel,2);
+            sumY2 += pow(yPixel,2);
+            ++n;
         }
     }
+    long double xMean = sumX / n, yMean = sumY / n, numerator = n * sumXY - sumX * sumY;
+    double denominator = sqrt((n * sumX2 - sumX * sumX) * (n*sumY2 - sumY * sumY));
+    return numerator/denominator; 
 }
 
+long double calculateVerticalCorrelation(const cv::Mat &img, short channel) {
+    long double sumX = 0,sumY = 0, sumXY =0, sumX2 = 0, sumY2 = 0.0;
+    ll n(0);
+    for(int o = 0; o < img.rows;o++) {
+        for(int i = 0; i < img.cols;i++) {
+            uchar xPixel = img.at<cv::Vec3b>(o,i)[channel];
+            uchar yPixel = img.at<cv::Vec3b>(o+1,i)[channel];
+            sumX +=xPixel;
+            sumY +=yPixel;
+            sumXY += xPixel * yPixel;
+            sumX2 += pow(xPixel,2);
+            sumY2 += pow(yPixel,2);
+            ++n;
+        }
+    }
+    long double xMean = sumX / n, yMean = sumY / n, numerator = n * sumXY - sumX * sumY;
+    double denominator = sqrt((n * sumX2 - sumX * sumX) * (n*sumY2 - sumY * sumY));
+    return numerator/denominator; 
+}
+
+long double calculateDiagonalCorrelation(const cv::Mat &img, short channel) {
+    long double sumX = 0,sumY = 0, sumXY =0, sumX2 = 0, sumY2 = 0.0;
+    ll n(0);
+    for(int o = 0; o < img.rows;o++) {
+        for(int i = 0; i < img.cols;i++) {
+            uchar xPixel = img.at<cv::Vec3b>(o,i)[channel];
+            uchar yPixel = img.at<cv::Vec3b>(o+1,i+1)[channel];
+            sumX +=xPixel;
+            sumY +=yPixel;
+            sumXY += xPixel * yPixel;
+            sumX2 += pow(xPixel,2);
+            sumY2 += pow(yPixel,2);
+            ++n;
+        }
+    }
+    long double xMean = sumX / n, yMean = sumY / n, numerator = n * sumXY - sumX * sumY;
+    double denominator = sqrt((n * sumX2 - sumX * sumX) * (n*sumY2 - sumY * sumY));
+    return numerator/denominator; 
+}
+
+
+double getCorrelation(const cv::Mat &img) {
+    vector<double> correlations;
+    const short channels = img.channels();
+    for(int o = 0; o < channels;o++) {
+        correlations.push_back(calculateHorizontalCorrelation(img,o));
+        correlations.push_back(calculateVerticalCorrelation(img,o));   
+        correlations.push_back(calculateDiagonalCorrelation(img,o));
+    }
+    double sum = accumulate(all(correlations),0.0);
+    return sum/ correlations.size();
+}
+
+vector<ll> getImgFreq(const cv::Mat &img) {
+    vector<ll> freq(256,0);
+    const short channels = img.channels();
+    for(int o = 0; o < img.rows;o++) {
+        for(int i = 0; i < img.cols;i++) {
+            if(channels == 1) {
+                freq[img.at<uchar>(o,i)]++;
+            } else {
+                const cv::Vec3b pixel = img.at<cv::Vec3b>(o,i);
+                for(int x = 0; x < channels;x++)
+                    freq[pixel[x]]++;
+            }
+        }
+    }
+    return freq;
+}
+
+long double calculateInformationEntropy(const cv::Mat &img) {
+    vector<ll> freq = getImgFreq(img);
+    const short channels = img.channels();
+    long double val = 0.0;
+    const ll picSize = img.cols * img.rows* channels;
+    for(int o = 0; o < 256;o++) {
+        if(freq[o] > 0) {
+            long double prob = (freq[o] / (picSize * 1.0));
+            val -= prob * log2(prob);
+        }
+    }
+    return val;
+}
+
+long double calculateEncryptionQuality(const cv::Mat &img1, const cv::Mat &img2) {
+    long double ans(0.0);
+    vector<ll> img1Freq = getImgFreq(img1);
+    vector<ll> img2Freq = getImgFreq(img2);
+
+    for(int o = 0; o < 256;o++) {
+        ans+= abs(img1Freq[o]-img2Freq[o]);
+    }
+    return ans/256.0;
+}
 
 //Helper functions.
 
@@ -407,24 +511,31 @@ int32_t main() {
     padVector(imageVector,modifiedImageVector);
 
     cout << "<<<<< Plain text sensitivity test >>>>>"  << endl;
-    cout << "NPCR: " << NPCR(imageVector,modifiedImageVector) << '%' <<endl;
-    cout << "UACI: " << UACI(imageVector,modifiedImageVector) << '%' << endl;
-    cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << "%\n" << endl;
+    cout << "NPCR: " << NPCR(imageVector,modifiedImageVector) << "%\n";
+    cout << "UACI: " << UACI(imageVector,modifiedImageVector) << "%\n";
+    cout << "Hammding Distance: " << hammingDistance(imageVector,modifiedImageVector) << "%\n";
 
     vector<ll> d = getFreq(matricize(encryptedImage,colorImage.rows,colorImage.cols));
     //frq(d);
-    fe(d);
-    cout << "ChiSqaure: " << (chiSquare(d)? " Uniform" : " Not uniform") << endl;
+    // fe(d);
+    cout << "ChiSqaure: " << (chiSquare(d)? " Uniform\n" : " Not uniform\n");
+    cout << "Correlation: " << getCorrelation(decryptedImage) << endl;
+    cout << "Information Entropy: " << calculateInformationEntropy(decryptedImage) << endl;
+    cout << "Encryption Quality: " << calculateEncryptionQuality(colorImage,decryptedImage) << endl;
 
     SecByteBlock key2 = getNewKey(key);
     cv::Mat colorImage2 = colorImage.clone();
     vector<unsigned char> image2Vector = vectorize(colorImage2);
     vector<unsigned char> encryptedImage2 = encryptImage(image2Vector,key2,iv);
-    // string encodeImage2 = base64Encode(encryptedImage2);
-    // vector<unsigned char> secondImage2(all(encodeImage2));
-    // cv::Mat noisyEncryptedImage = matricize(,colorImage2.cols); //change dims;
+    vector<unsigned char> temp(all(encryptedImage2));
+    string encodeImage2 = base64Encode(temp);
+    vector<unsigned char> secondImage2(all(encodeImage2));
+    cv::Mat noisyEncryptedImage = matricize(secondImage2,colorImage2.cols,colorImage2.rows); //change dims;
 
     padVector(imageVector,image2Vector);
+
+    // vector<ll> newTest = getFreq(decryptedImage2);
+    // fe(newTest);
 
     cout << "\b<<<<< Key sensitivity >>>>>" << endl;
     cout << imageVector.size() << ' ' << image2Vector.size() << endl;
@@ -433,8 +544,10 @@ int32_t main() {
     cout << "Hamming Distance: " << hammingDistance(imageVector,image2Vector) << "%\n";
     vector<ll> newFreq = getFreq(matricize(encryptedImage2, colorImage2.rows,colorImage2.cols));
     // frq(newFreq);
-    fe(newFreq);
+    // fe(newFreq);
     cout << "Chisqaure: " << (chiSquare(newFreq) ? " Uniform" : " Not Uniform") << endl;
+    cout << getCorrelation(noisyEncryptedImage) << endl;
+    cout << "Information Entropy: " << calculateInformationEntropy(noisyEncryptedImage) << endl;
 
 
 
