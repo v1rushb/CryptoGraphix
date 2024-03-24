@@ -15,17 +15,21 @@ class AESImageEncryptor : public IEncryptor {
 
 private:
     void GenerateKeyAndIV();
-    vector<unsigned char> Vectorize(const cv::Mat &img) const;
+    vector<int> Vectorize(const cv::Mat &img) const;
     cv::Mat Matricize(const vector<unsigned char> &data, long int height, long int width) const;
-    vector<unsigned char> Encode(const vector<unsigned char> &data);
-    vector<unsigned char> Decode(const string& encoded);
+    string Encode(const vector<unsigned char> &data) const;
+    vector<unsigned char> Decode(const vector<unsigned char> &encoded) const;
+    cv::Mat makeMatrix(long int rows, long int cols) const;
+    void embedSize(vector<long int> &data, long int rows, long int cols) const;
+    void removeEmbededSize(vector<long int> &data) const;
+    cv::Mat setMatrix(const vector<int> &data, long int rows, long int cols) const;
 
 public:
     AESImageEncryptor();
     AESImageEncryptor(const SecByteBlock& key, const CryptoPP::byte iv[AES::BLOCKSIZE]);
 
-    pair<cv::Mat, vector<unsigned char>> Encrypt(const cv::Mat &img) const override;
-    vector<unsigned char> Decrypt(const vector<unsigned char>& data) const override;
+    pair<cv::Mat,pair<vector<unsigned char>,vector<int>>> Encrypt(const cv::Mat &img) const override;
+    cv::Mat Decrypt(const pair<vector<unsigned char>,vector<int>> &p) const override;
 
     string GetKeyBase64() const;
     string GetIVBase64() const;

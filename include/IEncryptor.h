@@ -10,8 +10,8 @@ class IEncryptor {
 public:
     virtual ~IEncryptor() = default;
 
-    virtual pair<cv::Mat,vector<unsigned char>> Encrypt(const cv::Mat &img) const = 0;
-    virtual vector<unsigned char> Decrypt(const std::vector<unsigned char>& data) const = 0;
+    virtual pair<cv::Mat,pair<vector<unsigned char>,vector<int>>> Encrypt(const cv::Mat &img) const = 0;
+    virtual cv::Mat Decrypt(const pair<vector<unsigned char>,vector<int>> &p) const = 0;
 };
 
 #endif
