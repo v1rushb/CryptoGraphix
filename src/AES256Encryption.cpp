@@ -67,12 +67,15 @@ std::string DecodeBase64(const std::string& base64Input) {
 vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte> &plain) {
     vector<CryptoPP::byte> cipher;
     try {
-        AES::Encryption aesEncryption(key_, AES::DEFAULT_KEYLENGTH);
-        CBC_Mode_ExternalCipher::Encryption cbcEncryption(aesEncryption, iv_);
-        cipher.clear();
-        VectorSource(plain, true, new StreamTransformationFilter(cbcEncryption, new VectorSink(cipher)));
+        CBC_Mode<AES>::Encryption encryption;
+        encryption.SetKeyWithIV(key_, AES::DEFAULT_KEYLENGTH, iv_);
+        ArraySource(plain.data(), plain.size(), true,
+                new StreamTransformationFilter(encryption,
+                                               new VectorSink(cipher)
+                                              )
+               );
         } catch(const CryptoPP::Exception &ex) {
-            runtime_error("shit" + string(ex.what()));
+            throw runtime_error("shit" + string(ex.what()));
         }
     return cipher;
 }
@@ -100,18 +103,23 @@ vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte> &p
 //     return vector<uchar>(all(decrypted));
 // }
 
-vector<CryptoPP::byte> AES256Encryption::Decrypt(const vector<CryptoPP::byte> &cipher, Metadata &metadata) {
-    cout << "ENCRYPTION SIZE: " << metadata.encrypted.size() << endl;
-    vector<CryptoPP::byte> recovered;
-    try {
-        AES::Decryption aesDecryption(key_, AES::DEFAULT_KEYLENGTH);
-        CBC_Mode_ExternalCipher::Decryption cbcDecryption(aesDecryption, iv_);
-        recovered.clear();
-        VectorSource(metadata.encrypted, true, new StreamTransformationFilter(cbcDecryption, new VectorSink(recovered)));
-    } catch (const CryptoPP::Exception& ex) {
-        throw runtime_error("Decryption failed: " + string(ex.what()));
-    }
-    return recovered;
+vector<CryptoPP::byte> AES256Encryption::Decrypt(const vector<CryptoPP::byte> &cipher) {
+    // cout << "ENCRYPTION SIZE: " << metadata.encrypted.size() << endl;
+        vector<CryptoPP::byte> recovered;
+        try {
+            CBC_Mode<AES>::Decryption decryption;
+            decryption.SetKeyWithIV(key_, AES::DEFAULT_KEYLENGTH, iv_);
+
+            // Decrypt
+            ArraySource(cipher.data(), cipher.size(), true,
+                        new StreamTransformationFilter(decryption,
+                                                    new VectorSink(recovered)
+                                                    ) // StreamTransformationFilter
+                    ); // ArraySource
+        } catch (const CryptoPP::Exception& ex) {
+            throw runtime_error("Decryption failed: " + string(ex.what()));
+        }
+        return recovered;
 }
 
 

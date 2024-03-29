@@ -16,7 +16,7 @@ public:
     virtual ~EncryptionStrategy() = default;
 
     virtual vector<CryptoPP::byte>  Encrypt(const vector<CryptoPP::byte> &plain) = 0;
-    virtual vector<CryptoPP::byte>  Decrypt(const vector<CryptoPP::byte> &cipher, Metadata &metadata) = 0;
+    virtual vector<CryptoPP::byte>  Decrypt(const vector<CryptoPP::byte> &cipher) = 0;
 };
 
 #endif

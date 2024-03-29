@@ -43,43 +43,43 @@ int main() {
     try {
         ImageReader reader;
         ImageWriter writer;
-        // cv::Mat image = reader.ReadImage("../assets/besho.jpg");
-        cv::Mat image = Utils::GenerateRandomImage(460,500);
+        cv::Mat image = reader.ReadImage("../assets/besho.jpg");
+        // cv::Mat image = Utils::GenerateRandomImage(460,500);
         cv::Mat image2 = reader.ReadImage("../assets/neon.PNG");
         // cv::Mat image2 = Utils::GenerateRandomImage(4096,2160,3);
-        // IEncrypt firstenc(make_unique<AES256Encryption>());
-        // cv::Mat encryptedImage = firstenc.Encrypt(image);
-        // cv::Mat encryptedImage2 = firstenc.Encrypt(image2);
+        IEncrypt firstenc(make_unique<AES256Encryption>());
+        cv::Mat encryptedImage = firstenc.Encrypt(image);
+        cv::Mat encryptedImage2 = firstenc.Encrypt(image2);
 
         // vector<int> img1 = {1,23,12,41,41,23,12,512,3,12,5412,3,12,5412,3,123,1254,123,12,4123,12};
-        vector<int> img1;
-        for(int o = 0; o < 10000;o++)
-            img1.push_back(o%256);
-        vector<int> img2(img1.rbegin(),img1.rend());
-        vector<ll> freq = Utils::getFreq(image);
-        TestRunner runner;
-        runner.registerTest("NPCR",make_shared<NPCRTest>(img1, img2));
-        runner.run("NPCR");
-        runner.registerTest("UACI",make_shared<UACITest>(img1,img2));
-        runner.run("UACI");
-        runner.registerTest("Hamming Distance",make_shared<HammingDistanceTest>(img1,img2));
-        runner.run("Hamming Distance");
-        runner.registerTest("Chisqaure",make_shared<ChiSquareTest>(freq));
-        runner.run("Chisqaure");
-        runner.registerTest("Correlation",make_shared<CorrelationTest>(image2));
-        runner.run("Correlation");
-        runner.registerTest("Information Entropy",make_shared<InformationEntropyTest>(image2));
-        runner.run("Information Entropy");
-        IEncrypt encryptor(make_unique<AES256Encryption>());
-        cv::Mat newImage2 = encryptor.Encrypt(image2);
-        runner.registerTest("Encryption Quality",make_shared<EncryptionQualityTest>(image,newImage2));
-        runner.run("Encryption Quality");
-        // cv::Mat decryptedImage = firstenc.Decrypt(image);
-        // cv::Mat decryptedImage2 = firstenc.Decrypt(image2);
+        // vector<int> img1;
+        // for(int o = 0; o < 10000;o++)
+        //     img1.push_back(o%256);
+        // vector<int> img2(img1.rbegin(),img1.rend());
+        // vector<ll> freq = Utils::getFreq(image);
+        // TestRunner runner;
+        // runner.registerTest("NPCR",make_shared<NPCRTest>(img1, img2));
+        // runner.run("NPCR");
+        // runner.registerTest("UACI",make_shared<UACITest>(img1,img2));
+        // runner.run("UACI");
+        // runner.registerTest("Hamming Distance",make_shared<HammingDistanceTest>(img1,img2));
+        // runner.run("Hamming Distance");
+        // runner.registerTest("Chisqaure",make_shared<ChiSquareTest>(freq));
+        // runner.run("Chisqaure");
+        // runner.registerTest("Correlation",make_shared<CorrelationTest>(image2));
+        // runner.run("Correlation");
+        // runner.registerTest("Information Entropy",make_shared<InformationEntropyTest>(image2));
+        // runner.run("Information Entropy");
+        // IEncrypt encryptor(make_unique<AES256Encryption>());
+        // cv::Mat newImage2 = encryptor.Encrypt(image2);
+        // runner.registerTest("Encryption Quality",make_shared<EncryptionQualityTest>(image,newImage2));
+        // runner.run("Encryption Quality");
+        cv::Mat decryptedImage = firstenc.Decrypt(encryptedImage);
+        cv::Mat decryptedImage2 = firstenc.Decrypt(encryptedImage2);
 
-        // writer.WriteImage("../assets/test_write.jpg", encryptedImage);
-        // writer.WriteImage("../assets/test_write2.jpg", encryptedImage2);
-        // cout << "Image written successfully." << endl;
+        writer.WriteImage("../assets/test_write.jpg", decryptedImage);
+        writer.WriteImage("../assets/test_write2.jpg", decryptedImage2);
+        cout << "Image written successfully." << endl;
     } catch (const exception& e) {
         cerr << "An error occurred: " << e.what() << endl;
         return -1;

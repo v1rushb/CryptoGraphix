@@ -26,7 +26,7 @@ public:
     AES256Encryption(const SecByteBlock& key, const CryptoPP::byte iv[AES::BLOCKSIZE]);
 
     vector<CryptoPP::byte> Encrypt(const vector<CryptoPP::byte> &plain) override;
-    vector<CryptoPP::byte> Decrypt(const vector<CryptoPP::byte> &cipher,Metadata &metadata) override;
+    vector<CryptoPP::byte> Decrypt(const vector<CryptoPP::byte> &cipher) override;
 
     string GetKeyBase64() const;
     string GetIVBase64() const;
