@@ -1,7 +1,7 @@
 // EncryptionFacade.hpp
 
-#ifndef ENCRYPTIONFACADE_HPP
-#define ENCRYPTIONFACADE_HPP
+#ifndef IENCRYPT_HPP
+#define IENCRYPT_HPP
 
 #include "EncryptionStrategy.hpp"
 #include "MetadataManager.hpp"

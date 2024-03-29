@@ -381,6 +381,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   include/IEncrypt.hpp \
   include/Metadata.hpp \
   include/MetadataManager.hpp \
+  include/Utils.hpp \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -518,6 +519,8 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/bits/postypes.h \
   /usr/include/c++/13.2.1/bits/predefined_ops.h \
   /usr/include/c++/13.2.1/bits/ptr_traits.h \
+  /usr/include/c++/13.2.1/bits/random.h \
+  /usr/include/c++/13.2.1/bits/random.tcc \
   /usr/include/c++/13.2.1/bits/range_access.h \
   /usr/include/c++/13.2.1/bits/refwrap.h \
   /usr/include/c++/13.2.1/bits/requires_hosted.h \
@@ -542,6 +545,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/bits/stl_list.h \
   /usr/include/c++/13.2.1/bits/stl_map.h \
   /usr/include/c++/13.2.1/bits/stl_multimap.h \
+  /usr/include/c++/13.2.1/bits/stl_numeric.h \
   /usr/include/c++/13.2.1/bits/stl_pair.h \
   /usr/include/c++/13.2.1/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13.2.1/bits/stl_relops.h \
@@ -600,11 +604,14 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/memory \
   /usr/include/c++/13.2.1/mutex \
   /usr/include/c++/13.2.1/new \
+  /usr/include/c++/13.2.1/numeric \
   /usr/include/c++/13.2.1/ostream \
   /usr/include/c++/13.2.1/pstl/execution_defs.h \
   /usr/include/c++/13.2.1/pstl/glue_algorithm_defs.h \
   /usr/include/c++/13.2.1/pstl/glue_memory_defs.h \
+  /usr/include/c++/13.2.1/pstl/glue_numeric_defs.h \
   /usr/include/c++/13.2.1/pstl/pstl_config.h \
+  /usr/include/c++/13.2.1/random \
   /usr/include/c++/13.2.1/ratio \
   /usr/include/c++/13.2.1/sstream \
   /usr/include/c++/13.2.1/stdexcept \
@@ -641,6 +648,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/error_constants.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/gthr.h \
+  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/opt_random.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
   /usr/include/ctype.h \
   /usr/include/endian.h \
@@ -1396,12 +1404,22 @@ CMakeFiles/CryptoGraphix.dir/src/ImageWriter.cpp.o: src/ImageWriter.cpp \
 
 CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   include/AES256Encryption.hpp \
+  include/ChisquareTest.hpp \
+  include/CorrelationTest.hpp \
+  include/EncryptionQualityTest.hpp \
   include/EncryptionStrategy.hpp \
+  include/HammingDistanceTest.hpp \
   include/IEncrypt.hpp \
+  include/ITest.hpp \
   include/ImageReader.h \
   include/ImageWriter.h \
+  include/InformationEntropyTest.hpp \
   include/Metadata.hpp \
   include/MetadataManager.hpp \
+  include/NPCRTest.hpp \
+  include/TestRunner.hpp \
+  include/UACI.hpp \
+  include/Utils.hpp \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -1549,6 +1567,8 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   /usr/include/c++/13.2.1/bits/predefined_ops.h \
   /usr/include/c++/13.2.1/bits/ptr_traits.h \
   /usr/include/c++/13.2.1/bits/quoted_string.h \
+  /usr/include/c++/13.2.1/bits/random.h \
+  /usr/include/c++/13.2.1/bits/random.tcc \
   /usr/include/c++/13.2.1/bits/range_access.h \
   /usr/include/c++/13.2.1/bits/refwrap.h \
   /usr/include/c++/13.2.1/bits/requires_hosted.h \
@@ -1645,6 +1665,7 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   /usr/include/c++/13.2.1/pstl/glue_memory_defs.h \
   /usr/include/c++/13.2.1/pstl/glue_numeric_defs.h \
   /usr/include/c++/13.2.1/pstl/pstl_config.h \
+  /usr/include/c++/13.2.1/random \
   /usr/include/c++/13.2.1/ratio \
   /usr/include/c++/13.2.1/sstream \
   /usr/include/c++/13.2.1/stdexcept \
@@ -1684,6 +1705,7 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/gthr.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/messages_members.h \
+  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/opt_random.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/time_members.h \
   /usr/include/ctype.h \
@@ -1801,13 +1823,11 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
 
 /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/basic_file.h:
 
-/usr/include/c++/13.2.1/numeric:
-
 /usr/include/c++/13.2.1/bitset:
 
-/usr/include/c++/13.2.1/bits/stl_numeric.h:
-
 /usr/include/c++/13.2.1/bits/fstream.tcc:
+
+include/InformationEntropyTest.hpp:
 
 /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/time_members.h:
 
@@ -1836,6 +1856,12 @@ src/ImageWriter.cpp:
 include/ImageReader.h:
 
 src/ImageReader.cpp:
+
+include/EncryptionQualityTest.hpp:
+
+/usr/include/c++/13.2.1/numeric:
+
+/usr/include/c++/13.2.1/bits/stl_numeric.h:
 
 src/IEncrypt.cpp:
 
@@ -1893,6 +1919,8 @@ src/IEncrypt.cpp:
 
 /usr/local/include/cryptopp/randpool.h:
 
+include/HammingDistanceTest.hpp:
+
 /usr/local/include/cryptopp/osrng.h:
 
 /usr/local/include/cryptopp/authenc.h:
@@ -1910,6 +1938,8 @@ src/IEncrypt.cpp:
 /usr/local/include/cryptopp/cryptlib.h:
 
 /usr/local/include/cryptopp/config_os.h:
+
+/usr/include/c++/13.2.1/bits/random.tcc:
 
 /usr/local/include/cryptopp/config_ns.h:
 
@@ -1985,6 +2015,8 @@ src/IEncrypt.cpp:
 
 /usr/include/asm-generic/errno.h:
 
+include/ITest.hpp:
+
 /usr/include/c++/13.2.1/bits/functional_hash.h:
 
 /usr/include/c++/13.2.1/bits/exception_ptr.h:
@@ -2038,6 +2070,8 @@ src/IEncrypt.cpp:
 /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/gthr.h:
 
 /usr/include/c++/13.2.1/bits/invoke.h:
+
+include/UACI.hpp:
 
 /usr/include/c++/13.2.1/bits/basic_ios.h:
 
@@ -2109,6 +2143,8 @@ src/main.cpp:
 
 /usr/include/bits/types/__fpos_t.h:
 
+/usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/opt_random.h:
+
 /usr/local/include/cryptopp/allocate.h:
 
 include/MetadataManager.hpp:
@@ -2135,6 +2171,8 @@ include/AES256Encryption.hpp:
 
 /usr/include/bits/atomic_wide_counter.h:
 
+include/NPCRTest.hpp:
+
 /usr/include/bits/long-double.h:
 
 /usr/include/c++/13.2.1/bits/fs_path.h:
@@ -2154,6 +2192,8 @@ include/AES256Encryption.hpp:
 /usr/include/c++/13.2.1/bits/allocator.h:
 
 /usr/include/c++/13.2.1/bits/deque.tcc:
+
+include/TestRunner.hpp:
 
 /usr/include/c++/13.2.1/algorithm:
 
@@ -2188,6 +2228,8 @@ include/AES256Encryption.hpp:
 /usr/include/c++/13.2.1/bits/range_access.h:
 
 /usr/include/bits/pthread_stack_min-dynamic.h:
+
+include/CorrelationTest.hpp:
 
 /usr/include/bits/libc-header-start.h:
 
@@ -2343,6 +2385,8 @@ src/AES256Encryption.cpp:
 
 /usr/include/bits/types/error_t.h:
 
+/usr/include/c++/13.2.1/bits/random.h:
+
 /usr/local/include/cryptopp/config.h:
 
 /usr/include/c++/13.2.1/istream:
@@ -2459,6 +2503,8 @@ include/EncryptionStrategy.hpp:
 
 /usr/include/c++/13.2.1/tr1/exp_integral.tcc:
 
+include/Utils.hpp:
+
 /usr/include/c++/13.2.1/bits/stl_construct.h:
 
 /usr/include/c++/13.2.1/cstddef:
@@ -2482,6 +2528,8 @@ include/EncryptionStrategy.hpp:
 /usr/include/c++/13.2.1/bits/stl_pair.h:
 
 /usr/include/c++/13.2.1/bits/stl_tempbuf.h:
+
+include/ChisquareTest.hpp:
 
 /usr/include/c++/13.2.1/bits/stringfwd.h:
 
@@ -2578,6 +2626,8 @@ include/IEncrypt.hpp:
 /usr/include/bits/types/struct_sched_param.h:
 
 /usr/include/c++/13.2.1/ratio:
+
+/usr/include/c++/13.2.1/random:
 
 /usr/include/time.h:
 

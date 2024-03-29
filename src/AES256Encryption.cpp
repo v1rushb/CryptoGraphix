@@ -101,6 +101,7 @@ vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte> &p
 // }
 
 vector<CryptoPP::byte> AES256Encryption::Decrypt(const vector<CryptoPP::byte> &cipher, Metadata &metadata) {
+    cout << "ENCRYPTION SIZE: " << metadata.encrypted.size() << endl;
     vector<CryptoPP::byte> recovered;
     try {
         AES::Decryption aesDecryption(key_, AES::DEFAULT_KEYLENGTH);

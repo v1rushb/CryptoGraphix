@@ -36,7 +36,6 @@ public:
     }
     void storeMetadata(Metadata& metadata, const string &encryptedDataString) {
         // string encryptedDataString(encryptedData.begin(),encryptedData.end());
-        cout << encryptedDataString[234] << endl;
         string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
         cout << hashedEncryptedDataString << endl;
         metadataMap[hashedEncryptedDataString] = metadata;

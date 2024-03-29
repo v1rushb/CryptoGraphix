@@ -1,4 +1,5 @@
 #include "IEncrypt.hpp"
+#include "Utils.hpp"
 #include <vector>
 #include <iostream>
 
@@ -62,11 +63,10 @@ cv::Mat IEncrypt::setMatrix(const vector<CryptoPP::byte> &data, long int rows, l
     for(auto el : data)
         conv.push_back(static_cast<int>(el));
     int ctr(0);
-    // Calculate the total expected size based on the cv::Mat dimensions
     long int expectedSize = img.total() * img.elemSize();
     for (int o = 0; o < img.rows; o++) {
         for (int i = 0; i < img.cols; i++) {
-            if (ctr + 2 < expectedSize) { // Use expectedSize to limit the data usage
+            if (ctr + 2 < expectedSize) {
                 cv::Vec3b &pixel = img.at<cv::Vec3b>(o, i);
                 pixel[0] = conv[ctr++];
                 pixel[1] = conv[ctr++];
@@ -79,13 +79,15 @@ cv::Mat IEncrypt::setMatrix(const vector<CryptoPP::byte> &data, long int rows, l
 
 
 cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
-    vector<int> vectorizedImage = Vectorize(img);
-    vector<CryptoPP::byte> output;
-    output.reserve(vectorizedImage.size());
+    // vector<int> vectorizedImage = Vectorize(img);
+    vector<int> vectorizedImage = Utils::Vectorize(img);
+    // vector<CryptoPP::byte> output;
+    // output.reserve(vectorizedImage.size());
 
-    for(int value : vectorizedImage) {
-        output.push_back(static_cast<CryptoPP::byte>(value));
-    }
+    // for(int value : vectorizedImage) {
+    //     output.push_back(static_cast<CryptoPP::byte>(value));
+    // }
+    vector<CryptoPP::byte> output = Utils::IntVectorToByte(vectorizedImage);
     vector<CryptoPP::byte> encryptedData = strategy->Encrypt(output);
 
     Metadata metadata = {
@@ -94,30 +96,35 @@ cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
         img.channels(),
         encryptedData,
     };
-    // // cv::Mat encryptedImage = setMatrix(encryptedData,metadata.width,metadata.height);
-    // cv::Mat encryptedImage = setMatrix(encryptedData,metadata.height,metadata.width);
-    cv::Mat image(img.rows, img.cols, CV_8UC3, (void*)output.data());
 
-    vector<int> newVectorizedImage = Vectorize(image);
-    vector<CryptoPP::byte> output2;
-    output2.reserve(newVectorizedImage.size());
+    // cout << encryptedData.size() << endl;
+    // cv::Mat image(img.rows, img.cols, CV_8UC1, (void*)output.data());
+    cv::Mat image = Utils::Matricize(img.rows,img.cols,img.channels(),output);
+    // cout << "CHANNELS: "<<img.channels() << endl;
 
-    for(int value : newVectorizedImage) {
-        output2.push_back(static_cast<CryptoPP::byte>(value));
-    }
+    // vector<int> newVectorizedImage = Vectorize(image);
+    vector<int> newVectorizedImage = Utils::Vectorize(image);
+    // cout << "Size: " << encryptedData.size() << endl;
 
-    // vector<uchar> newVectorizedImage = Vectorize(encryptedImage);
-    // metadataManager.storeMetadata(metadata,newVectorizedImage);
-    // // vector<uchar> newVectorizedImage = Vectorize(encryptedImage);
-    // metadataManager.storeMetadata(metadata, newVectorizedImage);
+    // vector<CryptoPP::byte> output2;
+    // output2.reserve(newVectorizedImage.size());
 
-    string res;
-    for(int el : newVectorizedImage) {
-        if (el < 0 || el > 255) {
-            throw std::runtime_error("Value out of ASCII range.");
-        }
-        res+= static_cast<char>(el);
-    }
+    // for(int value : newVectorizedImage) {
+    //     output2.push_back(static_cast<CryptoPP::byte>(value));
+    // }
+    vector<CryptoPP::byte> output2 = Utils::IntVectorToByte(newVectorizedImage);
+
+    // string res;
+    // for(int el : newVectorizedImage) {
+    //     if (el < 0 || el > 255) {
+    //         throw std::runtime_error("Value out of ASCII range.");
+    //     }
+    //     res+= static_cast<char>(el);
+    // }
+    string res = Utils::IntVectorToString(newVectorizedImage);
+    for(int o = 0; o < 10;o++)
+        cout << newVectorizedImage[o] << ' ';
+    cout << endl;
 
     metadataManager.storeMetadata(metadata,res);
     cout << "Encryption" << endl;
@@ -134,32 +141,41 @@ cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
 }
 
 cv::Mat IEncrypt::Decrypt(const cv::Mat &encryptedImg) {
-    vector<int> encryptedData = Vectorize(encryptedImg);
-    vector<CryptoPP::byte> output;
-    output.reserve(encryptedData.size());
+    // using namespace Utils; // do later - refactoring
+    // vector<int> encryptedData = Vectorize(encryptedImg);
+    vector<int> encryptedData = Utils::Vectorize(encryptedImg);
+    cout << "Size: " << encryptedData.size() << endl;
+    for(int o =0; o < 10;o++)
+        cout << encryptedData[o] << ' ';
+    cout << endl;
+    // vector<CryptoPP::byte> output;
+    // output.reserve(encryptedData.size());
 
-    for(int value : encryptedData) {
-        output.push_back(static_cast<CryptoPP::byte>(value));
-    }
+    // for(int value : encryptedData) {
+    //     output.push_back(static_cast<CryptoPP::byte>(value));
+    // }
+    vector<CryptoPP::byte> output = Utils::IntVectorToByte(encryptedData);
 
-    string res;
-    for(int el : encryptedData) {
-        if (el < 0 || el > 255) {
-            throw std::runtime_error("Value out of ASCII range.");
-        }
-        res+= static_cast<char>(el);
-    }
+    // string res;
+    // for(int el : encryptedData) {
+    //     if (el < 0 || el > 255) {
+    //         throw std::runtime_error("Value out of ASCII range.");
+    //     }
+    //     res+= static_cast<char>(el);
+    // }
+    string res = Utils::IntVectorToString(encryptedData);
 
-    cout << "Decryption" << endl;
+    // cout << "Decryption" << endl;
     // cout << encryptedData.size() << endl;
     // for(int o = 0; o < 15;o++)
     //     cout << res[o] << ' ';
     // cout << endl;
     Metadata metadata = metadataManager.getMetadata(res);
-    cout << metadata.height << endl;
+    // cout << metadata.height << endl;
     vector<CryptoPP::byte> decryptedData = strategy->Decrypt(output,metadata);
     // return setMatrix(decryptedData,metadata.width,metadata.height);
-    cv::Mat image(metadata.width, metadata.height, CV_8UC3, (void*)output.data());
+    // cv::Mat image(metadata.width, metadata.height, CV_8UC3, (void*)output.data());
+    cv::Mat image = Utils::Matricize(metadata.width,metadata.height,metadata.channels,output);
     // return cv::Mat();
-    return image.clone();
+    return image;
 }
