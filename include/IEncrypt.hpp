@@ -1,5 +1,3 @@
-// EncryptionFacade.hpp
-
 #ifndef IENCRYPT_HPP
 #define IENCRYPT_HPP
 
@@ -24,8 +22,10 @@ public:
     IEncrypt(unique_ptr<EncryptionStrategy> strategy)
         : strategy(move(strategy)) {}
 
-    cv::Mat Encrypt(const cv::Mat &img);
-    cv::Mat Decrypt(const cv::Mat &encryptedImg);
+    cv::Mat EncryptImage(const cv::Mat &img);
+    cv::Mat DecryptImage(const cv::Mat &encryptedImg);
+    string EncryptText(string);
+    string DecryptText(string);
 };
 
 #endif

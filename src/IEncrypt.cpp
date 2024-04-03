@@ -78,7 +78,7 @@ cv::Mat IEncrypt::setMatrix(const vector<CryptoPP::byte> &data, long int rows, l
 }
 
 
-cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
+cv::Mat IEncrypt::EncryptImage(const cv::Mat &img) {
     vector<int> vectorizedImage = Utils::Vectorize(img);
 
     vector<CryptoPP::byte> output = Utils::IntVectorToByte(vectorizedImage);
@@ -106,12 +106,9 @@ cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
     return image;
 }
 
-cv::Mat IEncrypt::Decrypt(const cv::Mat &encryptedImg) {
+cv::Mat IEncrypt::DecryptImage(const cv::Mat &encryptedImg) {
     vector<int> encryptedData = Utils::Vectorize(encryptedImg);
     cout << "Size: " << encryptedData.size() << endl;
-    // for(int o =0; o < 10;o++)
-    //     cout << encryptedData[o] << ' ';
-    // cout << endl;
 
     vector<CryptoPP::byte> output = Utils::IntVectorToByte(encryptedData);
 

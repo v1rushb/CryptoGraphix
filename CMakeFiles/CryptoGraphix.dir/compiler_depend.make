@@ -1409,11 +1409,14 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   include/EncryptionQualityTest.hpp \
   include/EncryptionStrategy.hpp \
   include/HammingDistanceTest.hpp \
+  include/HidingStrategy.hpp \
   include/IEncrypt.hpp \
+  include/IHide.hpp \
   include/ITest.hpp \
   include/ImageReader.h \
   include/ImageWriter.h \
   include/InformationEntropyTest.hpp \
+  include/LSB.hpp \
   include/Metadata.hpp \
   include/MetadataManager.hpp \
   include/NPCRTest.hpp \
@@ -1829,6 +1832,8 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
 
 include/InformationEntropyTest.hpp:
 
+include/IHide.hpp:
+
 /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/time_members.h:
 
 /usr/include/c++/13.2.1/locale:
@@ -2054,6 +2059,8 @@ include/ITest.hpp:
 /usr/include/bits/types/struct_tm.h:
 
 /usr/include/c++/13.2.1/bits/atomic_lockfree_defines.h:
+
+include/HidingStrategy.hpp:
 
 /usr/local/include/cryptopp/aes.h:
 
@@ -2644,6 +2651,8 @@ include/IEncrypt.hpp:
 /usr/include/c++/13.2.1/tr1/ell_integral.tcc:
 
 /usr/include/c++/13.2.1/tr1/legendre_function.tcc:
+
+include/LSB.hpp:
 
 /usr/include/c++/13.2.1/tr1/poly_hermite.tcc:
 

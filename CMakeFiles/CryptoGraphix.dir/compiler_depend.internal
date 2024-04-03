@@ -1414,11 +1414,14 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o
  /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionQualityTest.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionStrategy.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/HammingDistanceTest.hpp
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/HidingStrategy.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/IEncrypt.hpp
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/IHide.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/ITest.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/ImageReader.h
  /home/v1rushb/newDev/newCopyCryptanalysis/include/ImageWriter.h
  /home/v1rushb/newDev/newCopyCryptanalysis/include/InformationEntropyTest.hpp
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/LSB.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/Metadata.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/MetadataManager.hpp
  /home/v1rushb/newDev/newCopyCryptanalysis/include/NPCRTest.hpp

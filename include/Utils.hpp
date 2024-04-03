@@ -123,6 +123,14 @@ class Utils {
             }
             return freq;
         }
+
+        static vector<CryptoPP::byte> StringToByteVector(const string &str) {
+            return vector<CryptoPP::byte>(str.begin(),str.end());
+        }
+
+        static string ByteVectorToString(const vector<CryptoPP::byte> &data) {
+            return string(data.begin(),data.end());
+        }
 };
 
 

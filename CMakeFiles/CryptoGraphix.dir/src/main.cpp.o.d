@@ -338,4 +338,8 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/CorrelationTest.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/InformationEntropyTest.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/Utils.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionQualityTest.hpp
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionQualityTest.hpp \
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/LSB.hpp \
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/HidingStrategy.hpp \
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/IHide.hpp \
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/IEncrypt.hpp
