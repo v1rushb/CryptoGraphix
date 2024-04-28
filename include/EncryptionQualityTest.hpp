@@ -11,7 +11,7 @@
 using namespace std;
 
 #define ll long long int
-#define all(d) d.begin(),d.end()
+// #define all(d) d.begin(),d.end()
 
 class EncryptionQualityTest : public ITest {
     private:

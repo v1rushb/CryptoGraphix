@@ -88,7 +88,7 @@ class CorrelationTest : public ITest {
                 correlations.push_back(CalculateVerticalCorrelation(img,o));   
                 correlations.push_back(CalculateDiagonalCorrelation(img,o));
             }
-            double sum = accumulate(all(correlations),0.0);
+            double sum = accumulate(correlations.begin(),correlations.end(),0.0);
             return sum / correlations.size();
         }
 

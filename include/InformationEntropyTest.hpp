@@ -46,19 +46,3 @@ class InformationEntropyTest : public ITest {
 };
 
 #endif
-
-/*
-long double calculateInformationEntropy(const cv::Mat &img) {
-    vector<ll> freq = getImgFreq(img);
-    const short channels = img.channels();
-    long double val = 0.0;
-    const ll picSize = img.cols * img.rows* channels;
-    for(int o = 0; o < 256;o++) {
-        if(freq[o] > 0) {
-            long double prob = (freq[o] / (picSize * 1.0));
-            val -= prob * log2(prob);
-        }
-    }
-    return val;
-}
-*/

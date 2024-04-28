@@ -323,14 +323,14 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /usr/local/include/cryptopp/cryptlib.h /usr/local/include/cryptopp/ccm.h \
  /usr/local/include/cryptopp/authenc.h \
  /usr/local/include/cryptopp/modes.h /usr/local/include/cryptopp/base64.h \
- /usr/include/c++/13.2.1/bitset \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/AES256Encryption.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/Utils.hpp \
  /usr/include/c++/13.2.1/random /usr/include/c++/13.2.1/bits/random.h \
  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/opt_random.h \
- /usr/include/c++/13.2.1/bits/random.tcc \
+ /usr/include/c++/13.2.1/bits/random.tcc /usr/include/c++/13.2.1/chrono \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/NPCRTest.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/ITest.hpp \
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/TestRunner.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/TestRunner.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/UACI.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/HammingDistanceTest.hpp \
@@ -339,7 +339,10 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/InformationEntropyTest.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/Utils.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionQualityTest.hpp \
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/TimePerformanceTest.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/LSB.hpp \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/HidingStrategy.hpp \
+ /usr/include/c++/13.2.1/bitset \
  /home/v1rushb/newDev/newCopyCryptanalysis/include/IHide.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/IEncrypt.hpp
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/IEncrypt.hpp \
+ /home/v1rushb/newDev/newCopyCryptanalysis/include/Macros.h

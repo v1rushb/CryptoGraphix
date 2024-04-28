@@ -56,7 +56,7 @@ vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte> &p
                                               )
                );
         } catch(const CryptoPP::Exception &ex) {
-            throw runtime_error("shit" + string(ex.what()));
+            throw runtime_error("Why does it have to be an error all the time?" + string(ex.what()));
         }
     return cipher;
 }
@@ -76,8 +76,3 @@ vector<CryptoPP::byte> AES256Encryption::Decrypt(const vector<CryptoPP::byte> &c
         }
         return recovered;
 }
-
-
-
-
-

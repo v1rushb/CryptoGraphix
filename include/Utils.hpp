@@ -4,6 +4,8 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <random>
+#include <chrono>
+#include <functional>
 
 using namespace std;
 
@@ -16,16 +18,16 @@ class Utils {
             vector<int> buffer;
             buffer.reserve(img.total() * img.channels());
             if (img.channels() == 1) {
-                for (int i = 0; i < img.rows; i++) {
-                    for (int j = 0; j < img.cols; j++) {
-                        uchar val = img.at<uchar>(i, j);
-                        buffer.push_back(val);
+                for (int o = 0; o < img.rows; o++) {
+                    for (int i = 0; i < img.cols; i++) {
+                        uchar pixel = img.at<uchar>(o,i);
+                        buffer.push_back(pixel);
                     }
                 }
             } else if (img.channels() == 3) {
-                for (int i = 0; i < img.rows; i++) {
-                    for (int j = 0; j < img.cols; j++) {
-                        cv::Vec3b pixel = img.at<cv::Vec3b>(i, j);
+                for (int o = 0; o < img.rows; o++) {
+                    for (int i = 0; i < img.cols; i++) {
+                        cv::Vec3b pixel = img.at<cv::Vec3b>(o, i);
                         for (int k = 0; k < 3; k++) {
                             buffer.push_back(pixel[k]);
                         }
@@ -130,6 +132,15 @@ class Utils {
 
         static string ByteVectorToString(const vector<CryptoPP::byte> &data) {
             return string(data.begin(),data.end());
+        }
+
+        template<typename Function, typename... Args>
+        static double getExecutionTime(Function function, Args&&... args) {
+            auto start = chrono::high_resolution_clock::now();
+            invoke(function, forward<Args>(args)...);
+            auto finish = chrono::high_resolution_clock::now();
+            chrono::duration<double> elapsedTime = finish -  start;
+            return elapsedTime.count();
         }
 };
 

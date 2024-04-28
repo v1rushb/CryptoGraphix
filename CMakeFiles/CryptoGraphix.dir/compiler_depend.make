@@ -382,6 +382,9 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   include/Metadata.hpp \
   include/MetadataManager.hpp \
   include/Utils.hpp \
+  src/Logger.cpp \
+  include/LogMacros.h \
+  src/Logger.cpp \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -483,6 +486,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/bits/char_traits.h \
   /usr/include/c++/13.2.1/bits/charconv.h \
   /usr/include/c++/13.2.1/bits/chrono.h \
+  /usr/include/c++/13.2.1/bits/codecvt.h \
   /usr/include/c++/13.2.1/bits/concept_check.h \
   /usr/include/c++/13.2.1/bits/cpp_type_traits.h \
   /usr/include/c++/13.2.1/bits/cxxabi_forced.h \
@@ -493,6 +497,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/bits/exception.h \
   /usr/include/c++/13.2.1/bits/exception_defines.h \
   /usr/include/c++/13.2.1/bits/exception_ptr.h \
+  /usr/include/c++/13.2.1/bits/fstream.tcc \
   /usr/include/c++/13.2.1/bits/functexcept.h \
   /usr/include/c++/13.2.1/bits/functional_hash.h \
   /usr/include/c++/13.2.1/bits/hash_bytes.h \
@@ -504,8 +509,11 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/bits/list.tcc \
   /usr/include/c++/13.2.1/bits/locale_classes.h \
   /usr/include/c++/13.2.1/bits/locale_classes.tcc \
+  /usr/include/c++/13.2.1/bits/locale_conv.h \
   /usr/include/c++/13.2.1/bits/locale_facets.h \
   /usr/include/c++/13.2.1/bits/locale_facets.tcc \
+  /usr/include/c++/13.2.1/bits/locale_facets_nonio.h \
+  /usr/include/c++/13.2.1/bits/locale_facets_nonio.tcc \
   /usr/include/c++/13.2.1/bits/localefwd.h \
   /usr/include/c++/13.2.1/bits/memory_resource.h \
   /usr/include/c++/13.2.1/bits/memoryfwd.h \
@@ -519,6 +527,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/bits/postypes.h \
   /usr/include/c++/13.2.1/bits/predefined_ops.h \
   /usr/include/c++/13.2.1/bits/ptr_traits.h \
+  /usr/include/c++/13.2.1/bits/quoted_string.h \
   /usr/include/c++/13.2.1/bits/random.h \
   /usr/include/c++/13.2.1/bits/random.tcc \
   /usr/include/c++/13.2.1/bits/range_access.h \
@@ -568,6 +577,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/cctype \
   /usr/include/c++/13.2.1/cerrno \
   /usr/include/c++/13.2.1/cfloat \
+  /usr/include/c++/13.2.1/chrono \
   /usr/include/c++/13.2.1/climits \
   /usr/include/c++/13.2.1/clocale \
   /usr/include/c++/13.2.1/cmath \
@@ -592,14 +602,17 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/ext/numeric_traits.h \
   /usr/include/c++/13.2.1/ext/string_conversions.h \
   /usr/include/c++/13.2.1/ext/type_traits.h \
+  /usr/include/c++/13.2.1/fstream \
   /usr/include/c++/13.2.1/functional \
   /usr/include/c++/13.2.1/initializer_list \
+  /usr/include/c++/13.2.1/iomanip \
   /usr/include/c++/13.2.1/ios \
   /usr/include/c++/13.2.1/iosfwd \
   /usr/include/c++/13.2.1/iostream \
   /usr/include/c++/13.2.1/istream \
   /usr/include/c++/13.2.1/limits \
   /usr/include/c++/13.2.1/list \
+  /usr/include/c++/13.2.1/locale \
   /usr/include/c++/13.2.1/map \
   /usr/include/c++/13.2.1/memory \
   /usr/include/c++/13.2.1/mutex \
@@ -639,8 +652,10 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/utility \
   /usr/include/c++/13.2.1/vector \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/atomic_word.h \
+  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/basic_file.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/c++allocator.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
+  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/c++io.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/c++locale.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/cpu_defines.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/ctype_base.h \
@@ -648,8 +663,10 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/error_constants.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/gthr-default.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/gthr.h \
+  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/messages_members.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/opt_random.h \
   /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/os_defines.h \
+  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/time_members.h \
   /usr/include/ctype.h \
   /usr/include/endian.h \
   /usr/include/errno.h \
@@ -657,6 +674,7 @@ CMakeFiles/CryptoGraphix.dir/src/IEncrypt.cpp.o: src/IEncrypt.cpp \
   /usr/include/features.h \
   /usr/include/gnu/stubs-64.h \
   /usr/include/gnu/stubs.h \
+  /usr/include/libintl.h \
   /usr/include/limits.h \
   /usr/include/linux/errno.h \
   /usr/include/linux/limits.h \
@@ -1417,10 +1435,12 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   include/ImageWriter.h \
   include/InformationEntropyTest.hpp \
   include/LSB.hpp \
+  include/Macros.h \
   include/Metadata.hpp \
   include/MetadataManager.hpp \
   include/NPCRTest.hpp \
   include/TestRunner.hpp \
+  include/TimePerformanceTest.hpp \
   include/UACI.hpp \
   include/Utils.hpp \
   /usr/include/alloca.h \
@@ -1620,6 +1640,7 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   /usr/include/c++/13.2.1/cctype \
   /usr/include/c++/13.2.1/cerrno \
   /usr/include/c++/13.2.1/cfloat \
+  /usr/include/c++/13.2.1/chrono \
   /usr/include/c++/13.2.1/climits \
   /usr/include/c++/13.2.1/clocale \
   /usr/include/c++/13.2.1/cmath \
@@ -1824,35 +1845,19 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: src/main.cpp \
   /usr/local/include/opencv4/opencv2/opencv_modules.hpp
 
 
-/usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/basic_file.h:
-
 /usr/include/c++/13.2.1/bitset:
 
-/usr/include/c++/13.2.1/bits/fstream.tcc:
+include/TimePerformanceTest.hpp:
+
+include/Macros.h:
 
 include/InformationEntropyTest.hpp:
 
 include/IHide.hpp:
 
-/usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/time_members.h:
-
-/usr/include/c++/13.2.1/locale:
-
-/usr/include/c++/13.2.1/iomanip:
-
 /usr/include/c++/13.2.1/filesystem:
 
 /usr/include/c++/13.2.1/codecvt:
-
-/usr/include/c++/13.2.1/bits/quoted_string.h:
-
-/usr/include/c++/13.2.1/bits/locale_facets_nonio.tcc:
-
-/usr/include/c++/13.2.1/bits/locale_facets_nonio.h:
-
-/usr/include/c++/13.2.1/bits/locale_conv.h:
-
-/usr/include/c++/13.2.1/bits/codecvt.h:
 
 include/ImageWriter.h:
 
@@ -1862,11 +1867,35 @@ include/ImageReader.h:
 
 src/ImageReader.cpp:
 
+/usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/time_members.h:
+
+/usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/basic_file.h:
+
 include/EncryptionQualityTest.hpp:
 
 /usr/include/c++/13.2.1/numeric:
 
+/usr/include/c++/13.2.1/locale:
+
+/usr/include/c++/13.2.1/iomanip:
+
 /usr/include/c++/13.2.1/bits/stl_numeric.h:
+
+/usr/include/c++/13.2.1/bits/quoted_string.h:
+
+/usr/include/c++/13.2.1/bits/locale_facets_nonio.tcc:
+
+/usr/include/c++/13.2.1/bits/locale_facets_nonio.h:
+
+/usr/include/c++/13.2.1/bits/locale_conv.h:
+
+/usr/include/c++/13.2.1/bits/fstream.tcc:
+
+/usr/include/c++/13.2.1/bits/codecvt.h:
+
+include/LogMacros.h:
+
+src/Logger.cpp:
 
 src/IEncrypt.cpp:
 
@@ -2283,6 +2312,8 @@ include/CorrelationTest.hpp:
 /usr/include/bits/time.h:
 
 /usr/include/bits/stdio_lim.h:
+
+/usr/include/c++/13.2.1/chrono:
 
 /usr/include/bits/types/__mbstate_t.h:
 

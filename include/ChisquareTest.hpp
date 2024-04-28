@@ -10,7 +10,7 @@
 using namespace std;
 
 #define ll long long int
-#define all(d) d.begin(),d.end()
+// #define all(d) d.begin(),d.end()
 
 class ChiSquareTest : public ITest {
     private:
@@ -22,7 +22,7 @@ class ChiSquareTest : public ITest {
             : freq(freqarr) {}
         
         pair<double,bool> CalculateChiSquare() const {
-            const ll sum = accumulate(all(freq), 0);
+            const ll sum = accumulate(freq.begin(),freq.end(), 0);
             const double expectedFreq = (double) sum/256.0;
             double s(0);
             for(ll el : freq) {

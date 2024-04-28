@@ -1,7 +1,10 @@
+#pragma
 #include "IEncrypt.hpp"
 #include "Utils.hpp"
 #include <vector>
 #include <iostream>
+// #include "Macros.h"
+#include "Logger.cpp"
 
 using namespace std;
 using namespace CryptoPP;
@@ -108,7 +111,9 @@ cv::Mat IEncrypt::EncryptImage(const cv::Mat &img) {
 
 cv::Mat IEncrypt::DecryptImage(const cv::Mat &encryptedImg) {
     vector<int> encryptedData = Utils::Vectorize(encryptedImg);
-    cout << "Size: " << encryptedData.size() << endl;
+    // cout << "Size: " << encryptedData.size() << endl;
+    // LOG_INFO("SIZE: " + to_string(encryptedData.size()));
+    LOG_INFO(("size " +  to_string(encryptedData.size())));
 
     vector<CryptoPP::byte> output = Utils::IntVectorToByte(encryptedData);
 
@@ -118,4 +123,13 @@ cv::Mat IEncrypt::DecryptImage(const cv::Mat &encryptedImg) {
     vector<CryptoPP::byte> decryptedData = strategy->Decrypt(metadata.encrypted);
     cv::Mat image = Utils::Matricize(metadata.width,metadata.height,metadata.channels,decryptedData);
     return image;
+}
+
+
+vector<CryptoPP::byte> IEncrypt::EncryptText(const vector<CryptoPP::byte> &data) {
+    return strategy->Encrypt(data);
+}
+
+vector<CryptoPP::byte> IEncrypt::DecryptText(const vector<CryptoPP::byte> &encryptedText) {
+    strategy->Decrypt(encryptedText);
 }

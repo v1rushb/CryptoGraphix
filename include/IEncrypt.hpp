@@ -24,8 +24,8 @@ public:
 
     cv::Mat EncryptImage(const cv::Mat &img);
     cv::Mat DecryptImage(const cv::Mat &encryptedImg);
-    string EncryptText(string);
-    string DecryptText(string);
+    vector<CryptoPP::byte>  EncryptText(const vector<CryptoPP::byte> &data);
+    vector<CryptoPP::byte>  DecryptText(const vector<CryptoPP::byte> &encryptedText);
 };
 
 #endif

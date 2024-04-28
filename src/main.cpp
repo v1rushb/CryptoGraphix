@@ -1,3 +1,13 @@
+/*%!@\$!@\$%&&\$#@%@^#%&\$**(\$%&%#\$%@#%^#@^&#@\$%#!@^@#^&@#^
+░██████╗░█████╗░███╗░░░███╗██╗░░░██╗██████╗░░█████╗░██╗
+██╔════╝██╔══██╗████╗░████║██║░░░██║██╔══██╗██╔══██╗██║
+╚█████╗░███████║██╔████╔██║██║░░░██║██████╔╝███████║██║
+░╚═══██╗██╔══██║██║╚██╔╝██║██║░░░██║██╔══██╗██╔══██║██║
+██████╔╝██║░░██║██║░╚═╝░██║╚██████╔╝██║░░██║██║░░██║██║
+╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═╝░╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝
+^@#^@&@#%@*^%*&\$%^#\$^\$***%^#\$@%\$@#\$!@\$!@#\$%@#^@&@#%@#*/
+
+
 #include "ImageReader.h"
 #include "ImageWriter.h"
 #include <iostream>
@@ -22,91 +32,26 @@
 #include <cryptopp/ccm.h>
 #include <cryptopp/base64.h>
 #include <opencv2/opencv.hpp>
-#include <bitset>
 #include "AES256Encryption.hpp"
 #include "Utils.hpp"
 #include "NPCRTest.hpp"
+#include "TestRunner.hpp"
 #include "UACI.hpp"
 #include "HammingDistanceTest.hpp"
 #include "ChisquareTest.hpp"
 #include "CorrelationTest.hpp"
 #include "InformationEntropyTest.hpp"
 #include "EncryptionQualityTest.hpp"
+#include "TimePerformanceTest.hpp"
 #include "LSB.hpp"
-#include <bitset>
 #include "IHide.hpp"
+#include "Macros.h"
 
 using namespace std;
 using namespace CryptoPP;
 
-#define all(v) v.begin(),v.end();
-#define ll long long int
-#define ull unsigned long long
-
-// void hideMessage(cv::Mat &img, const string &message) {
-//     if(message.size() > img.cols * img.rows) {
-//         cerr << "Too large for LSB." << endl;
-//         return;
-//     }
-//     string data;
-//     for(char ch : message) {
-//         bitset<8> bits(static_cast<ull>(ch));
-//         data+=bits.to_string();
-//     }
-
-    
-//     int bitIndex(0);
-//     for(int o = 0; o < img.rows && bitIndex < data.size(); o++) {
-//         for(int i = 0; i  < img.cols && bitIndex < data.size();i++) {
-
-//             if(img.channels() == 3) {
-//                 cv::Vec3b &pixel = img.at<cv::Vec3b>(o,i);
-//                 uchar &blue = pixel[0];
-//                 if(data[bitIndex] =='1') {
-//                     blue |=1;
-//                 } else {
-//                     blue &= ~1;
-//                 }
-//             } else {
-//                 uchar &wb = img.at<uchar>(o,i);
-//                 if(data[bitIndex] =='1') {
-//                     wb |=1;
-//                 } else {
-//                     wb &= ~1;
-//                 }
-//             }
-//             ++bitIndex;
-//         }
-//     }
-// }
-
-// string extractMessage(const cv::Mat &img, int len) {
-//     len*=8;
-//     string data;
-//     int bitIndex(0);
-//     for(int o = 0; o < img.rows && bitIndex < len; o++) {
-//         for(int i = 0; i  < img.cols && bitIndex < len;i++) {
-//             if(img.channels() == 3) {
-//             uchar blue = img.at<cv::Vec3b>(o,i)[0];
-//             data += to_string(blue&1);
-//             } else {
-//                 uchar wb = img.at<uchar>(o,i);
-//                 data+=to_string(wb&1);
-//             }
-//             ++bitIndex;             
-//         }
-//     }
-
-//     string msg;
-//     for(int o = 0; o < data.size();o+=8) {
-//         bitset<8> bits(data.substr(o,8));
-//         msg += static_cast<char>(bits.to_ulong());
-//     }
-//     return msg;
-// }
-
-
 int main() {
+    send help pls;
     try {
         ImageReader reader;
         ImageWriter writer;
@@ -115,6 +60,9 @@ int main() {
         // cv::Mat image2 = reader.ReadImage("../assets/neon.PNG");
         // cv::Mat image2 = Utils::GenerateRandomImage(4096,2160,3);
         IEncrypt firstenc(make_unique<AES256Encryption>());
+
+        cv::Mat encryptedImage = firstenc.EncryptImage(image);
+        cv::Mat decryptedImage = firstenc.DecryptImage(encryptedImage);
         // string secretmsg = "Hi bruv";
         // vector<uint8_t> messageData(secretmsg.begin(),secretmsg.end());
         // LSB lsbsteg;
@@ -127,8 +75,9 @@ int main() {
         // cout << extractedMessage << endl;
 
         // hideMessage(image,msg);
-        // // cout << "Hi" << endl;
+        // cout << "Hi" << endl;
         auto lsb = make_shared<LSB>();
+        auto aesenc = make_shared<AES256Encryption>();
         IHide service(lsb);
         const string msg = "God Bless Gaza";
         service.embedMessage(image,msg);
@@ -137,34 +86,37 @@ int main() {
         // cout << extractMessage(encryptedImage,msg.length()) << endl;
         // cv::Mat encryptedImage2 = firstenc.Encrypt(image2);
 
-        // vector<ll> freq = Utils::getFreq(encryptedImage);
+        vector<ll> freq = Utils::getFreq(encryptedImage);
         // for(auto &el : freq)
         //     cout << el << ' ';
         // cout << endl;
-        // vector<int> img1 = Utils::Vectorize(image);
-        // vector<int> img2 = Utils::Vectorize(encryptedImage);
-        // TestRunner runner;
-        // runner.registerTest("NPCR",make_shared<NPCRTest>(img1, img2));
-        // runner.run("NPCR");
-        // runner.registerTest("UACI",make_shared<UACITest>(img1,img2));
-        // runner.run("UACI");
-        // runner.registerTest("Hamming Distance",make_shared<HammingDistanceTest>(img1,img2));
-        // runner.run("Hamming Distance");
-        // runner.registerTest("Chisqaure",make_shared<ChiSquareTest>(freq));
-        // runner.run("Chisqaure");
-        // runner.registerTest("Correlation",make_shared<CorrelationTest>(encryptedImage));
-        // runner.run("Correlation");
-        // runner.registerTest("Information Entropy",make_shared<InformationEntropyTest>(encryptedImage));
-        // runner.run("Information Entropy");
-        // runner.registerTest("Encryption Quality",make_shared<EncryptionQualityTest>(image,encryptedImage));
-        // runner.run("Encryption Quality");
+        vector<int> img1 = Utils::Vectorize(image);
+        vector<int> img2 = Utils::Vectorize(encryptedImage);
+        TestRunner runner;
+        runner.registerTest("NPCR",make_shared<NPCRTest>(img1, img2));
+        runner.run("NPCR");
+        runner.registerTest("UACI",make_shared<UACITest>(img1,img2));
+        runner.run("UACI");
+        runner.registerTest("Hamming Distance",make_shared<HammingDistanceTest>(img1,img2));
+        runner.run("Hamming Distance");
+        runner.registerTest("Chisqaure",make_shared<ChiSquareTest>(freq));
+        runner.run("Chisqaure");
+        runner.registerTest("Correlation",make_shared<CorrelationTest>(encryptedImage));
+        runner.run("Correlation");
+        runner.registerTest("Information Entropy",make_shared<InformationEntropyTest>(encryptedImage));
+        runner.run("Information Entropy");
+        runner.registerTest("Encryption Quality",make_shared<EncryptionQualityTest>(image,encryptedImage));
+        runner.run("Encryption Quality");
+        runner.registerTest("Time Performance", make_shared<TimePerformanceTest>(encryptedImage, &firstenc,&IEncrypt::EncryptImage,encryptedImage));
+        runner.run("Time Performance");
         // cv::Mat decryptedImage = firstenc.Decrypt(encryptedImage);
 
-        // writer.WriteImage("../assets/test_write.jpg", encryptedImage);
+        // writer.WriteImage("../assets/test_write.jpg", img2);
         // // writer.WriteImage("../assets/test_write2.jpg", encryptedImage2);
         // cout << "Image written successfully." << endl;
     } catch (const exception& e) {
-        cerr << "An error occurred: " << e.what() << endl;
+        // cerr << "An error occurred: " << e.what() << endl;
+        cout << e.what() << endl;
         return -1;
     }
 
