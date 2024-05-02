@@ -49,6 +49,10 @@ public:
             cout << el.second.width <<endl;
         return metadataMap[hashedEncryptedDataString];
     }
+
+    bool isEmpty() {
+        return !metadataMap.size();
+    }
 };
 
 #endif

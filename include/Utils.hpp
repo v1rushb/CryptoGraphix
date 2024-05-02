@@ -6,6 +6,7 @@
 #include <random>
 #include <chrono>
 #include <functional>
+#include <random>
 
 using namespace std;
 
@@ -141,6 +142,26 @@ class Utils {
             auto finish = chrono::high_resolution_clock::now();
             chrono::duration<double> elapsedTime = finish -  start;
             return elapsedTime.count();
+        }
+
+        static void StringIntoSecByteBlock(CryptoPP::SecByteBlock &secretKey, string &secretKeyString) {
+            string tempKey = secretKeyString;
+            secretKey.CleanNew(tempKey.size());
+            memcpy(secretKey.data(), tempKey.data(), tempKey.size());
+        }
+
+        static int GenerateARandomInteger() {
+            mt19937 gen(static_cast<unsigned int>(time(nullptr))); 
+            uniform_int_distribution<> distr(1, 550);
+            return distr(gen);
+        }
+
+        static CryptoPP::SecByteBlock ModifyKeyBit(CryptoPP::SecByteBlock key) {
+            CryptoPP::SecByteBlock newKey = key;
+            if(!key.size())
+                return newKey;
+            newKey[Utils::GenerateARandomInteger()%key.size())^=1;
+            return newKey;
         }
 };
 

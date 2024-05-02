@@ -4,11 +4,14 @@
 #include <vector>
 #include <iostream>
 // #include "Macros.h"
-#include "Logger.cpp"
+#include "LogMacros.h"
 
 using namespace std;
 using namespace CryptoPP;
 
+// void changeKey (const CryptoPP::SecByteBlock &key) {
+//     strategy->setKey(key);
+// }
 
 // vector<uchar> IEncrypt::Vectorize(const cv::Mat &image) {
 //     // vector<uchar> buffer;
@@ -133,3 +136,5 @@ vector<CryptoPP::byte> IEncrypt::EncryptText(const vector<CryptoPP::byte> &data)
 vector<CryptoPP::byte> IEncrypt::DecryptText(const vector<CryptoPP::byte> &encryptedText) {
     strategy->Decrypt(encryptedText);
 }
+
+bool IEncrypt::isInstantiated = false;

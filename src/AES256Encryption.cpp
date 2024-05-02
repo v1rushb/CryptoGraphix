@@ -1,4 +1,4 @@
-#include "AES256Encryption.hpp"
+#include "AES256Encryption.h"
 #include <vector>
 #include <string>
 #include "cryptopp/base64.h"
@@ -17,6 +17,10 @@ AES256Encryption::AES256Encryption(const SecByteBlock& key, const CryptoPP::byte
 AES256Encryption::AES256Encryption() {
     GenerateKeyAndIV();
 }
+
+// void setKey(const CryptoPP::SecByteBlock & key) {
+//     key_ = key;
+// }
 
 void AES256Encryption::GenerateKeyAndIV() {
     AutoSeededRandomPool rnd;
