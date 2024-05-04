@@ -18,6 +18,7 @@ public:
     virtual vector<CryptoPP::byte>  Encrypt(const vector<CryptoPP::byte> &plain) = 0;
     virtual vector<CryptoPP::byte>  Decrypt(const vector<CryptoPP::byte> &cipher) = 0;
     virtual void setKey(const CryptoPP::SecByteBlock &key) = 0;
+    virtual  CryptoPP::SecByteBlock getKey() = 0;
 };
 
 #endif

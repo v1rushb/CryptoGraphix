@@ -1,7 +1,7 @@
 CMakeFiles/CryptoGraphix.dir/src/ImageWriter.cpp.o: \
- /home/v1rushb/newDev/newCopyCryptanalysis/src/ImageWriter.cpp \
+ /home/v1rushb/newDev/CryptoGraphix/src/ImageWriter.cpp \
  /usr/include/stdc-predef.h \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/ImageWriter.h \
+ /home/v1rushb/newDev/CryptoGraphix/include/ImageWriter.h \
  /usr/local/include/opencv4/opencv2/opencv.hpp \
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/local/include/opencv4/opencv2/core.hpp \

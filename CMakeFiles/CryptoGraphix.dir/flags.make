@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/v1rushb/newDev/newCopyCryptanalysis/include -I/usr/include/cryptopp -isystem /usr/local/include/opencv4
+CXX_INCLUDES = -I/home/v1rushb/newDev/CryptoGraphix/include -I/usr/include/cryptopp -isystem /usr/local/include/opencv4
 
 CXX_FLAGS = -std=gnu++17
 

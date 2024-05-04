@@ -7,6 +7,8 @@
 #include <chrono>
 #include <functional>
 #include <random>
+#include <thread>
+#include "../src/ErrorHandler.cpp"
 
 using namespace std;
 
@@ -17,6 +19,7 @@ class Utils {
 
         static vector<int> Vectorize(const cv::Mat &img) {
             vector<int> buffer;
+            cout << "DEBUGGING: " << img.channels() << endl;
             buffer.reserve(img.total() * img.channels());
             if (img.channels() == 1) {
                 for (int o = 0; o < img.rows; o++) {
@@ -61,7 +64,7 @@ class Utils {
         }
 
         static cv::Mat Matricize(long int rows, long int cols, int channels,const vector<CryptoPP::byte> &data) {
-            return cv::Mat(rows,cols,(channels == 1? CV_8UC1 : (channels == 3? CV_8UC3 : throw runtime_error("Unsupported Number of channels."))),(void*)data.data()).clone();
+            return cv::Mat(rows,cols,(channels == 1? CV_8UC1 : (channels == 3? CV_8UC3 : throw CustomException("Unsupported Number of channels."))),(void*)data.data()).clone();
         }
 
         static cv::Mat GenerateRandomImage(long int rows, long int cols, int channels = 1) {
@@ -156,12 +159,27 @@ class Utils {
             return distr(gen);
         }
 
-        static CryptoPP::SecByteBlock ModifyKeyBit(CryptoPP::SecByteBlock key) {
+        static CryptoPP::SecByteBlock ModifyKey(CryptoPP::SecByteBlock key) {
             CryptoPP::SecByteBlock newKey = key;
             if(!key.size())
                 return newKey;
-            newKey[Utils::GenerateARandomInteger()%key.size())^=1;
+            newKey[Utils::GenerateARandomInteger()%key.size()]^=1;
             return newKey;
+        }
+
+        static void ModifyImage(cv::Mat &img) {
+                const ll cols = Utils::GenerateARandomInteger()%img.cols;
+                const ll rows = Utils::GenerateARandomInteger()%img.rows;
+                const short idx = Utils::GenerateARandomInteger()%3;
+                unsigned char &val = (img.channels() != 3? img.at<uchar>(rows,cols) : img.at<cv::Vec3b>(rows,cols)[idx]);
+                val ^=1;
+        }
+
+        static void DelaySeconds(ll sec) {
+            this_thread::sleep_for(chrono::seconds(sec));
+        }
+        static void Clear() {
+            system("clear");
         }
 };
 

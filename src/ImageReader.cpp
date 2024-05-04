@@ -1,11 +1,13 @@
 #include "ImageReader.h"
 #include <opencv2/opencv.hpp>
 #include <stdexcept>
+#include "ErrorHandler.cpp"
 
-cv::Mat ImageReader::ReadImage(const string imagePath) const {
-    cv::Mat image = cv::imread(imagePath,cv::IMREAD_COLOR);
+cv::Mat ImageReader::ReadImage(const string imagePath, const bool colored) const {
+    cv::Mat image;
+    image = cv::imread(imagePath,(colored ? cv::IMREAD_COLOR : cv::IMREAD_GRAYSCALE));
     if(image.empty()) {
-        throw runtime_error("Can not open the image with the path:" + imagePath);
+        throw CustomException("Can not open the image with the path:" + imagePath);
     }
     return image;
 };

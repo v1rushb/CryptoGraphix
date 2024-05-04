@@ -39,6 +39,13 @@ public:
         Utils::StringIntoSecByteBlock(key, stringKey);
         strategy->setKey(key);
     }
+    void changeKey(CryptoPP::SecByteBlock key) {
+        strategy->setKey(key);
+    }
+
+    CryptoPP::SecByteBlock getKey() {
+        return strategy->getKey();
+    }
     static bool checkIsInstantiated() {
         return isInstantiated;
     }

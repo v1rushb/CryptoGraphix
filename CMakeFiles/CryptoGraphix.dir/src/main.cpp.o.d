@@ -1,7 +1,7 @@
 CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
- /home/v1rushb/newDev/newCopyCryptanalysis/src/main.cpp \
+ /home/v1rushb/newDev/CryptoGraphix/src/main.cpp \
  /usr/include/stdc-predef.h \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/ImageReader.h \
+ /home/v1rushb/newDev/CryptoGraphix/include/ImageReader.h \
  /usr/local/include/opencv4/opencv2/opencv.hpp \
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/local/include/opencv4/opencv2/core.hpp \
@@ -251,10 +251,10 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /usr/local/include/opencv4/opencv2/imgcodecs.hpp \
  /usr/local/include/opencv4/opencv2/imgproc.hpp \
  /usr/local/include/opencv4/opencv2/imgproc/segmentation.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/ImageWriter.h \
+ /home/v1rushb/newDev/CryptoGraphix/include/ImageWriter.h \
  /usr/include/c++/13.2.1/iostream \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/IEncrypt.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionStrategy.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/IEncrypt.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/EncryptionStrategy.hpp \
  /usr/local/include/cryptopp/secblock.h \
  /usr/local/include/cryptopp/config.h \
  /usr/local/include/cryptopp/config_align.h \
@@ -285,8 +285,8 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /usr/local/include/cryptopp/seckey.h \
  /usr/local/include/cryptopp/simple.h \
  /usr/local/include/cryptopp/secblock.h \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/MetadataManager.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/Metadata.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/MetadataManager.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/Metadata.hpp \
  /usr/local/include/cryptopp/sha.h /usr/local/include/cryptopp/iterhash.h \
  /usr/local/include/cryptopp/filters.h \
  /usr/local/include/cryptopp/queue.h \
@@ -295,13 +295,17 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /usr/local/include/cryptopp/basecode.h \
  /usr/local/include/cryptopp/filters.h \
  /usr/local/include/cryptopp/argnames.h \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/Utils.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/Utils.hpp \
  /usr/include/c++/13.2.1/random /usr/include/c++/13.2.1/bits/random.h \
  /usr/include/c++/13.2.1/x86_64-pc-linux-gnu/bits/opt_random.h \
  /usr/include/c++/13.2.1/bits/random.tcc /usr/include/c++/13.2.1/numeric \
  /usr/include/c++/13.2.1/bits/stl_numeric.h \
  /usr/include/c++/13.2.1/pstl/glue_numeric_defs.h \
- /usr/include/c++/13.2.1/chrono /usr/local/include/cryptopp/osrng.h \
+ /usr/include/c++/13.2.1/chrono /usr/include/c++/13.2.1/thread \
+ /usr/include/c++/13.2.1/bits/std_thread.h \
+ /usr/include/c++/13.2.1/bits/this_thread_sleep.h \
+ /home/v1rushb/newDev/CryptoGraphix/include/../src/ErrorHandler.cpp \
+ /usr/local/include/cryptopp/osrng.h \
  /usr/local/include/cryptopp/randpool.h /usr/local/include/cryptopp/aes.h \
  /usr/local/include/cryptopp/fips140.h /usr/local/include/cryptopp/hkdf.h \
  /usr/local/include/cryptopp/hmac.h /usr/local/include/cryptopp/rng.h \
@@ -327,31 +331,33 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /usr/local/include/cryptopp/cryptlib.h /usr/local/include/cryptopp/ccm.h \
  /usr/local/include/cryptopp/authenc.h \
  /usr/local/include/cryptopp/modes.h /usr/local/include/cryptopp/base64.h \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/AES256Encryption.h \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/Utils.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/NPCRTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/ITest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/TestRunner.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/TestRunner.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/UACI.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/HammingDistanceTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/ChisquareTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/CorrelationTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/InformationEntropyTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionQualityTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/TimePerformanceTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/LSB.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/HidingStrategy.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/AES256Encryption.h \
+ /home/v1rushb/newDev/CryptoGraphix/include/NPCRTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/ITest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/TestRunner.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/TestRunner.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/UACI.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/HammingDistanceTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/ChisquareTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/CorrelationTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/InformationEntropyTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/EncryptionQualityTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/TimePerformanceTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/LSB.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/HidingStrategy.hpp \
  /usr/include/c++/13.2.1/bitset \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/IHide.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/IEncrypt.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/Macros.h \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/UnitTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/NPCRTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/UACI.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/HammingDistanceTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/ChisquareTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/CorrelationTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/InformationEntropyTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/include/EncryptionQualityTest.hpp \
- /home/v1rushb/newDev/newCopyCryptanalysis/src/PrepareTesting.cpp
+ /home/v1rushb/newDev/CryptoGraphix/include/IHide.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/IEncrypt.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/Macros.h \
+ /home/v1rushb/newDev/CryptoGraphix/include/UnitTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/NPCRTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/UACI.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/HammingDistanceTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/ChisquareTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/CorrelationTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/InformationEntropyTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/EncryptionQualityTest.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/src/PrepareTesting.cpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/Utils.hpp \
+ /home/v1rushb/newDev/CryptoGraphix/src/menu.cpp \
+ /home/v1rushb/newDev/CryptoGraphix/src/ErrorHandler.cpp
