@@ -3,3 +3,4 @@
 *.txt
 assets/
 scripts/script.sh
+build/*

@@ -11,6 +11,7 @@
 #include "../src/ErrorHandler.cpp"
 #include <cryptopp/base64.h>
 #include <cryptopp/secblock.h>
+#include <unordered_map>
 
 using namespace std;
 
@@ -18,7 +19,6 @@ using namespace std;
 
 class Utils {
     public:
-
         static vector<int> Vectorize(const cv::Mat &img) {
             vector<int> buffer;
             cout << "DEBUGGING: " << img.channels() << endl;
@@ -219,7 +219,31 @@ class Utils {
         //     }
         //     return ans;
         // }
+        
+        static void print(const string &prompt, const string chosenColor = "White",const bool &special = false) {
+            unordered_map<string,string> color = {
+                {"Black", "\033[30m"},
+                {"Red", "\033[31m"},
+                {"Green", "\033[32m"},
+                {"Yellow", "\033[33m"},
+                {"Blue", "\033[34m"},
+                {"Magenta", "\033[35m"},
+                {"Cyan", "\033[36m"},
+                {"White", "\033[37m"}
+            };
+            if(special) {
+                vector<string> colorKeys;
+                for(auto &el : color) {
+                    colorKeys.push_back(el.first); 
+                }
+                for(auto &el : prompt) {
+                    cout << color[colorKeys[Utils::GenerateARandomInteger()%8]] << el;
+                }
+                return void(cout<<"\033[0m" <<endl);
+            } 
+            cout << color[chosenColor] << prompt;
+            cout << "\033[0m" << endl; 
+        }
 };
-
 
 #endif
