@@ -4,7 +4,6 @@
 #include <vector>
 #include <iostream>
 // #include "Macros.h"
-#include "LogMacros.h"
 
 using namespace std;
 using namespace CryptoPP;
@@ -126,7 +125,7 @@ cv::Mat IEncrypt::DecryptImage(const cv::Mat &encryptedImg) {
     // cout << "Size: " << encryptedData.size() << endl;
     cout << "img size: dec" << encryptedImg.rows << ' ' << encryptedImg.cols << endl; 
     // LOG_INFO("SIZE: " + to_string(encryptedData.size()));
-    LOG_INFO(("size " +  to_string(encryptedData.size())));
+    // LOG_INFO(("size " +  to_string(encryptedData.size())));
 
     vector<CryptoPP::byte> output = Utils::IntVectorToByte(encryptedData);
 

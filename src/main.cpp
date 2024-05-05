@@ -54,9 +54,9 @@
 using namespace std;
 // using namespace CryptoPP;
 
-void WelcomeUser() {
-    cout << "Hi" << endl;
-}
+// void WelcomeUser() {
+//     cout << "Hi" << endl;
+// }
 
 // int main() {
 //     send help pls;
@@ -150,7 +150,7 @@ void WelcomeUser() {
 signed main() {
     // send help pls;
     Utils::Clear();
-    WelcomeUser();
+    // WelcomeUser();
     MainMenu();
     // short choice;
     // cout << "Kindly, enter the path of target image.\n";
@@ -335,5 +335,4 @@ signed main() {
     //     Utils::DelaySeconds(4);
     //     Utils::Clear();
     // }
-
 }

@@ -9,6 +9,8 @@
 #include <random>
 #include <thread>
 #include "../src/ErrorHandler.cpp"
+#include <cryptopp/base64.h>
+#include <cryptopp/secblock.h>
 
 using namespace std;
 
@@ -181,6 +183,42 @@ class Utils {
         static void Clear() {
             system("clear");
         }
+        // static string SecByteBlockIntoString(CryptoPP::SecByteBlock blk) {
+        //     string ansHex;
+        //     CryptoPP::HexEncoder encoder;
+        //     encoder.Attach(new CryptoPP::StringSink(ansHex));
+        //     encoder.Put(blk, blk.size());
+        //     encoder.MessageEnd();
+        //     return ansHex;
+        // }
+        
+        // static std::string SecByteBlockToBase64String(const CryptoPP::SecByteBlock& block) {
+        //     std::string base64;
+        //     CryptoPP::Base64Encoder encoder(new CryptoPP::StringSink(base64), /* newline= */ false);
+        //     encoder.Put(block, block.size());
+        //     encoder.MessageEnd();
+        //     return base64;
+        // }
+
+        // static vector<pair<char,bool>> SecByteBlockIntoCharVector(const CryptoPP::SecByteBlock & block) {
+        //     vector<pair<char,bool>> og;
+        //     for(auto el : block) {
+        //         if(el - 129 < 0) {
+        //             og.push_back({(char)el,false});
+        //         } else {
+        //             og.push_back({(char) (el-129),true});
+        //         }
+        //     }
+        //     return og;
+        // }
+        // static string SecByteBlockIntoString(const CryptoPP::SecByteBlock &key) {
+        //     vector<pair<char,bool>> og = SecByteBlockIntoCharVector(key);
+        //     string ans ="";
+        //     for(auto el : og) {
+        //         ans+=el.first;
+        //     }
+        //     return ans;
+        // }
 };
 
 

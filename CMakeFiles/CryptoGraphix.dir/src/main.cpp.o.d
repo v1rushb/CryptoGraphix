@@ -305,7 +305,7 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /usr/include/c++/13.2.1/bits/std_thread.h \
  /usr/include/c++/13.2.1/bits/this_thread_sleep.h \
  /home/v1rushb/newDev/CryptoGraphix/include/../src/ErrorHandler.cpp \
- /usr/local/include/cryptopp/osrng.h \
+ /usr/local/include/cryptopp/base64.h /usr/local/include/cryptopp/osrng.h \
  /usr/local/include/cryptopp/randpool.h /usr/local/include/cryptopp/aes.h \
  /usr/local/include/cryptopp/fips140.h /usr/local/include/cryptopp/hkdf.h \
  /usr/local/include/cryptopp/hmac.h /usr/local/include/cryptopp/rng.h \
@@ -330,7 +330,7 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /usr/local/include/cryptopp/strciphr.h \
  /usr/local/include/cryptopp/cryptlib.h /usr/local/include/cryptopp/ccm.h \
  /usr/local/include/cryptopp/authenc.h \
- /usr/local/include/cryptopp/modes.h /usr/local/include/cryptopp/base64.h \
+ /usr/local/include/cryptopp/modes.h \
  /home/v1rushb/newDev/CryptoGraphix/include/AES256Encryption.h \
  /home/v1rushb/newDev/CryptoGraphix/include/NPCRTest.hpp \
  /home/v1rushb/newDev/CryptoGraphix/include/ITest.hpp \
@@ -360,4 +360,7 @@ CMakeFiles/CryptoGraphix.dir/src/main.cpp.o: \
  /home/v1rushb/newDev/CryptoGraphix/src/PrepareTesting.cpp \
  /home/v1rushb/newDev/CryptoGraphix/include/Utils.hpp \
  /home/v1rushb/newDev/CryptoGraphix/src/menu.cpp \
- /home/v1rushb/newDev/CryptoGraphix/src/ErrorHandler.cpp
+ /home/v1rushb/newDev/CryptoGraphix/src/ErrorHandler.cpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/LogMacros.h \
+ /home/v1rushb/newDev/CryptoGraphix/include/../src/Logger.cpp \
+ /home/v1rushb/newDev/CryptoGraphix/include/../src/../include/LogMacros.h
