@@ -5,25 +5,6 @@
 #include "Utils.hpp"
 #include "IEncrypt.hpp"
 
-// void InitializeAndRunTests(const cv::Mat &image, const cv::Mat &encryptedImage, IEncrypt &iEncrypt) {
-//         TestRunner runner;
-//         UnitTest us;
-        
-//         vector<int> img1 = Utils::Vectorize(image);
-//         vector<int> img2 = Utils::Vectorize(encryptedImage);
-//         vector<ll> freq = Utils::getFreq(encryptedImage);
-
-//         us.addTest("NPCR",make_shared<NPCRTest>(img1, img2));
-//         us.addTest("UACI",make_shared<UACITest>(img1,img2));
-//         us.addTest("Hamming Distance",make_shared<HammingDistanceTest>(img1,img2));
-//         us.addTest("Chisqaure",make_shared<ChiSquareTest>(freq));
-//         us.addTest("Correlation",make_shared<CorrelationTest>(encryptedImage));
-//         us.addTest("Information Entropy",make_shared<InformationEntropyTest>(encryptedImage));
-//         us.addTest("Encryption Quality",make_shared<EncryptionQualityTest>(image,encryptedImage));
-//         us.addTest("Time Performance",make_shared<TimePerformanceTest>(encryptedImage, &iEncrypt,&IEncrypt::EncryptImage,encryptedImage));
-//         us.runAllTests(runner);
-// }
-
 class PrepareTesting { // normal image!
         private:
                 UnitTest us;

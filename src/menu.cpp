@@ -24,7 +24,7 @@ void MainMenu() {
     while (true) {
         Utils::print("1. Encrypt image");
         Utils::print("2. Decrypt image");
-        Utils::print("3. Test my image :fire:");
+        Utils::print("3. Test my image \xF0\x9F\x94\xA5");
         Utils::print("4. Embed Text into the image");
         Utils::print("5. Retrieve info from the image");
         Utils::print("6. Exit");
@@ -40,6 +40,7 @@ void MainMenu() {
                     cin >> choice;
                     cv::Mat img;
                     Utils::Clear();
+                    string outputFile;
                     if(choice == 1) {
                         caseOne2:
                             Utils::print("1. Grey scale image","Magnetta");
@@ -53,6 +54,7 @@ void MainMenu() {
                                 if(choice == 1) {
                                     try {
                                         img = reader.ReadImage(path, false);
+                                        outputFile = Utils::SplitAndReturnLastPart(path);
                                     } catch(const CustomException &ex) {
                                         Utils::print(string(ex.what()),"Red");
                                         LOG_ERROR("USER ERROR:" + string(ex.what()));
@@ -120,30 +122,31 @@ void MainMenu() {
                             }
                     }
                     else if(choice == 3) {
+                        Utils::Clear();
                         caseOne3:
-                            auto filteredFiles = FileLister::listFilesInDirectory("../assets/");
+                            auto filteredFiles = FileLister::listFilesInDirectory(_DEFAULT_PATH);
                             ll o(0);
                             for(const auto &el : filteredFiles) {
                                 cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
                             }
-                            caseOne4:
-                                // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
-                                Utils::print("Enter which file you want.","Magnetta");
-                                // string imagePath; cin >> imagePath;
-                                cin >> choice;
-                                try {
-                                    if(choice > filteredFiles.size() && choice > 0) {
-                                        throw CustomException("Please use a valid number.");
-                                    }
-                                } catch(const CustomException &ex) {
-                                    Utils::Clear();
-                                    Utils::print(string(ex.what()),"Red");
-                                    LOG_ERROR("User has given an out of bound number.");
-                                    Utils::DelaySeconds(2);
-                                    Utils::Clear();
-                                    goto caseOne4;
+                            // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
+                            Utils::print("Enter which file you want.","Magnetta");
+                            // string imagePath; cin >> imagePath;
+                            cin >> choice;
+                            try {
+                                if(choice > filteredFiles.size() || choice <= 0) {
+                                    throw CustomException("Please use a valid number.");
                                 }
-                                auto it = filteredFiles.begin() + choice;
+                            } catch(const CustomException &ex) {
+                                Utils::Clear();
+                                Utils::print(string(ex.what()),"Red");
+                                LOG_ERROR("User has given an out of bound number.");
+                                Utils::DelaySeconds(2);
+                                Utils::Clear();
+                                goto caseOne3;
+                            }
+                            auto it = filteredFiles.begin() + (choice-1);
+                            outputFile =*it;
 
                             try {
                                 img = reader.ReadImage(_DEFAULT_PATH+*it,cv::IMREAD_UNCHANGED);
@@ -173,23 +176,45 @@ void MainMenu() {
                 cin >> choice;
                 Utils::Clear();
                 if(choice == 1) {
+                makeKey2:
                     Utils::print("Kindly, input your key.","Magnetta");
                     // LOG_WARNING("Kindly, input your key.");
                     cin >> key;
+                    try {
+                        if(key.size() != 16) {
+                            throw CustomException("Key length must be 16.");
+                        }
+                    } catch(const CustomException &ex){
+                        Utils::Clear();
+                        LOG_ERROR(string(ex.what()));
+                        Utils::print(string(ex.what()),"Red");
+                        Utils::DelaySeconds(3);
+                        Utils::Clear();
+                        goto makeKey2;
+                    }
                     iEncrypt.changeKey(key);
-                    Utils::print("Key has been changed.", "Yellow");
+                    // Utils::Clear();
+                    Utils::print("Key has been set.", "Yellow");
+                    Utils::DelaySeconds(3);
+                    Utils::Clear();
                 }
                 else if(choice == 2) {
                     // LOG_INFO("Key has been generated");
                     // LOG_INFO(Utils::SecByteBlockToBase64String(iEncrypt.getKey()));
                     // LOG_INFO(Utils::testBlock(iEncrypt.getKey()));
                     // cout << "Key has been generated\n You can see the key in the logs.\n";
+                    Utils::Clear();
                     Utils::print("Key has been generated\n You can see the key in the logs.","Yellow");
+                    Utils::DelaySeconds(3);
+                    Utils::Clear();
                 }
                 else {
                     // LOG_ERROR("Invalid option. A key has been generated.");
                     LOG_ERROR("USER ERROR: invalid input, a key has been generated.");
+                    Utils::Clear();
                     Utils::print("Invalid option. A key has been generated.","Yellow");
+                    Utils::DelaySeconds(3);
+                    Utils::Clear();
                 }
                 // Utils::Clear();
                 dist3:
@@ -201,8 +226,12 @@ void MainMenu() {
                     if(newChoice == "1" || newChoice == "Yes") {
                         Utils::ModifyImage(img); //og img
                         Utils::print("Image has been modified.","Yellow");
+                        Utils::DelaySeconds(3);
+                        Utils::Clear();
                     } else if(newChoice == "2" || newChoice == "No") {
                         Utils::print("Image will remain the same.","Yellow");
+                        Utils::DelaySeconds(3);
+                        Utils::Clear();
                     }  else {
                         Utils::print("Invalid option.","Red");
                         Utils::DelaySeconds(5);
@@ -217,18 +246,24 @@ void MainMenu() {
                             CryptoPP::SecByteBlock modifiedKey = Utils::ModifyKey(iEncrypt.getKey());
                             iEncrypt.changeKey(modifiedKey);
                             Utils::print("Key has been modified.","Yellow");
+                            Utils::DelaySeconds(3);
+                            Utils::Clear();
                         } else if(newChoice == "2" || newChoice == "No") {
                             Utils::print("Key will remain the same.","Yellow");
+                            Utils::DelaySeconds(3);
+                            Utils::Clear();
                         }  else {
                             Utils::print("Invalid option.","Red");
+                            Utils::DelaySeconds(3);
+                            Utils::Clear();
                             //delay here.
                             goto dist4;
                         }
                     
                     cv::Mat encryptedImage = iEncrypt.EncryptImage(img);
-                    const string path = "../assets/EncryptedImage.bmp";
-                    writer.WriteImage(path,encryptedImage);
-                    Utils::print("Image has been successfully encrypted and written on: " + path,"Yellow");
+                    const auto currentFileName = Utils::SplitStringIntoPair(outputFile,'.');
+                    writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "(ENCRYPTED)." + currentFileName.second,encryptedImage);
+                    Utils::print("Image has been successfully encrypted and written on: " + _DEFAULT_PATH + currentFileName.first + "(ENCRYPTED.)" + currentFileName.second,"Yellow");
                     break;
             }
             case 2: {
@@ -238,7 +273,7 @@ void MainMenu() {
                     Utils::print("3. Choose from the existing images in your directory.","Magnetta");
                     cin >> choice;
                     cv::Mat img;
-                    Utils::Clear();
+                    string outputName;
                     if(choice == 1) {
                         caseTwo2:
                             Utils::print("1. Grey scale image","Magnetta");
@@ -252,6 +287,7 @@ void MainMenu() {
                                 if(choice == 1) {
                                     try {
                                         img = reader.ReadImage(path, false);
+                                        outputName = Utils::SplitAndReturnLastPart(path);
                                     } catch(const CustomException &ex) {
                                         Utils::print(string(ex.what()),"Red");
                                         LOG_ERROR("USER ERROR:" + string(ex.what()));
@@ -269,43 +305,6 @@ void MainMenu() {
                                         Utils::Clear();
                                         goto caseTwoPath;
                                     }
-                                }
-                                else if(choice == 3) {
-                                    caseTwo3:
-                                        auto filteredFiles = FileLister::listFilesInDirectory("../assets/");
-                                        ll o(0);
-                                        for(const auto &el : filteredFiles) {
-                                            cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
-                                        }
-                                        caseTwo4:
-                                            // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
-                                            Utils::print("Enter which file you want.","Magnetta");
-                                            // string imagePath; cin >> imagePath;
-                                            cin >> choice;
-                                            try {
-                                                if(choice > filteredFiles.size() && choice > 0) {
-                                                    throw CustomException("Please use a valid number.");
-                                                }
-                                            } catch(const CustomException &ex) {
-                                                Utils::Clear();
-                                                Utils::print(string(ex.what()),"Red");
-                                                LOG_ERROR("User has given an out of bound number.");
-                                                Utils::DelaySeconds(2);
-                                                Utils::Clear();
-                                                goto caseTwo4;
-                                            }
-                                            auto it = filteredFiles.begin() + choice;
-
-                                        try {
-                                            img = reader.ReadImage(_DEFAULT_PATH+*it,cv::IMREAD_UNCHANGED);
-                                        } catch(const CustomException &ex) {
-                                            Utils::print("Invalid name, file could've been deleted or misspelled.\n Please try again.","Red");
-                                            LOG_ERROR("USER ERROR:" + string(ex.what()));
-                                            LOG_INFO((img.channels() == 1? "User has read chosen a gray scale image, name: " : "User has read chosen a colored image, name: ") + *it);
-                                            Utils::DelaySeconds(2);
-                                            Utils::Clear();
-                                            goto caseTwo3;                           
-                                        }
                                 } else {
                                     try {
                                         throw CustomException("Invalid option.");
@@ -354,6 +353,43 @@ void MainMenu() {
                                     goto colorDec;
                                 }
                             }
+                    } else if(choice == 3) {
+                        Utils::Clear();
+                        caseTwo5:
+                            auto filteredFiles = FileLister::listFilesInDirectory(_DEFAULT_PATH);
+                            ll o(0);
+                            for(const auto &el : filteredFiles) {
+                                cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
+                            }
+                            // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
+                            Utils::print("Enter which file you want.","Magnetta");
+                            // string imagePath; cin >> imagePath;
+                            cin >> choice;
+                            try {
+                                if(choice > filteredFiles.size() || choice <= 0) {
+                                    throw CustomException("Please use a valid number.");
+                                }
+                            } catch(const CustomException &ex) {
+                                Utils::Clear();
+                                Utils::print(string(ex.what()),"Red");
+                                LOG_ERROR("User has given an out of bound number.");
+                                Utils::DelaySeconds(2);
+                                Utils::Clear();
+                                goto caseTwo5;
+                            }
+                            auto it = filteredFiles.begin() + (choice-1);
+                            outputName =*it;
+
+                            try {
+                                img = reader.ReadImage(_DEFAULT_PATH+*it,cv::IMREAD_UNCHANGED);
+                            } catch(const CustomException &ex) {
+                                Utils::print("Invalid name, file could've been deleted or misspelled.\n Please try again.","Red");
+                                LOG_ERROR("USER ERROR:" + string(ex.what()));
+                                LOG_INFO((img.channels() == 1? "User has read chosen a gray scale image, name: " : "User has read chosen a colored image, name: ") + *it);
+                                Utils::DelaySeconds(2);
+                                Utils::Clear();
+                                goto caseTwo5;                           
+                            }
                     } else {
                         try {
                             throw CustomException("Invalid option.");
@@ -374,9 +410,22 @@ void MainMenu() {
                     Utils::Clear();
                     if(choice == 1) {
                         dist:
-                            Utils::print("Kindly, input your key.","Magnetta");
+                            makeKey:
+                                Utils::print("Kindly, input your key.","Magnetta");
                             // LOG_WARNING("Kindly, input your key.");
-                            cin >> key;
+                                cin >> key;
+                                try {
+                                    if(key.size() != 16) {
+                                        throw CustomException("Key length must be 16.");
+                                    }
+                                } catch(const CustomException &ex){
+                                    Utils::Clear();
+                                    LOG_ERROR(string(ex.what()));
+                                    Utils::print(string(ex.what()),"Red");
+                                    Utils::DelaySeconds(3);
+                                    Utils::Clear();
+                                    goto makeKey;
+                                }
                             iEncrypt.changeKey(key);
                     }
                     else if(choice == 2) {
@@ -404,9 +453,9 @@ void MainMenu() {
                             goto dist5;
                         }
                     }
-                // cv::Mat img = reader.ReadImage("../assets/EncryptedImage.bmp"); 
+                const auto currentFileName = Utils::SplitStringIntoPair(outputName,'.');
                 cv::Mat decryptedImg = iEncrypt.DecryptImage(img);
-                writer.WriteImage("../assets/DecryptedImage.jpg",decryptedImg);
+                writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "(DECRYPTED)." + currentFileName.second,decryptedImg);
                 break;
             }
             case 3: {
@@ -460,8 +509,8 @@ void MainMenu() {
                                 Utils::Clear();
                                 goto caseThree1;
                             }
-                            auto it1 = filteredFiles.begin() + choice1;
-                            auto it2 = filteredFiles.begin() + choice2;
+                            auto it1 = filteredFiles.begin() + (choice1-1);
+                            auto it2 = filteredFiles.begin() + (choice2-1);
                         try {
                             image1 = reader.ReadImage(_DEFAULT_PATH+*it1,cv::IMREAD_UNCHANGED);
                             image2 = reader.ReadImage(_DEFAULT_PATH+*it2,cv::IMREAD_UNCHANGED);
@@ -536,7 +585,7 @@ void MainMenu() {
                         Utils::print("Enter which file you want.","Magnetta");
                         cin >> choice;
                         try {
-                            if(choice > filteredFiles.size() && choice > 0) {
+                            if(choice > filteredFiles.size() || choice <= 0) {
                                 throw CustomException("Please use a valid number.");
                             }
                         } catch(const CustomException &ex) {
@@ -547,7 +596,7 @@ void MainMenu() {
                             Utils::Clear();
                             goto caseFour1;
                         }
-                        auto it = filteredFiles.begin() + choice;
+                        auto it = filteredFiles.begin() + (choice-1);
 
                     try {
                         img = reader.ReadImage(_DEFAULT_PATH+*it,cv::IMREAD_UNCHANGED);
@@ -594,7 +643,7 @@ void MainMenu() {
                         Utils::print("Enter which file you want.","Magnetta");
                         cin >> choice;
                         try {
-                            if(choice > filteredFiles.size() && choice > 0) {
+                            if(choice > filteredFiles.size() || choice <= 0) {
                                 throw CustomException("Please use a valid number.");
                             }
                         } catch(const CustomException &ex) {
@@ -605,7 +654,7 @@ void MainMenu() {
                             Utils::Clear();
                             goto caseFive1;
                         }
-                        auto it = filteredFiles.begin() + choice;
+                        auto it = filteredFiles.begin() + (choice-1);
 
                     try {
                         img = reader.ReadImage(_DEFAULT_PATH+*it,cv::IMREAD_UNCHANGED);

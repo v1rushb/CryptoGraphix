@@ -12,6 +12,7 @@
 #include <cryptopp/base64.h>
 #include <cryptopp/secblock.h>
 #include <unordered_map>
+#include <cryptopp/sha.h>
 
 using namespace std;
 
@@ -149,10 +150,14 @@ class Utils {
             return elapsedTime.count();
         }
 
-        static void StringIntoSecByteBlock(CryptoPP::SecByteBlock &secretKey, string &secretKeyString) {
-            string tempKey = secretKeyString;
-            secretKey.CleanNew(tempKey.size());
-            memcpy(secretKey.data(), tempKey.data(), tempKey.size());
+        static CryptoPP::SecByteBlock StringToSecByteBlock(const std::string& str) {
+            CryptoPP::SHA256 hash;
+            CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
+
+            // Correctly cast to CryptoPP::byte* to avoid the type mismatch error
+            hash.CalculateDigest(digest, reinterpret_cast<const CryptoPP::byte*>(str.data()), str.size());
+
+            return CryptoPP::SecByteBlock(digest, CryptoPP::SHA256::DIGESTSIZE);
         }
 
         static int GenerateARandomInteger() {
@@ -243,6 +248,19 @@ class Utils {
             } 
             cout << color[chosenColor] << prompt;
             cout << "\033[0m" << endl; 
+        }
+
+        static string SplitAndReturnLastPart(string &str) {
+            size_t pos = str.find_last_of("/");
+            return str.substr(pos+1);
+        }
+
+        static pair<string, string> SplitStringIntoPair(const string &str, char opt) {
+            size_t pos = str.find(opt);
+            if (pos != string::npos) {
+                return {str.substr(0, pos), str.substr(pos + 1)};
+            }
+            return {str, ""};
         }
 };
 

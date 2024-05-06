@@ -35,8 +35,7 @@ public:
     vector<CryptoPP::byte>  EncryptText(const vector<CryptoPP::byte> &data);
     vector<CryptoPP::byte>  DecryptText(const vector<CryptoPP::byte> &encryptedText);
     void changeKey(string &stringKey) {
-        CryptoPP:: SecByteBlock key;
-        Utils::StringIntoSecByteBlock(key, stringKey);
+        CryptoPP::SecByteBlock key = Utils::StringToSecByteBlock(stringKey);
         strategy->setKey(key);
     }
     void changeKey(CryptoPP::SecByteBlock key) {

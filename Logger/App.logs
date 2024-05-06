@@ -468,3 +468,68 @@
 2024-05-06 02:04:30 [ERROR] Invalid Option.
 2024-05-06 02:04:34 [ERROR] Invalid Option.
 2024-05-06 02:08:56 [ERROR] User has given an out of bound number.
+2024-05-06 12:56:14 [WARNING] Exiting Program.
+2024-05-06 15:51:51 [ERROR] User has given an out of bound number.
+2024-05-06 16:01:38 [ERROR] USER ERROR:Invalid option.
+2024-05-06 16:05:32 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:05:32 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:05:35 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:05:35 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:05:44 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:05:44 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:09:34 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:09:34 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:09:37 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:09:37 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:10:05 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:10:05 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:10:08 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:10:08 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:10:19 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:10:19 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:10:22 [ERROR] User has given an out of bound number.
+2024-05-06 16:10:31 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:10:31 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:12:06 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:12:06 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:13:34 [ERROR] User has given an out of bound number.
+2024-05-06 16:13:37 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:13:37 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:13:42 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:13:42 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:13:45 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:13:45 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:14:00 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:14:00 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:14:05 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:14:05 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:14:08 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:14:08 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:14:44 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:14:44 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:14:47 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:14:47 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:14:58 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:14:58 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:15:01 [ERROR] User has given an out of bound number.
+2024-05-06 16:15:04 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:15:04 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:15:29 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:15:29 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:15:31 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:15:31 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:17:05 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:17:05 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:17:28 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:17:28 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:17:49 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:17:49 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:19:31 [ERROR] USER ERROR:Invalid option.
+2024-05-06 16:22:37 [ERROR] USER ERROR:Invalid Option.
+2024-05-06 16:26:09 [ERROR] User has given an out of bound number.
+2024-05-06 16:28:50 [ERROR] User has given an out of bound number.
+2024-05-06 16:33:59 [ERROR] USER ERROR:Can not open the image with the path:../assets/
+2024-05-06 16:33:59 [INFO] User has read chosen a gray scale image, name: 
+2024-05-06 16:35:01 [ERROR] Key length must be 16.
+2024-05-06 16:37:00 [ERROR] User has given an out of bound number.
+2024-05-06 16:45:08 [ERROR] USER ERROR:Invalid option.
