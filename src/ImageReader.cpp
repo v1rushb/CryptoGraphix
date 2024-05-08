@@ -5,9 +5,10 @@
 
 cv::Mat ImageReader::ReadImage(const string imagePath, const bool colored) const {
     cv::Mat image;
-    image = cv::imread(imagePath,(colored ? cv::IMREAD_COLOR : cv::IMREAD_GRAYSCALE));
+    string newImagePath = Utils::removeEncryptionTags(imagePath);
+    image = cv::imread(newImagePath,(colored ? cv::IMREAD_COLOR : cv::IMREAD_GRAYSCALE));
     if(image.empty()) {
-        throw CustomException("Can not open the image with the path:" + imagePath);
+        throw CustomException("Can not open the image with the path:" + newImagePath);
     }
     return image;
 };

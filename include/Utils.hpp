@@ -2,6 +2,7 @@
 #define UTILS_HPP
 
 #include <opencv2/opencv.hpp>
+#include <iostream>
 #include <vector>
 #include <random>
 #include <chrono>
@@ -13,6 +14,8 @@
 #include <cryptopp/secblock.h>
 #include <unordered_map>
 #include <cryptopp/sha.h>
+#include "../src/ErrorHandler.cpp"
+#include "../src/FileLister.cpp"
 
 using namespace std;
 
@@ -22,7 +25,7 @@ class Utils {
     public:
         static vector<int> Vectorize(const cv::Mat &img) {
             vector<int> buffer;
-            cout << "DEBUGGING: " << img.channels() << endl;
+            // cout << "DEBUGGING: " << img.channels() << endl;
             buffer.reserve(img.total() * img.channels());
             if (img.channels() == 1) {
                 for (int o = 0; o < img.rows; o++) {
@@ -41,7 +44,7 @@ class Utils {
                     }
                 }
             } else {
-                throw std::runtime_error("Unsupported number of channels.");
+                throw runtime_error("Unsupported number of channels.");
             }
             return buffer;
         }
@@ -92,7 +95,7 @@ class Utils {
                     }
                 }
             } else {
-                throw std::runtime_error("Unsupported number of channels.");
+                throw runtime_error("Unsupported number of channels.");
             }
             return image;
         }
@@ -150,7 +153,7 @@ class Utils {
             return elapsedTime.count();
         }
 
-        static CryptoPP::SecByteBlock StringToSecByteBlock(const std::string& str) {
+        static CryptoPP::SecByteBlock StringToSecByteBlock(const string& str) {
             CryptoPP::SHA256 hash;
             CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
 
@@ -261,6 +264,60 @@ class Utils {
                 return {str.substr(0, pos), str.substr(pos + 1)};
             }
             return {str, ""};
+        }
+
+        static ll getValidChoice(int upperBound) {
+            ll choice;
+            if (!(cin >> choice)) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                throw CustomException("Invalid input. Please enter an integer.");
+            }
+
+            if (choice > upperBound || choice <= 0) {
+                throw CustomException("Please use a valid number within the allowed range.");
+            }
+
+            return choice;
+        }
+
+        static vector<string> getDirectoryFiles(const string &_PATH) {
+            vector<string> files = FileLister::listFilesInDirectory(_PATH);
+            for(auto &el : files) {
+                el = Utils::removeEncryptionTags(el);
+            }
+            return files;
+        }
+
+        static string removeEncryptionTags(string str) {
+            const string decryptedTag = " (DECRYPTED)";
+            const string encryptedTag = " (ENCRYPTED)";
+
+            size_t pos = str.find(decryptedTag);
+            while (pos != string::npos) {
+                str.erase(pos, decryptedTag.length());
+                pos = str.find(decryptedTag, pos);
+            }
+
+            pos = str.find(encryptedTag);
+            while (pos != string::npos) {
+                str.erase(pos, encryptedTag.length());
+                pos = str.find(encryptedTag, pos);
+            }
+            return str;
+        }
+        static string splitNameAndNumber(const string& input) {
+            string num,name;
+            ll idx = input.length() - 1;
+            while (idx >= 0 && isdigit(input[idx])) {
+                idx--;
+            }
+
+            name = input.substr(0, idx + 1);
+            if (idx + 1 < input.length()) {
+                num = input.substr(idx + 1);
+            }
+            return name;
         }
 };
 

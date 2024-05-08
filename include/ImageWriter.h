@@ -5,5 +5,5 @@ using namespace std;
 
 class ImageWriter {
     public:
-        void WriteImage(const std::string& writePath, const cv::Mat& img) const;
+        void WriteImage(const string& writePath, const cv::Mat& img, const bool &encrypted = 1) const;
 };

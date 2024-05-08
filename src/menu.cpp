@@ -28,7 +28,18 @@ void MainMenu() {
         Utils::print("4. Embed Text into the image");
         Utils::print("5. Retrieve info from the image");
         Utils::print("6. Exit");
-        cin >> choice;
+        
+        // cin >> choice;
+        try {
+            choice = Utils::getValidChoice(6);
+        } catch(const CustomException &ex) {
+            Utils::Clear();
+            Utils::print(string(ex.what()),"Red");
+            LOG_ERROR(string(ex.what()));
+            Utils::DelaySeconds(2);
+            Utils::Clear();
+            continue;
+        }
         Utils::Clear();
         IHide service(make_shared<LSB>());
         switch(choice) {
@@ -129,22 +140,19 @@ void MainMenu() {
                             for(const auto &el : filteredFiles) {
                                 cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
                             }
-                            // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
                             Utils::print("Enter which file you want.","Magnetta");
-                            // string imagePath; cin >> imagePath;
-                            cin >> choice;
+
                             try {
-                                if(choice > filteredFiles.size() || choice <= 0) {
-                                    throw CustomException("Please use a valid number.");
-                                }
+                                choice = Utils::getValidChoice(filteredFiles.size());
                             } catch(const CustomException &ex) {
                                 Utils::Clear();
                                 Utils::print(string(ex.what()),"Red");
-                                LOG_ERROR("User has given an out of bound number.");
+                                LOG_ERROR(string(ex.what()));
                                 Utils::DelaySeconds(2);
                                 Utils::Clear();
                                 goto caseOne3;
                             }
+
                             auto it = filteredFiles.begin() + (choice-1);
                             outputFile =*it;
 
@@ -262,8 +270,7 @@ void MainMenu() {
                     
                     cv::Mat encryptedImage = iEncrypt.EncryptImage(img);
                     const auto currentFileName = Utils::SplitStringIntoPair(outputFile,'.');
-                    writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "(ENCRYPTED)." + currentFileName.second,encryptedImage);
-                    Utils::print("Image has been successfully encrypted and written on: " + _DEFAULT_PATH + currentFileName.first + "(ENCRYPTED.)" + currentFileName.second,"Yellow");
+                    writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "." + currentFileName.second,encryptedImage);
                     break;
             }
             case 2: {
@@ -364,19 +371,17 @@ void MainMenu() {
                             // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
                             Utils::print("Enter which file you want.","Magnetta");
                             // string imagePath; cin >> imagePath;
-                            cin >> choice;
                             try {
-                                if(choice > filteredFiles.size() || choice <= 0) {
-                                    throw CustomException("Please use a valid number.");
-                                }
+                                choice = Utils::getValidChoice(filteredFiles.size());
                             } catch(const CustomException &ex) {
                                 Utils::Clear();
                                 Utils::print(string(ex.what()),"Red");
-                                LOG_ERROR("User has given an out of bound number.");
+                                LOG_ERROR(string(ex.what()));
                                 Utils::DelaySeconds(2);
                                 Utils::Clear();
                                 goto caseTwo5;
                             }
+                            
                             auto it = filteredFiles.begin() + (choice-1);
                             outputName =*it;
 
@@ -455,7 +460,7 @@ void MainMenu() {
                     }
                 const auto currentFileName = Utils::SplitStringIntoPair(outputName,'.');
                 cv::Mat decryptedImg = iEncrypt.DecryptImage(img);
-                writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "(DECRYPTED)." + currentFileName.second,decryptedImg);
+                writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "." + currentFileName.second,decryptedImg,false);
                 break;
             }
             case 3: {
@@ -493,22 +498,35 @@ void MainMenu() {
                             Utils::print("Enter which file you want.","Magnetta");
                             // string imagePath; cin >> imagePath;
                             ll choice1,choice2;
-
-                            Utils::print("Number of the first file:","Yellow");
-                            cin >> choice1;
-                            Utils::print("Number of the second file:","Yellow");
-                            cin >> choice2;
-                            try {
-                                if((choice1 > filteredFiles.size() && choice1 > 0) || (choice2 > filteredFiles.size() && choice2 > 0)) {
-                                    throw CustomException("Please use a valid number.");
-                                }
+                                try {
+                                Utils::print("Number of the first file:","Yellow");
+                                choice1 = Utils::getValidChoice(filteredFiles.size());
+                                Utils::print("Number of the second file:","Yellow");
+                                choice2 = Utils::getValidChoice(filteredFiles.size());
                             } catch(const CustomException &ex) {
+                                Utils::Clear();
                                 Utils::print(string(ex.what()),"Red");
-                                LOG_ERROR("User has given an out of bound number.");
+                                LOG_ERROR(string(ex.what()));
                                 Utils::DelaySeconds(2);
                                 Utils::Clear();
                                 goto caseThree1;
                             }
+
+                            // Utils::print("Number of the first file:","Yellow");
+                            // cin >> choice1;
+                            // Utils::print("Number of the second file:","Yellow");
+                            // cin >> choice2;
+                            // try {
+                            //     if((choice1 > filteredFiles.size() && choice1 > 0) || (choice2 > filteredFiles.size() && choice2 > 0)) {
+                            //         throw CustomException("Please use a valid number.");
+                            //     }
+                            // } catch(const CustomException &ex) {
+                            //     Utils::print(string(ex.what()),"Red");
+                            //     LOG_ERROR("User has given an out of bound number.");
+                            //     Utils::DelaySeconds(2);
+                            //     Utils::Clear();
+                            //     goto caseThree1;
+                            // }
                             auto it1 = filteredFiles.begin() + (choice1-1);
                             auto it2 = filteredFiles.begin() + (choice2-1);
                         try {
@@ -577,21 +595,18 @@ void MainMenu() {
             case 4: {
                 cv::Mat img;
                 caseFour1:
-                    auto filteredFiles = FileLister::listFilesInDirectory("../assets/");
+                    auto filteredFiles = FileLister::listFilesInDirectory(_DEFAULT_PATH);
                     ll o(0);
                     for(const auto &el : filteredFiles) {
                         cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
                     }
                         Utils::print("Enter which file you want.","Magnetta");
-                        cin >> choice;
                         try {
-                            if(choice > filteredFiles.size() || choice <= 0) {
-                                throw CustomException("Please use a valid number.");
-                            }
+                            choice = Utils::getValidChoice(filteredFiles.size());
                         } catch(const CustomException &ex) {
                             Utils::Clear();
                             Utils::print(string(ex.what()),"Red");
-                            LOG_ERROR("User has given an out of bound number.");
+                            LOG_ERROR(string(ex.what()));
                             Utils::DelaySeconds(2);
                             Utils::Clear();
                             goto caseFour1;
@@ -635,21 +650,18 @@ void MainMenu() {
             case 5: {
                 cv::Mat img;
                 caseFive1:
-                    auto filteredFiles = FileLister::listFilesInDirectory("../assets/");
+                    auto filteredFiles = FileLister::listFilesInDirectory(_DEFAULT_PATH);
                     ll o(0);
                     for(const auto &el : filteredFiles) {
                         cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
                     }
                         Utils::print("Enter which file you want.","Magnetta");
-                        cin >> choice;
                         try {
-                            if(choice > filteredFiles.size() || choice <= 0) {
-                                throw CustomException("Please use a valid number.");
-                            }
+                            choice = Utils::getValidChoice(filteredFiles.size());
                         } catch(const CustomException &ex) {
                             Utils::Clear();
                             Utils::print(string(ex.what()),"Red");
-                            LOG_ERROR("User has given an out of bound number.");
+                            LOG_ERROR(string(ex.what()));
                             Utils::DelaySeconds(2);
                             Utils::Clear();
                             goto caseFive1;
