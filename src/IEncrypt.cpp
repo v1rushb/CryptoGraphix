@@ -126,6 +126,7 @@ cv::Mat IEncrypt::DecryptImage(const cv::Mat &encryptedImg) {
     cout << "img size: dec" << encryptedImg.rows << ' ' << encryptedImg.cols << endl; 
     // LOG_INFO("SIZE: " + to_string(encryptedData.size()));
     // LOG_INFO(("size " +  to_string(encryptedData.size())));
+    Utils::print(to_string(encryptedData.size()),"Red");
 
     vector<CryptoPP::byte> output = Utils::IntVectorToByte(encryptedData);
 

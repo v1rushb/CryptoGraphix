@@ -571,3 +571,26 @@
 2024-05-08 14:04:21 [WARNING] Exiting Program.
 2024-05-08 15:50:45 [ERROR] Invalid input. Please enter an integer.
 2024-05-08 15:51:23 [ERROR] USER ERROR:Invalid option.
+2024-05-10 01:02:43 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB4.bmp
+2024-05-10 01:02:43 [INFO] User has read chosen a gray scale image, name: BaboonRGB4 (ENCRYPTED).bmp
+2024-05-10 01:02:46 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB4.bmp
+2024-05-10 01:02:46 [INFO] User has read chosen a gray scale image, name: BaboonRGB4 (ENCRYPTED).bmp
+2024-05-10 01:02:49 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB4.bmp
+2024-05-10 01:02:49 [INFO] User has read chosen a gray scale image, name: BaboonRGB4 (ENCRYPTED).bmp
+2024-05-10 01:02:54 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB4.bmp
+2024-05-10 01:02:54 [INFO] User has read chosen a gray scale image, name: BaboonRGB4 (ENCRYPTED).bmp
+2024-05-10 01:02:56 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB4.bmp
+2024-05-10 01:02:56 [INFO] User has read chosen a gray scale image, name: BaboonRGB4 (ENCRYPTED).bmp
+2024-05-10 01:03:01 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB4.bmp
+2024-05-10 01:03:01 [INFO] User has read chosen a gray scale image, name: BaboonRGB4 (ENCRYPTED).bmp
+2024-05-10 01:03:08 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB2.bmp
+2024-05-10 01:03:08 [INFO] User has read chosen a gray scale image, name: BaboonRGB2 (ENCRYPTED).bmp
+2024-05-10 01:03:10 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB2.bmp
+2024-05-10 01:03:10 [INFO] User has read chosen a gray scale image, name: BaboonRGB2 (ENCRYPTED).bmp
+2024-05-10 01:03:13 [ERROR] USER ERROR:Can not open the image with the path:../assets/BaboonRGB2.bmp
+2024-05-10 01:03:13 [INFO] User has read chosen a gray scale image, name: BaboonRGB2 (ENCRYPTED).bmp
+2024-05-10 01:09:10 [ERROR] Key length must be 16.
+2024-05-11 01:06:23 [WARNING] Exiting Program.
+2024-05-11 01:18:08 [ERROR] Login failed.
+2024-05-11 01:19:42 [WARNING] Exiting Program.
+2024-05-11 01:24:31 [WARNING] Exiting Program.

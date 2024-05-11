@@ -17,7 +17,7 @@ using namespace CryptoPP;
 
 class AES256Encryption : public EncryptionStrategy {
     CryptoPP::SecByteBlock key_;
-    CryptoPP::byte iv_[AES::BLOCKSIZE];
+    CryptoPP::byte iv_[AES::BLOCKSIZE] = {};
 
 private:
     void GenerateKeyAndIV();

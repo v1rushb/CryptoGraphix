@@ -6,12 +6,120 @@
 #include "LogMacros.h"
 #include "FileLister.cpp"
 #include "Utils.hpp"
+#include "../Database/DatabaseConnection.cpp"
+#include "../Database/UserManagement.cpp"
+#include "../Database/SessionManagement.cpp"
+#include <mysql/mysql.h>
+// #include <dotenv.h>
+
 
 string _DEFAULT_PATH = "../assets/";
+MYSQL *connection = nullptr;
+DatabaseConnection *dbConnection=nullptr;
+
+DatabaseConnection* InitializeDB() {
+    // dotenv::env.load_dotenv();
+    const char* server = std::getenv("DB_SERVER");
+    const char* user = std::getenv("DB_USER");
+    const char* password = std::getenv("DB_PASSWORD");
+    const char* database = std::getenv("DB_DATABASE");
+
+    auto con = DatabaseConnection::getInstance(server, user, password, database);
+    if (!con) {
+        throw runtime_error("Failed to connect to the database");
+    }
+    return con;
+}
+
+void AuthMenu() {
+    // auto dbConnection;
+    // try {
+        dbConnection = InitializeDB();
+        connection = dbConnection->getConnection();
+        Utils::print("Connected to DB!","Green");
+        Utils::DelaySeconds(3);
+    // } catch(const CustomException &ex) {
+        // Utils::print(string(ex.what()),"Red");
+        // Utils::print("Session ending...","Yellow");
+        // Utils::DelaySeconds(3);
+        // return;
+    // }
+    SessionManagement ManageSession(*dbConnection);
+    UserManagement ManageUser(*dbConnection);
+    Utils::Clear();
+    while (true) {
+    Utils::print("1. Register", "White");
+    Utils::print("2. Login", "White");
+    short choice;
+    cin >> choice;
+    string username, password, firstName, secondName;
+    switch (choice) {
+        case 1:
+            Utils::Clear();
+            Utils::print("Enter username: ", "Magnetta");
+            cin >> username;
+            Utils::Clear();
+            Utils::print("Enter password: ", "Magnetta");
+            cin >> password;
+            Utils::Clear();
+            Utils::print("Enter first name: ", "Magnetta");
+            cin >> firstName;
+            Utils::Clear();
+            Utils::print("Enter second name: ", "Magnetta");
+            cin >> secondName;
+            Utils::Clear();
+            if (ManageUser.Register(username, password, firstName, secondName)) {
+                 Utils::print("Registration successful.", "Yellow");
+            } else {
+                Utils::print("Registration failed.", "Yellow");
+            }
+            Utils::DelaySeconds(3);
+            Utils::Clear();
+            break;
+        case 2:
+            Utils::Clear();
+            Utils::print("Enter username: ", "Magnetta");
+            cin >> username;
+            Utils::Clear();
+            Utils::print("Enter password: ", "Magnetta");
+            cin >> password;
+            Utils::Clear();
+            if (ManageUser.Login(username, password)) {
+                auto user_id = ManageUser.GetUserID(username);
+                if (user_id && ManageSession.CreateSession(*user_id)) {
+                    Utils::print("Login successful. Session started. ENJOY!","Yellow");
+                    Utils::DelaySeconds(3);
+                    Utils::Clear();
+                    return;
+                    // if (ManageSession.IsValidSession(*user_id)) {
+                    //     cout << "Session is valid.\n";
+                    // } else {
+                    //     cout << "Session is invalid.\n";
+                    // }
+                } else {
+                    LOG_ERROR("Failed to create the session");
+                    Utils::print("Failed to create session.","Red");
+                    Utils::DelaySeconds(3);
+                    Utils::Clear();
+
+                }
+            } else {
+                LOG_ERROR("Login failed.");
+                Utils::print("Login failed.","Red");
+            }
+            break;
+        default:
+            Utils::Clear();
+            Utils::print("Invalid option. Please try again.","Yellow");
+    }
+            Utils::DelaySeconds(3);
+            Utils::Clear();
+    }
+}
 
 void MainMenu() {
+    AuthMenu();
     short choice;
-
     ImageReader reader;
     ImageWriter writer;
     string key;
@@ -694,9 +802,15 @@ void MainMenu() {
                 break;
             }
             case 6: {
-                LOG_WARNING("Exiting Program.");
-                Utils::print("Exiting Program","Red");
-                Utils::print("Cya v1rushb! come back real soon pls\no_O","White",true);
+                SessionManagement ManageSession(*dbConnection);
+                if(ManageSession.ClearAllSessions()) {
+                    LOG_WARNING("Exiting Program.");
+                    Utils::print("Exiting Program","Red");
+                    Utils::print("Cya v1rushb! come back real soon pls\no_O","White",true);
+                } else {
+                    Utils::print("Something wrong happened.","Red");
+                }
+                mysql_close(connection);
                 return;
             }
             default: {
