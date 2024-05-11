@@ -594,3 +594,10 @@
 2024-05-11 01:18:08 [ERROR] Login failed.
 2024-05-11 01:19:42 [WARNING] Exiting Program.
 2024-05-11 01:24:31 [WARNING] Exiting Program.
+2024-05-11 15:17:47 [ERROR] Key length must be 16.
+2024-05-11 15:19:28 [WARNING] Exiting Program.
+2024-05-11 15:21:47 [ERROR] Key length must be 16.
+2024-05-11 16:21:41 [WARNING] Exiting Program.
+2024-05-11 16:23:56 [WARNING] Exiting Program.
+2024-05-11 16:25:30 [ERROR] Please use a valid number within the allowed range.
+2024-05-11 16:25:58 [ERROR] USER ERROR:Can not open the image with the path:ezgif.com-gif-to-jpg-converted.jpg

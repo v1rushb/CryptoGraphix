@@ -9,13 +9,23 @@ using namespace CryptoPP;
 
 #define all(d) d.begin(),d.end()
 
-AES256Encryption::AES256Encryption(const SecByteBlock& key, const CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE])
+AES256Encryption::AES256Encryption(const SecByteBlock& key, const CryptoPP::byte iv[])
     : key_(key) {
-    copy(iv, iv + AES::BLOCKSIZE, iv_); // look for later.
+    if (iv) {
+        memcpy(iv_, iv, AES::BLOCKSIZE);
+    } else {
+        SetConstantIV();
+    }
+}
+
+void AES256Encryption::SetConstantIV() {
+    const CryptoPP::byte iv_const[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
+    memcpy(iv_, iv_const, CryptoPP::AES::BLOCKSIZE);
 }
 
 AES256Encryption::AES256Encryption() {
     GenerateKeyAndIV();
+    SetConstantIV();
 }
 
 // void setKey(const CryptoPP::SecByteBlock & key) {
@@ -26,7 +36,8 @@ void AES256Encryption::GenerateKeyAndIV() {
     AutoSeededRandomPool rnd;
     key_.resize(AES::DEFAULT_KEYLENGTH);
     rnd.GenerateBlock(key_,key_.size());
-    rnd.GenerateBlock(iv_,sizeof(iv_));
+    SetConstantIV();
+    // rnd.GenerateBlock(iv_,sizeof(iv_));
 }
 
 string EncodeBase64(const string& binaryInput) {
@@ -49,34 +60,79 @@ string DecodeBase64(const string& base64Input) {
     return binaryOutput;
 }
 
-vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte> &plain) {
-    vector<CryptoPP::byte> cipher;
-    try {
-        CBC_Mode<AES>::Encryption encryption;
-        encryption.SetKeyWithIV(key_, AES::DEFAULT_KEYLENGTH, iv_);
-        ArraySource(plain.data(), plain.size(), true,
-                new StreamTransformationFilter(encryption,
-                                               new VectorSink(cipher)
-                                              )
-               );
-        } catch(const CryptoPP::Exception &ex) {
-            throw CustomException("Encryption Failed: " + string(ex.what()));
-        }
-    return cipher;
-}
+//CBC (too many bugs to fix) (for later: make use of the database to save image metadata which will contain padding and image size etc..)
+// vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte> &plain) {
+//     vector<CryptoPP::byte> cipher;
+//     try {
+//         CBC_Mode<AES>::Encryption encryption;
+//         encryption.SetKeyWithIV(key_, AES::DEFAULT_KEYLENGTH, iv_);
+//         ArraySource(plain.data(), plain.size(), true,
+//                 new StreamTransformationFilter(encryption,
+//                                                new VectorSink(cipher)
+//                                               )
+//                );
+//         } catch(const CryptoPP::Exception &ex) {
+//             throw CustomException("Encryption Failed: " + string(ex.what()));
+//         }
+//     return cipher;
+// }
 
-vector<CryptoPP::byte> AES256Encryption::Decrypt(const vector<CryptoPP::byte> &cipher) {
+// vector<CryptoPP::byte> AES256Encryption::Decrypt(const vector<CryptoPP::byte> &cipher) {
+//         vector<CryptoPP::byte> recovered;
+//         try {
+//             CBC_Mode<AES>::Decryption decryption;
+//             decryption.SetKeyWithIV(key_, AES::DEFAULT_KEYLENGTH, iv_);
+//             ArraySource(cipher.data(), cipher.size(), true,
+//                         new StreamTransformationFilter(decryption,
+//                                                     new VectorSink(recovered)
+//                                                     )
+//                     );
+//         } catch (const CryptoPP::Exception& ex) {
+//             throw CustomException("Decryption failed: " + string(ex.what()));
+//         }
+//         return recovered;
+// }
+
+//CTR
+vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte>& plain) {
+    cout <<"Key" << endl;
+        for(auto &el : key_) {
+            cout << (int)el << ' ';
+        }
+        cout << endl;
+        cout << "IV" << endl;
+        // cout << (int)iv_ << endl;
+        for(auto &el : iv_) {
+            cout << (int)el << ' ';
+        }
+        cout << endl;
+        vector<CryptoPP::byte> cipher;
+        try {
+            CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption encryption;
+            encryption.SetKeyWithIV(key_, CryptoPP::AES::DEFAULT_KEYLENGTH, iv_);
+            CryptoPP::ArraySource(plain.data(), plain.size(), true,
+                new CryptoPP::StreamTransformationFilter(encryption,
+                    new CryptoPP::VectorSink(cipher)
+                )
+            );
+        } catch(const CryptoPP::Exception &ex) {
+            throw runtime_error("Encryption Failed: " + string(ex.what()));
+        }
+        return cipher;
+    }
+
+vector<CryptoPP::byte> AES256Encryption::Decrypt(const vector<CryptoPP::byte>& cipher) {
         vector<CryptoPP::byte> recovered;
         try {
-            CBC_Mode<AES>::Decryption decryption;
-            decryption.SetKeyWithIV(key_, AES::DEFAULT_KEYLENGTH, iv_);
-            ArraySource(cipher.data(), cipher.size(), true,
-                        new StreamTransformationFilter(decryption,
-                                                    new VectorSink(recovered)
-                                                    )
-                    );
+            CryptoPP::CTR_Mode<CryptoPP::AES>::Decryption decryption;
+            decryption.SetKeyWithIV(key_, CryptoPP::AES::DEFAULT_KEYLENGTH, iv_);
+            CryptoPP::ArraySource(cipher.data(), cipher.size(), true,
+                new CryptoPP::StreamTransformationFilter(decryption,
+                    new CryptoPP::VectorSink(recovered)
+                )
+            );
         } catch (const CryptoPP::Exception& ex) {
-            throw CustomException("Decryption failed: " + string(ex.what()));
+            throw runtime_error("Decryption failed: " + string(ex.what()));
         }
         return recovered;
-}
+    }

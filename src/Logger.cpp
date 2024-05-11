@@ -80,7 +80,7 @@ public:
         logLevel = level;
     }
 
-    void log(const std::string& message, LogLevel level) {
+    void log(const string& message, LogLevel level) {
         if (level < logLevel) {
             return;
         }

@@ -10,7 +10,7 @@ private:
     string message;
 
 public:
-    CustomException(const std::string& msg = "An error has occurred. Please try again later.") 
+    CustomException(const string& msg = "An error has occurred. Please try again later.") 
         : message(msg) {}
 
     const char* what() const noexcept override {

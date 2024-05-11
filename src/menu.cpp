@@ -18,11 +18,10 @@ MYSQL *connection = nullptr;
 DatabaseConnection *dbConnection=nullptr;
 
 DatabaseConnection* InitializeDB() {
-    // dotenv::env.load_dotenv();
-    const char* server = std::getenv("DB_SERVER");
-    const char* user = std::getenv("DB_USER");
-    const char* password = std::getenv("DB_PASSWORD");
-    const char* database = std::getenv("DB_DATABASE");
+    const char* server = getenv("DB_SERVER");
+    const char* user = getenv("DB_USER");
+    const char* password = getenv("DB_PASSWORD");
+    const char* database = getenv("DB_DATABASE");
 
     auto con = DatabaseConnection::getInstance(server, user, password, database);
     if (!con) {

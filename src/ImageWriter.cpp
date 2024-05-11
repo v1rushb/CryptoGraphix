@@ -68,6 +68,7 @@ void ImageWriter::WriteImage(const string& writePath, const cv::Mat& img, const 
     const vector<string> files = Utils::getDirectoryFiles("../assets/");
     string newWritePath = getValidated(writePath,files,encrypted);
     
+    cout << newWritePath << endl;
     if(!cv::imwrite(newWritePath,img)) {
         throw runtime_error("Failed to write the image on path: " + newWritePath);
     }
