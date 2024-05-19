@@ -18,11 +18,41 @@ AES256Encryption::AES256Encryption(const SecByteBlock& key, const CryptoPP::byte
     }
 }
 
+
+
+void AES256Encryption::setKey(const CryptoPP::SecByteBlock & key) {
+    key_ = key;
+}
+
+CryptoPP::SecByteBlock AES256Encryption::getKey() {
+    return key_;
+}
+
 void AES256Encryption::SetConstantIV() {
     const CryptoPP::byte iv_const[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
     memcpy(iv_, iv_const, CryptoPP::AES::BLOCKSIZE);
 }
 
+void AES256Encryption::GnerateRandomKey(CryptoPP::SecByteBlock &key, const short &choice) {
+    AutoSeededRandomPool rnd;
+    size_t keySize;
+    switch (choice) {
+    case 1:
+        keySize = 16;
+        break;
+    case 2:
+        keySize = 24;
+        break;
+    case 3:
+        keySize = 32;
+        break;
+    default:
+        keySize = 16;
+        break;
+    }
+    key.CleanNew(keySize);
+    rnd.GenerateBlock(key.data(), key.size());
+}
 AES256Encryption::AES256Encryption() {
     GenerateKeyAndIV();
     SetConstantIV();
@@ -34,7 +64,7 @@ AES256Encryption::AES256Encryption() {
 
 void AES256Encryption::GenerateKeyAndIV() {
     AutoSeededRandomPool rnd;
-    key_.resize(AES::DEFAULT_KEYLENGTH);
+    key_.resize(AES::MAX_KEYLENGTH);
     rnd.GenerateBlock(key_,key_.size());
     SetConstantIV();
     // rnd.GenerateBlock(iv_,sizeof(iv_));

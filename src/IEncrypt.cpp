@@ -8,27 +8,14 @@
 using namespace std;
 using namespace CryptoPP;
 
-// vector<uchar> IEncrypt::Vectorize(const cv::Mat &image) {
-//     // vector<uchar> buffer;
-//     // if (img.channels() == 1) {
-//     //     buffer.assign(img.begin<uchar>(), img.end<uchar>());
-//     // } else {
-//     //     if (img.isContinuous()) {
-//     //         buffer.assign(img.data, img.data + img.total() * img.elemSize());
-//     //     } else {
-//     //         for (int o = 0; o < img.rows; o++) {
-//     //             auto rowBegin = img.ptr<uchar>(o);
-//     //             auto rowEnd = rowBegin + img.cols * img.elemSize();
-//     //             buffer.insert(buffer.end(), rowBegin, rowEnd);
-//     //         }
-//     //     }
-//     // }
-//     cv::Mat flat = image.reshape(1, image.total()*image.channels());
-//     vector<uchar> buffer = image.isContinuous()? flat : flat.clone();
+IEncrypt::IEncrypt(unique_ptr<EncryptionStrategy> strategy)
+    : strategy(move(strategy)) {
+        isInstantiated = true;
+    }
 
-//     return buffer;
-// }
-
+IEncrypt::~IEncrypt() {
+        isInstantiated = false;
+    }
 vector<int> IEncrypt::Vectorize(const cv::Mat &newImg) {
     cv::Mat img = newImg.clone();
     vector<int> buffer;
@@ -55,11 +42,27 @@ vector<int> IEncrypt::Vectorize(const cv::Mat &newImg) {
     return buffer;
 }
 
-// cv::Mat IEncrypt::Matricize(vector<uchar> & data,Metadata size) {
-//     cout << size.height << ' ' << size.width << endl;
-//     cv::Mat img = cv::Mat(size.height, size.width, size.channels == 3 ? CV_8UC3 : CV_8UC1, data.data()).clone();
-//     return img;
-// }
+void IEncrypt::changeKey(string &stringKey) {
+    CryptoPP::SecByteBlock key = Utils::StringToSecByteBlock(stringKey);
+    strategy->setKey(key);
+}
+
+void IEncrypt::changeKey(CryptoPP::SecByteBlock key) {
+    strategy->setKey(key);
+}
+
+void IEncrypt::AssignRandomKey(CryptoPP::SecByteBlock &key, const short &choice) {
+    strategy->GnerateRandomKey(key,choice);
+    IEncrypt::changeKey(key);
+}
+
+CryptoPP::SecByteBlock IEncrypt::getKey() {
+    return strategy->getKey();
+}
+
+bool IEncrypt::isNotCached() {
+    return metadataManager.isEmpty();
+}
 
 cv::Mat IEncrypt::makeMatrix(long int rows, long int cols) {
     cv::Scalar defaultColor = (0,0,0);
@@ -164,7 +167,7 @@ vector<CryptoPP::byte> IEncrypt::EncryptText(const vector<CryptoPP::byte> &data)
 }
 
 vector<CryptoPP::byte> IEncrypt::DecryptText(const vector<CryptoPP::byte> &encryptedText) {
-    strategy->Decrypt(encryptedText);
+    return strategy->Decrypt(encryptedText);
 }
 
 bool IEncrypt::isInstantiated = false;

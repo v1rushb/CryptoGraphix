@@ -18,31 +18,87 @@ MYSQL *connection = nullptr;
 DatabaseConnection *dbConnection=nullptr;
 
 DatabaseConnection* InitializeDB() {
-    const char* server = getenv("DB_SERVER");
-    const char* user = getenv("DB_USER");
-    const char* password = getenv("DB_PASSWORD");
-    const char* database = getenv("DB_DATABASE");
+    // try {
+        const char* server = getenv("DB_SERVER");
+        const char* user = getenv("DB_USER");
+        const char* password = getenv("DB_PASSWORD");
+        const char* database = getenv("DB_DATABASE");
 
-    auto con = DatabaseConnection::getInstance(server, user, password, database);
-    if (!con) {
-        throw runtime_error("Failed to connect to the database");
-    }
+        auto con = DatabaseConnection::getInstance(server, user, password, database);
+        if (!con) {
+            throw CustomException("Failed to connect to the database");
+        } 
+    // } catch(const CustomException &ex) {
+    //     Utils::print("Failed to connect to Database.","Red");
+    //     Utils::print("Session ending...","Yellow");
+    //     Utils::DelaySeconds(3);
+    //     // return;
+    // }
     return con;
 }
+void AssignUserKey(CryptoPP::SecByteBlock& key, string keyInput, size_t keyLength = 16) {
+    if (keyInput.length() != keyLength) {
+        throw CustomException("Invalid key length. Expected " + to_string(keyLength) + " characters.");
+    }
+    key.CleanNew(keyLength);
+    memcpy(key.data(), keyInput.data(), keyLength);
+}
 
+void displayKeyOptions(CryptoPP::SecByteBlock &key) {
+    KeyOptions:
+        Utils::Clear();
+        Utils::print("Please choose which any of the following key lengths:", "Yellow");
+        Utils::print("1. 128-bit","Magnetta");
+        Utils::print("2. 192-bit","Magnetta");
+        Utils::print("3. 256-bit (Recommended)","Magnetta");
+        short choice; cin >> choice;
+        Utils::Clear();
+        string keyInput;
+        try {
+            Utils::print("Kindly. enter the key.","Magnetta");
+            if(choice == 1) {
+                cin >> keyInput;
+                const size_t chosenSize = 16;
+                if(keyInput.size() != chosenSize) {
+                    throw CustomException("You should pass " + to_string(chosenSize) + " characters.");
+                }
+                AssignUserKey(key,keyInput, chosenSize);
+            } else if(choice == 2) {
+                cin >> keyInput;
+                const size_t chosenSize = 24;
+                if(keyInput.size() != chosenSize) {
+                    throw CustomException("You should pass " + to_string(chosenSize) + " characters.");
+                }
+                AssignUserKey(key,keyInput, chosenSize);
+            } else if(choice == 3) {
+                cin >> keyInput;
+                const size_t chosenSize = 32;
+                if(keyInput.size() != chosenSize) {
+                    throw CustomException("You should pass " + to_string(chosenSize) + " characters.");
+                }
+                AssignUserKey(key,keyInput, chosenSize);
+            } else {
+                LOG_ERROR("User entered an invalid number.");
+                throw CustomException("Invalid choice."); 
+            }
+            //used for printing the key. delete.
+            for (size_t i = 0; i < key.size(); ++i) {
+                cout << key[i];
+            }
+            cout << endl;
+        }
+        catch(const CustomException &ex ) {
+            Utils::print(string(ex.what()),"Red");
+            Utils::DelaySeconds(3);
+            Utils::Clear();
+            goto KeyOptions;
+        }
+}
 void AuthMenu() {
-    // auto dbConnection;
-    // try {
-        dbConnection = InitializeDB();
-        connection = dbConnection->getConnection();
-        Utils::print("Connected to DB!","Green");
-        Utils::DelaySeconds(3);
-    // } catch(const CustomException &ex) {
-        // Utils::print(string(ex.what()),"Red");
-        // Utils::print("Session ending...","Yellow");
-        // Utils::DelaySeconds(3);
-        // return;
-    // }
+    dbConnection = InitializeDB();
+    connection = dbConnection->getConnection();
+    Utils::print("Connected to DB!","Green");
+    Utils::DelaySeconds(3);
     SessionManagement ManageSession(*dbConnection);
     UserManagement ManageUser(*dbConnection);
     Utils::Clear();
@@ -290,15 +346,14 @@ void MainMenu() {
                 Utils::print("2. Generate a new key.","Magnetta");
                 cin >> choice;
                 Utils::Clear();
+                CryptoPP::SecByteBlock key;
                 if(choice == 1) {
                 makeKey2:
                     Utils::print("Kindly, input your key.","Magnetta");
                     // LOG_WARNING("Kindly, input your key.");
-                    cin >> key;
+                    // cin >> key;
                     try {
-                        if(key.size() != 16) {
-                            throw CustomException("Key length must be 16.");
-                        }
+                        displayKeyOptions(key);
                     } catch(const CustomException &ex){
                         Utils::Clear();
                         LOG_ERROR(string(ex.what()));
@@ -308,16 +363,44 @@ void MainMenu() {
                         goto makeKey2;
                     }
                     iEncrypt.changeKey(key);
-                    // Utils::Clear();
                     Utils::print("Key has been set.", "Yellow");
                     Utils::DelaySeconds(3);
                     Utils::Clear();
                 }
                 else if(choice == 2) {
+                    KeyOptions:
+                        Utils::Clear();
+                        Utils::print("Please choose which any of the following key lengths:", "Yellow");
+                        Utils::print("1. 128-bit","Magnetta");
+                        Utils::print("2. 192-bit","Magnetta");
+                        Utils::print("3. 256-bit (Recommended)","Magnetta");
+                        short choice; cin >> choice;
+                        Utils::Clear();
+                        try {
+                            if(choice == 1) {
+                                const size_t chosenSize = 16;
+                                iEncrypt.AssignRandomKey(key);
+                            } else if(choice == 2) {
+                                const size_t chosenSize = 24;
+                                iEncrypt.AssignRandomKey(key,2);
+                            } else if(choice == 3) {
+                                const size_t chosenSize = 32;
+                                iEncrypt.AssignRandomKey(key,3);
+                            } else {
+                                LOG_ERROR("User entered an invalid number.");
+                                throw CustomException("Invalid choice."); 
+                            }
+                        }
                     // LOG_INFO("Key has been generated");
                     // LOG_INFO(Utils::SecByteBlockToBase64String(iEncrypt.getKey()));
                     // LOG_INFO(Utils::testBlock(iEncrypt.getKey()));
                     // cout << "Key has been generated\n You can see the key in the logs.\n";
+        catch(const CustomException &ex ) {
+            Utils::print(string(ex.what()),"Red");
+            Utils::DelaySeconds(3);
+            Utils::Clear();
+            goto KeyOptions;
+        }
                     Utils::Clear();
                     Utils::print("Key has been generated\n You can see the key in the logs.","Yellow");
                     Utils::DelaySeconds(3);
@@ -520,16 +603,15 @@ void MainMenu() {
                     Utils::print("\t |==+=+==> Works only upon saved sessions, else you need to save the key used.","Blue");
                     cin >> choice;
                     Utils::Clear();
+                    CryptoPP::SecByteBlock key;
                     if(choice == 1) {
                         dist:
                             makeKey:
                                 Utils::print("Kindly, input your key.","Magnetta");
                             // LOG_WARNING("Kindly, input your key.");
-                                cin >> key;
+                                // cin >> key;
                                 try {
-                                    if(key.size() != 16) {
-                                        throw CustomException("Key length must be 16.");
-                                    }
+                                    displayKeyOptions(key);
                                 } catch(const CustomException &ex){
                                     Utils::Clear();
                                     LOG_ERROR(string(ex.what()));
@@ -546,10 +628,12 @@ void MainMenu() {
                         if(IEncrypt::checkIsInstantiated()) {
                             if(iEncrypt.isNotCached()) {
                                 Utils::print("No work has been cached. Please enter a key.","Red");
+                                Utils::DelaySeconds(3);
+                                Utils::Clear();
                                 goto dist;
                             }
                         }
-                        Utils::print("Key has been generated.","Yellow");
+                        // Utils::print("Key has been generated.","Yellow");
                     }
                     else {
                         // generateKey(key);

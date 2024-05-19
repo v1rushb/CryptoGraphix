@@ -30,12 +30,9 @@ public:
     vector<CryptoPP::byte> Encrypt(const vector<CryptoPP::byte> &plain) override;
     vector<CryptoPP::byte> Decrypt(const vector<CryptoPP::byte> &cipher) override;
     void SetConstantIV();
-    void setKey(const CryptoPP::SecByteBlock & key) {
-        key_ = key;
-    }
-    CryptoPP::SecByteBlock getKey() {
-        return key_;
-    }
+    void setKey(const CryptoPP::SecByteBlock & key);
+    CryptoPP::SecByteBlock getKey();
+    void GnerateRandomKey(CryptoPP::SecByteBlock &key, const short &choice);
 
     string GetKeyBase64() const;
     string GetIVBase64() const; //199 10 26 4 222 223 161 16 73 155 204 218 251 132 34 209

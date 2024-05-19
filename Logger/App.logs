@@ -601,3 +601,29 @@
 2024-05-11 16:23:56 [WARNING] Exiting Program.
 2024-05-11 16:25:30 [ERROR] Please use a valid number within the allowed range.
 2024-05-11 16:25:58 [ERROR] USER ERROR:Can not open the image with the path:ezgif.com-gif-to-jpg-converted.jpg
+2024-05-19 16:46:54 [ERROR] Key length must be 16.
+2024-05-19 16:47:00 [ERROR] Key length must be 16.
+2024-05-19 17:27:02 [ERROR] USER ERROR:Invalid option.
+2024-05-19 17:27:04 [ERROR] USER ERROR:Invalid option.
+2024-05-19 17:27:06 [ERROR] USER ERROR:Invalid option.
+2024-05-19 17:27:08 [ERROR] USER ERROR:Invalid option.
+2024-05-19 17:27:23 [ERROR] Invalid input. Please enter an integer.
+2024-05-19 17:27:28 [ERROR] USER ERROR:Invalid option.
+2024-05-19 17:27:30 [ERROR] USER ERROR:Invalid option.
+2024-05-19 17:27:32 [ERROR] USER ERROR:Invalid option.
+2024-05-19 17:27:34 [ERROR] USER ERROR:Invalid option.
+2024-05-19 18:50:59 [ERROR] USER ERROR:Can not open the image with the path:../assets/LenaRGB2.bmp
+2024-05-19 18:50:59 [INFO] User has read chosen a gray scale image, name: LenaRGB2 (ENCRYPTED).bmp
+2024-05-19 18:51:01 [ERROR] USER ERROR:Can not open the image with the path:../assets/LenaRGB2.bmp
+2024-05-19 18:51:01 [INFO] User has read chosen a gray scale image, name: LenaRGB2 (ENCRYPTED).bmp
+2024-05-19 18:51:04 [ERROR] USER ERROR:Can not open the image with the path:../assets/LenaRGB2.bmp
+2024-05-19 18:51:04 [INFO] User has read chosen a gray scale image, name: LenaRGB2 (ENCRYPTED).bmp
+2024-05-19 18:51:07 [ERROR] USER ERROR:Can not open the image with the path:../assets/LenaRGB2.bmp
+2024-05-19 18:51:07 [INFO] User has read chosen a gray scale image, name: LenaRGB2 (ENCRYPTED).bmp
+2024-05-19 18:51:09 [ERROR] USER ERROR:Can not open the image with the path:../assets/LenaRGB2.bmp
+2024-05-19 18:51:09 [INFO] User has read chosen a gray scale image, name: LenaRGB2 (ENCRYPTED).bmp
+2024-05-19 18:51:12 [ERROR] USER ERROR:Can not open the image with the path:../assets/LenaRGB2.bmp
+2024-05-19 18:51:12 [INFO] User has read chosen a gray scale image, name: LenaRGB2 (ENCRYPTED).bmp
+2024-05-19 18:51:15 [ERROR] USER ERROR:Can not open the image with the path:../assets/LenaRGB2.bmp
+2024-05-19 18:51:15 [INFO] User has read chosen a gray scale image, name: LenaRGB2 (ENCRYPTED).bmp
+2024-05-19 19:01:46 [ERROR] Login failed.

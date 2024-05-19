@@ -25,6 +25,10 @@ string appendSuffix(string writePath, const bool &encrypted) {
 
 string getValidated(string writePath, const vector<string> &files, const bool &encrypted) {
     string outputFile = Utils::SplitAndReturnLastPart(writePath);
+    outputFile = Utils::removeEncryptionTags(outputFile);
+    auto slicedOutputFile = Utils::SplitStringIntoPair(outputFile,'.');
+    slicedOutputFile.first = Utils::splitNameAndNumber(slicedOutputFile.first);
+    outputFile = slicedOutputFile.first+'.'+slicedOutputFile.second;
     unordered_map<string,int> mp;
     for(auto &el : files) {
         auto currentFileName = Utils::SplitStringIntoPair(el,'.');
@@ -34,6 +38,7 @@ string getValidated(string writePath, const vector<string> &files, const bool &e
     for(auto &el : mp) {
         cout << el.first << ' ' << el.second << endl;
     }
+    cout << outputFile << endl;
     if(isDuplicated(outputFile,files)) {
         cout << "hi" << endl;
         int version(0);
@@ -68,7 +73,7 @@ void ImageWriter::WriteImage(const string& writePath, const cv::Mat& img, const 
     const vector<string> files = Utils::getDirectoryFiles("../assets/");
     string newWritePath = getValidated(writePath,files,encrypted);
     
-    cout << newWritePath << endl;
+    // cout << newWritePath << endl;
     if(!cv::imwrite(newWritePath,img)) {
         throw runtime_error("Failed to write the image on path: " + newWritePath);
     }

@@ -21,37 +21,24 @@ private:
     static bool isInstantiated;
 
 public:
-    IEncrypt(unique_ptr<EncryptionStrategy> strategy)
-        : strategy(move(strategy)) {
-            isInstantiated = true;
-        }
+    IEncrypt(unique_ptr<EncryptionStrategy> strategy);
 
-    ~IEncrypt() {
-        isInstantiated = false;
-    }
+    ~IEncrypt();
 
     cv::Mat EncryptImage(const cv::Mat &img);
     cv::Mat DecryptImage(const cv::Mat &encryptedImg);
     vector<CryptoPP::byte>  EncryptText(const vector<CryptoPP::byte> &data);
     vector<CryptoPP::byte>  DecryptText(const vector<CryptoPP::byte> &encryptedText);
-    void changeKey(string &stringKey) {
-        CryptoPP::SecByteBlock key = Utils::StringToSecByteBlock(stringKey);
-        strategy->setKey(key);
-    }
-    void changeKey(CryptoPP::SecByteBlock key) {
-        strategy->setKey(key);
-    }
-
-    CryptoPP::SecByteBlock getKey() {
-        return strategy->getKey();
-    }
+    void changeKey(string &stringKey);
+    void changeKey(CryptoPP::SecByteBlock key);
+    CryptoPP::SecByteBlock getKey();
     static bool checkIsInstantiated() {
         return isInstantiated;
     }
+    bool isNotCached();
+    void AssignRandomKey(CryptoPP::SecByteBlock &key, const short &choice = 1);
 
-    bool isNotCached() {
-        return metadataManager.isEmpty();
-    }
+
 };
 
 #endif
