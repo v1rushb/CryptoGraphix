@@ -157,7 +157,6 @@ class Utils {
             CryptoPP::SHA256 hash;
             CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
 
-            // Correctly cast to CryptoPP::byte* to avoid the type mismatch error
             hash.CalculateDigest(digest, reinterpret_cast<const CryptoPP::byte*>(str.data()), str.size());
 
             return CryptoPP::SecByteBlock(digest, CryptoPP::SHA256::DIGESTSIZE);

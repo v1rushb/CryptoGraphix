@@ -458,7 +458,7 @@ void MainMenu() {
                             goto dist4;
                         }
                     
-                    cv::Mat encryptedImage = iEncrypt.EncryptImage(img);
+                    cv::Mat encryptedImage = iEncrypt.Encrypt(img);
                     const auto currentFileName = Utils::SplitStringIntoPair(outputFile,'.');
                     writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "." + currentFileName.second,encryptedImage);
                     break;
@@ -650,7 +650,7 @@ void MainMenu() {
                         }
                     }
                 const auto currentFileName = Utils::SplitStringIntoPair(outputName,'.');
-                cv::Mat decryptedImg = iEncrypt.DecryptImage(img);
+                cv::Mat decryptedImg = iEncrypt.Decrypt(img);
                 writer.WriteImage(_DEFAULT_PATH + currentFileName.first + "." + currentFileName.second,decryptedImg,false);
                 break;
             }

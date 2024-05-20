@@ -71,7 +71,6 @@ cv::Mat IEncrypt::makeMatrix(long int rows, long int cols) {
 }
 
 cv::Mat IEncrypt::setMatrix(const vector<CryptoPP::byte> &data, long int rows, long int cols) {
-    cout << cols << ' ' << rows << endl;
     cv::Mat img(rows, cols, CV_8UC3);
     vector<int> conv;
     conv.reserve(rows * cols * 3);
@@ -93,18 +92,12 @@ cv::Mat IEncrypt::setMatrix(const vector<CryptoPP::byte> &data, long int rows, l
 }
 
 
-cv::Mat IEncrypt::EncryptImage(const cv::Mat &img) {
+cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
     vector<int> vectorizedImage = Utils::Vectorize(img);
 
     vector<CryptoPP::byte> output = Utils::IntVectorToByte(vectorizedImage);
-    for(int o = 0; o < 20;o++) {
-        cout << (int)output[o] << ' ';
-    }
-    cout << endl;
     vector<CryptoPP::byte> encryptedData = strategy->Encrypt(output);
-    cout << encryptedData.size() << endl;
 
-    // cout << "Encryption Size:" << encryptedData.size() << endl;
     Metadata metadata = {
         img.rows,
         img.cols,
@@ -114,25 +107,17 @@ cv::Mat IEncrypt::EncryptImage(const cv::Mat &img) {
 
     cv::Mat image = Utils::Matricize(img.rows,img.cols,img.channels(),encryptedData);
     vector<int> newVectorizedImage = Utils::Vectorize(image);
-    // cout << newVectorizedImage.size() << endl;
 
     vector<CryptoPP::byte> output2 = Utils::IntVectorToByte(newVectorizedImage);
 
     string res = Utils::IntVectorToString(newVectorizedImage);
-    // for(int o = 0; o < 10;o++)
-    //     cout << newVectorizedImage[o] << ' ';
-    // cout << endl;
 
     metadataManager.storeMetadata(metadata,res);
-    cout << "img size: enc " << image.rows << ' ' << image.cols << endl;
     return image;
 }
 
-cv::Mat IEncrypt::DecryptImage(const cv::Mat &encryptedImg) {
+cv::Mat IEncrypt::Decrypt(const cv::Mat &encryptedImg) {
     vector<int> encryptedData = Utils::Vectorize(encryptedImg);
-    cout << encryptedData.size() << endl;
-    // cout << "Size: " << encryptedData.size() << endl;
-    cout << "img size: dec" << encryptedImg.rows << ' ' << encryptedImg.cols << endl; 
     // LOG_INFO("SIZE: " + to_string(encryptedData.size()));
     // LOG_INFO(("size " +  to_string(encryptedData.size())));
     Utils::print(to_string(encryptedData.size()),"Red");
@@ -142,32 +127,25 @@ cv::Mat IEncrypt::DecryptImage(const cv::Mat &encryptedImg) {
     string res = Utils::IntVectorToString(encryptedData);
 
     Metadata metadata = metadataManager.getMetadata(res);
-    // cout << "Decrypted Size: " << metadata.encrypted.size() << endl;
-    //
 
     // cv::Mat socImage = 
     //
     // vector<CryptoPP::byte> decryptedData = strategy->Decrypt(metadata.encrypted);
     vector<CryptoPP::byte> decryptedData = strategy->Decrypt(output);
-    cout << "HERE" << endl;
-    for(int o = 0; o < 20;o++){
-        cout << (int)decryptedData[o] << ' ';
-    }
-    cout << endl;
 
-    // cout << "hi" <<endl;
     // cv::Mat image = Utils::Matricize(metadata.width,metadata.height,metadata.channels,decryptedData);
     cv::Mat image = Utils::Matricize(encryptedImg.rows,encryptedImg.cols,encryptedImg.channels(),decryptedData);
     return image;
 }
 
 
-vector<CryptoPP::byte> IEncrypt::EncryptText(const vector<CryptoPP::byte> &data) {
-    return strategy->Encrypt(data);
+vector<CryptoPP::byte> IEncrypt::Encrypt(const vector<CryptoPP::byte> &plainData) {
+
+    return strategy->Encrypt(plainData);
 }
 
-vector<CryptoPP::byte> IEncrypt::DecryptText(const vector<CryptoPP::byte> &encryptedText) {
-    return strategy->Decrypt(encryptedText);
+vector<CryptoPP::byte> IEncrypt::Decrypt(const vector<CryptoPP::byte> &cipherData) {
+    return strategy->Decrypt(cipherData);
 }
 
 bool IEncrypt::isInstantiated = false;

@@ -67,7 +67,8 @@ class PrepareTesting { // normal image!
                                 us.addTest("Encryption Quality",make_shared<EncryptionQualityTest>(image1,image2));
                         }
                         if(selected["Time Performance"]) {
-                                us.addTest("Time Performance",make_shared<TimePerformanceTest>(image2, &iEncrypt,&IEncrypt::EncryptImage,image2));
+                                auto encryptFunc = static_cast<cv::Mat (IEncrypt::*)(const cv::Mat&)>(&IEncrypt::Encrypt);
+                                us.addTest("Time Performance", make_shared<TimePerformanceTest>(image2, &iEncrypt, encryptFunc, image2));
                         }
                         
                 }

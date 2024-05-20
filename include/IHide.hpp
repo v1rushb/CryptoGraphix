@@ -22,7 +22,7 @@ public:
         string newMessage = message;
         cout << typeid(newMessage).name() << endl;
         if(useEncryption && encryptor) {
-            vector<CryptoPP::byte> encrypted = encryptor->EncryptText(Utils::StringToByteVector(message));
+            vector<CryptoPP::byte> encrypted = encryptor->Encrypt(Utils::StringToByteVector(message));
             newMessage =  Utils::ByteVectorToString(encrypted);
         }
         hide->hideMessage(img,newMessage);
@@ -33,7 +33,7 @@ public:
 
         if (useDecryption && encryptor) {
             // cout << typeid(extractedMessage).name() << endl;
-            vector<CryptoPP::byte> decrypted = encryptor->DecryptText(Utils::StringToByteVector(extractedMessage));
+            vector<CryptoPP::byte> decrypted = encryptor->Decrypt(Utils::StringToByteVector(extractedMessage));
             extractedMessage = Utils::ByteVectorToString(decrypted);
         }
 

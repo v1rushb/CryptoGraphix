@@ -25,10 +25,10 @@ public:
 
     ~IEncrypt();
 
-    cv::Mat EncryptImage(const cv::Mat &img);
-    cv::Mat DecryptImage(const cv::Mat &encryptedImg);
-    vector<CryptoPP::byte>  EncryptText(const vector<CryptoPP::byte> &data);
-    vector<CryptoPP::byte>  DecryptText(const vector<CryptoPP::byte> &encryptedText);
+    cv::Mat Encrypt(const cv::Mat &img);
+    cv::Mat Decrypt(const cv::Mat &encryptedImg);
+    vector<CryptoPP::byte> Encrypt(const vector<CryptoPP::byte> &plainData);
+    vector<CryptoPP::byte> Decrypt(const vector<CryptoPP::byte> &cipherData);
     void changeKey(string &stringKey);
     void changeKey(CryptoPP::SecByteBlock key);
     CryptoPP::SecByteBlock getKey();
