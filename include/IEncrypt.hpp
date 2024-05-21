@@ -38,7 +38,6 @@ public:
     bool isNotCached();
     void AssignRandomKey(CryptoPP::SecByteBlock &key, const short &choice = 1);
 
-
 };
 
 #endif

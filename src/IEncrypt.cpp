@@ -108,7 +108,7 @@ cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
     cv::Mat image = Utils::Matricize(img.rows,img.cols,img.channels(),encryptedData);
     vector<int> newVectorizedImage = Utils::Vectorize(image);
 
-    vector<CryptoPP::byte> output2 = Utils::IntVectorToByte(newVectorizedImage);
+    // vector<CryptoPP::byte> output2 = Utils::IntVectorToByte(newVectorizedImage);
 
     string res = Utils::IntVectorToString(newVectorizedImage);
 
@@ -130,8 +130,8 @@ cv::Mat IEncrypt::Decrypt(const cv::Mat &encryptedImg) {
 
     // cv::Mat socImage = 
     //
-    // vector<CryptoPP::byte> decryptedData = strategy->Decrypt(metadata.encrypted);
-    vector<CryptoPP::byte> decryptedData = strategy->Decrypt(output);
+    vector<CryptoPP::byte> decryptedData = strategy->Decrypt(metadata.encrypted);
+    // vector<CryptoPP::byte> decryptedData = strategy->Decrypt(output);
 
     // cv::Mat image = Utils::Matricize(metadata.width,metadata.height,metadata.channels,decryptedData);
     cv::Mat image = Utils::Matricize(encryptedImg.rows,encryptedImg.cols,encryptedImg.channels(),decryptedData);
@@ -140,12 +140,26 @@ cv::Mat IEncrypt::Decrypt(const cv::Mat &encryptedImg) {
 
 
 vector<CryptoPP::byte> IEncrypt::Encrypt(const vector<CryptoPP::byte> &plainData) {
-
-    return strategy->Encrypt(plainData);
+    vector<CryptoPP::byte> encryptedData = strategy->Encrypt(plainData);
+    Metadata metadata = {
+        0,
+        0,
+        0,
+        encryptedData,
+    };
+    string res = Utils::ByteVectorToString(encryptedData);
+    metadataManager.storeMetadata(metadata, res);
+    return encryptedData;
 }
 
 vector<CryptoPP::byte> IEncrypt::Decrypt(const vector<CryptoPP::byte> &cipherData) {
-    return strategy->Decrypt(cipherData);
+    vector<int> temp = Utils::ByteVectorIntoInt(cipherData);
+    string ans = Utils::IntVectorToString(temp);
+
+    Metadata metadata = metadataManager.getMetadata(ans);
+
+    vector<CryptoPP::byte> decryptedData = strategy->Decrypt(metadata.encrypted);
+    return decryptedData;
 }
 
 bool IEncrypt::isInstantiated = false;

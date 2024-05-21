@@ -34,20 +34,36 @@ public:
 
         return output;
     }
-    void storeMetadata(Metadata& metadata, const string &encryptedDataString) {
-        // string encryptedDataString(encryptedData.begin(),encryptedData.end());
+    // void storeMetadata(Metadata& metadata, const string &encryptedDataString) {
+    //     // string encryptedDataString(encryptedData.begin(),encryptedData.end());
+    //     string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
+    //     cout << hashedEncryptedDataString << endl;
+    //     metadataMap[hashedEncryptedDataString] = metadata;
+    // }
+
+    void storeMetadata(Metadata &metadata, const string &encryptedDataString) {
         string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
-        cout << hashedEncryptedDataString << endl;
+        cout << "Hashed Encrypted Data String: " << hashedEncryptedDataString << endl;
         metadataMap[hashedEncryptedDataString] = metadata;
     }
+
+    // Metadata getMetadata(const string &encryptedDataString) {
+    //     // string encryptedDataString (encryptedData.begin(),encryptedData.end());
+    //     cout << encryptedDataString[234] << endl;
+    //     string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
+    //     cout << hashedEncryptedDataString << endl;
+    //     for(auto &el : metadataMap)
+    //         cout << el.second.width <<endl;
+    //     return metadataMap[hashedEncryptedDataString];
+    // }
+
     Metadata getMetadata(const string &encryptedDataString) {
-        // string encryptedDataString (encryptedData.begin(),encryptedData.end());
-        cout << encryptedDataString[234] << endl;
         string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
-        cout << hashedEncryptedDataString << endl;
-        for(auto &el : metadataMap)
-            cout << el.second.width <<endl;
-        return metadataMap[hashedEncryptedDataString];
+        if (metadataMap.find(hashedEncryptedDataString) != metadataMap.end()) {
+            return metadataMap[hashedEncryptedDataString];
+        } else {
+            throw runtime_error("Metadata not found for the given encrypted data string.");
+        }
     }
 
     bool isEmpty() {

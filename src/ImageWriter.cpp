@@ -23,7 +23,7 @@ string appendSuffix(string writePath, const bool &encrypted) {
     return _WRITE_PATH + currentFileName.first + "." + currentFileName.second ;
 }
 
-string getValidated(string writePath, const vector<string> &files, const bool &encrypted) {
+string getValidated(string writePath, const vector<string> &files ,const bool &encrypted) { //const bool &isSpecial  add later for steganography.
     string outputFile = Utils::SplitAndReturnLastPart(writePath);
     outputFile = Utils::removeEncryptionTags(outputFile);
     auto slicedOutputFile = Utils::SplitStringIntoPair(outputFile,'.');

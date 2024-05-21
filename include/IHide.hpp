@@ -32,7 +32,6 @@ public:
         string extractedMessage = hide->extractMessage(img,messageLength);
 
         if (useDecryption && encryptor) {
-            // cout << typeid(extractedMessage).name() << endl;
             vector<CryptoPP::byte> decrypted = encryptor->Decrypt(Utils::StringToByteVector(extractedMessage));
             extractedMessage = Utils::ByteVectorToString(decrypted);
         }

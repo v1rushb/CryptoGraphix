@@ -179,9 +179,22 @@ void MainMenu() {
     ImageWriter writer;
     string key;
     auto lsb = make_shared<LSB>();
-    auto aesenc = make_shared<AES256Encryption>();
-    IHide service(lsb);
-    IEncrypt iEncrypt(make_unique<AES256Encryption>()); // as we're just interested in the AES encryption.
+
+    auto iHideEncryptionStrategy = make_unique<AES256Encryption>();
+    auto iHideEncryptor = make_shared<IEncrypt>(move(iHideEncryptionStrategy));
+
+    IHide service(lsb, iHideEncryptor);
+
+    IEncrypt iEncrypt(make_unique<AES256Encryption>());
+
+
+
+
+    // auto aesenc = make_unique<AES256Encryption>();
+    // auto iEncryptptr = make_shared<AES256Encryption>();
+    // IHide service(lsb,iEncryptptr);
+    // IEncrypt iHideEncryption(iEncryptptr);
+    // IEncrypt iEncrypt(make_unique<AES256Encryption>()); // as we're just interested in the AES encryption.
     // cout << IEncrypt::checkIsInstantiated() << endl;
     Utils::Clear();
     while (true) {
@@ -204,7 +217,7 @@ void MainMenu() {
             continue;
         }
         Utils::Clear();
-        IHide service(make_shared<LSB>());
+        // IHide service(make_shared<LSB>());
         switch(choice) {
             case 1: {
                 caseOne1:
@@ -660,7 +673,6 @@ void MainMenu() {
                     Utils::print("1. Plain Sensitivity.","Magnetta");
                     Utils::print("2. Key Sensitivity.","Magnetta");
                     cin >> choice;
-                    // system("\\"clear\\" && echo \\"noice\\" | lolcat");
                     if(choice > 2 || choice <=0) {
                         try {
                             throw CustomException("Invalid Option.");
@@ -814,6 +826,7 @@ void MainMenu() {
                         Utils::Clear();
                         goto caseFour1;
                     }
+                    Utils::Clear();
                     cin.ignore(numeric_limits<streamsize>::max(), '\n');
                     string msg;
                     cout << "Kindly, enter the msg to be embedded into the image:";
@@ -822,8 +835,84 @@ void MainMenu() {
                 // auto lsb = make_shared<LSB>();
                 // auto aesenc = make_shared<AES256Encryption>();
                 // const string msg = "God Bless Gaza";
+                EncryptionOptions:
+                    Utils::Clear();
+                    Utils::print("Please choose your text's condition.");
+                    Utils::print("1. Encrypted Text.","Magnetta");
+                    Utils::print("2. Normal Text.","Magnetta");
+                    cin >> choice;
+                    Utils::Clear();
+                    bool encrypt;
+                    try {
+                        if(choice == 1) {
+                            encrypt = true;
+                        } else if(choice == 2) {
+                            encrypt = false;
+                        } else {
+                            throw CustomException("Invalid option.");
+                        }
+                        if(encrypt) {
+                            StegKey:
+                                Utils::Clear();
+                                Utils::print("1. Enter a key.","Magnetta");
+                                Utils::print("2. Generate a random key.","Magnetta");
+                                cin >> choice;
+                                CryptoPP::SecByteBlock key;
+                                try {
+                                    if(choice == 1) {
+                                        displayKeyOptions(key);
+                                        iHideEncryptor->changeKey(key);
+                                    } else if(choice == 2) {
+                                        StegKeyOptions:
+                                            Utils::Clear();
+                                            Utils::print("Please choose which any of the following key lengths:", "Yellow");
+                                            Utils::print("1. 128-bit","Magnetta");
+                                            Utils::print("2. 192-bit","Magnetta");
+                                            Utils::print("3. 256-bit (Recommended)","Magnetta");
+                                            short choice; cin >> choice;
+                                            Utils::Clear();
+                                            StegGeneratedKey:
+                                                try {
+                                                    if(choice == 1) {
+                                                        const size_t chosenSize = 16;
+                                                        iHideEncryptor->AssignRandomKey(key);
+                                                    } else if(choice == 2) {
+                                                        const size_t chosenSize = 24;
+                                                        iHideEncryptor->AssignRandomKey(key,2);
+                                                    } else if(choice == 3) {
+                                                        const size_t chosenSize = 32;
+                                                        iHideEncryptor->AssignRandomKey(key,3);
+                                                    } else {
+                                                        LOG_ERROR("User entered an invalid number.");
+                                                        throw CustomException("Invalid choice."); 
+                                                    }
+                                                } catch(const CustomException &ex) {
+                                                    Utils::print(string(ex.what()),"Red");
+                                                    LOG_ERROR("USER ERROR" + string(ex.what()));
+                                                    Utils::DelaySeconds(3);
+                                                    Utils::Clear();
+                                                    goto StegGeneratedKey;
+                                                }
+                                } else {
+                                    throw CustomException("Invalid option.");
+                                }
+                            } catch(const CustomException &ex) {
+                                Utils::print(string(ex.what()),"Red");
+                                LOG_ERROR("USER ERROR" + string(ex.what()));
+                                Utils::DelaySeconds(3);
+                                Utils::Clear();
+                                goto StegKey;
+                            }
+                        }
+                    } catch(const CustomException &ex) {
+                        Utils::print(string(ex.what()),"Red");
+                        LOG_ERROR("USER ERROR" + string(ex.what()));
+                        Utils::DelaySeconds(3);
+                        Utils::Clear();
+                        goto EncryptionOptions;
+                    }
                 try {
-                    service.embedMessage(img,msg);
+                    service.embedMessage(img,msg,encrypt);
                     writer.WriteImage(_DEFAULT_PATH+*it,img);
                     Utils::Clear();
                     Utils::DelaySeconds(3);
@@ -869,12 +958,91 @@ void MainMenu() {
                         Utils::Clear();
                         goto caseFive1;
                     }
+                    Utils::Clear();
                     cout << "Kindly, enter the msg size to be retrieved from the image:";
                     ll msgLength; cin >> msgLength;
                     cout << '\n';
+                    Utils::Clear();
+                    DecryptionOptions:
+                        Utils::print("Please choose your hidden text's condition.");
+                        Utils::print("1. Encrypted Text.","Magnetta");
+                        Utils::print("2. Normal Text.","Magnetta");
+                        cin >> choice;
+                        bool decrypt;
+                        try {
+                            if(choice == 1) {
+                                decrypt = true;
+                            } else if(choice == 2) {
+                                decrypt = false;
+                            } else {
+                                throw CustomException("Invalid option.");
+                            }
+                        } catch(const CustomException &ex) {
+                            Utils::print(string(ex.what()),"Red");
+                            LOG_ERROR("USER ERROR" + string(ex.what()));
+                            Utils::DelaySeconds(3);
+                            Utils::Clear();
+                            goto DecryptionOptions;
+                        }
+                        if(decrypt) {
+                            DecryptionKeyOptions:
+                                Utils::Clear();
+                                Utils::print("1. Enter an existing key.","Magnetta");
+                                Utils::print("2. Decrypt using cached keys.","Magnetta");
+                                Utils::print("\t |==+=+==> Works only upon saved sessions, else you need to save the key used.","Blue");
+                                cin >> choice;
+                                Utils::Clear();
+                                CryptoPP::SecByteBlock key;
+                                if(choice == 1) {
+                                    StegoDist:
+                                        inputKey:
+                                            Utils::print("Kindly, input your key.","Magnetta");
+                                        // LOG_WARNING("Kindly, input your key.");
+                                            // cin >> key;
+                                            try {
+                                                displayKeyOptions(key);
+                                            } catch(const CustomException &ex){
+                                                Utils::Clear();
+                                                LOG_ERROR(string(ex.what()));
+                                                Utils::print(string(ex.what()),"Red");
+                                                Utils::DelaySeconds(3);
+                                                Utils::Clear();
+                                                goto inputKey;
+                                            }
+                                        iHideEncryptor->changeKey(key);
+                                }
+                                else if(choice == 2) {
+                                    if(IEncrypt::checkIsInstantiated()) {
+                                        // if(IEncrypt::getIntancesCount() < 1) {
+                                        //     // throw CustomException("Something went wrong.");
+                                        //     Utils::print("Something went wrong.", "Red");
+                                        //     Utils::DelaySeconds(3);
+                                        //     Utils::Clear();
+                                        //     goto StegoDist;
+                                        // }
+                                            if(iHideEncryptor->isNotCached()) {
+                                                Utils::print("No work has been cached. Please enter a key.","Red");
+                                                Utils::DelaySeconds(3);
+                                                Utils::Clear();
+                                                goto StegoDist;
+                                            }
+                                    }
+                                }
+                                else {
+                                    try {
+                                        throw CustomException("Invalid Option.");
+                                    } catch(const CustomException &ex) {
+                                        Utils::print(string(ex.what()),"Red");
+                                        LOG_ERROR("USER ERROR:" + string(ex.what()));
+                                        Utils::DelaySeconds(2);
+                                        Utils::Clear();
+                                        goto DecryptionKeyOptions;
+                                    }
+                                }
+                        }
                 try {
                     Utils::Clear();
-                    Utils::print("Text has been successfully extraxted!\n Embeded Text:" + service.retrieveMessage(img,msgLength),"Yellow");
+                    Utils::print("Text has been successfully extraxted!\n Embeded Text:" + service.retrieveMessage(img,msgLength,decrypt),"Yellow");
                 } catch(const CustomException &ex) {
                     Utils::Clear();
                     Utils::print(string(ex.what()),"Red");

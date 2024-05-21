@@ -58,6 +58,10 @@ class Utils {
             return result;
         }
 
+        static vector<int> ByteVectorIntoInt(const vector<CryptoPP::byte> &data) {
+            return vector<int>(data.begin(),data.end());
+        }
+
         static string IntVectorToString(const vector<int> &data) {
             string result;
             for(int el : data) {
