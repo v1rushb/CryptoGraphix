@@ -104,6 +104,61 @@ class Utils {
             return image;
         }
 
+        static cv::Mat GenerateGradientImage(long int rows, long int cols, int channels = 1) {
+            cv::Mat image(rows, cols, CV_8UC(channels));
+            for (long int o = 0; o < rows; o++) {
+                for (long int i = 0; i < cols; i++) {
+                    if (channels == 1) {
+                        image.at<uchar>(o, i) = static_cast<uchar>((o + i) % 256);
+                    } else if (channels == 3) {
+                        cv::Vec3b& pixel = image.at<cv::Vec3b>(o, i);
+                        pixel[0] = static_cast<uchar>((o + i) % 256);
+                        pixel[1] = static_cast<uchar>((o + 2 * i) % 256);
+                        pixel[2] = static_cast<uchar>((2 * o + i) % 256);
+                    }
+                }
+            }
+            return image;
+        }
+
+        static cv::Mat GenerateShapeImage(long int rows, long int cols, int channels = 1) {
+            cv::Mat image(rows, cols, CV_8UC(channels), cv::Scalar(255, 255, 255));
+            cv::Scalar color = (channels == 1) ? cv::Scalar(0) : cv::Scalar(0, 0, 255);
+            
+            cv::circle(image, cv::Point(cols / 2, rows / 2), 50, color, -1);
+            cv::rectangle(image, cv::Point(cols / 4, rows / 4), cv::Point(3 * cols / 4, 3 * rows / 4), color, 5);
+            
+            return image;
+        }
+
+        static cv::Mat GenerateNoisePatternImage(long int rows, long int cols, int channels = 1) {
+            cv::Mat image(rows, cols, CV_8UC(channels));
+            random_device rd;
+            mt19937 gen(rd());
+            uniform_int_distribution<> distr(0, 255);
+
+            for (long int o = 0; o < rows; o++) {
+                for (long int i = 0; i < cols; i++) {
+                    if (channels == 1) {
+                        image.at<uchar>(o, i) = static_cast<uchar>(distr(gen));
+                    } else if (channels == 3) {
+                        cv::Vec3b& pixel = image.at<cv::Vec3b>(o, i);
+                        pixel[0] = static_cast<uchar>(distr(gen));
+                        pixel[1] = static_cast<uchar>(distr(gen));
+                        pixel[2] = static_cast<uchar>(distr(gen));
+                    }
+                }
+            }
+
+            cv::Scalar color = (channels == 1) ? cv::Scalar(0) : cv::Scalar(255, 255, 255);
+            cv::line(image, cv::Point(0, 0), cv::Point(cols - 1, rows - 1), color, 2);
+            
+            return image;
+        }
+
+
+
+
         static vector<ll> getFreq(const cv::Mat &img) {
             vector<ll> freq(256,0);
             const bool channels = (img.channels() != 1);
@@ -256,7 +311,7 @@ class Utils {
             cout << "\033[0m" << endl; 
         }
 
-        static string SplitAndReturnLastPart(string &str) {
+        static string SplitAndReturnLastPart(const string &str) {
             size_t pos = str.find_last_of("/");
             return str.substr(pos+1);
         }

@@ -61,19 +61,23 @@ string getValidated(string writePath, const vector<string> &files ,const bool &e
     return appendSuffix(outputFile,encrypted);
 }
 
-void ImageWriter::WriteImage(const string& writePath, const cv::Mat& img, const bool &encrypted) const {
-    filesystem::path outputPath(writePath);
+void ImageWriter::WriteImage(const string& writePath, const cv::Mat& img, const bool &encrypted) const {    
+    string updatedWritePath = writePath;
+    cout << updatedWritePath << endl;
+    if(Utils::SplitAndReturnLastPart(writePath).size() <=1) {
+        updatedWritePath = _WRITE_PATH + "GeneratedImage.bmp";
+    }
+    cout << updatedWritePath<< endl;
+    filesystem::path outputPath(updatedWritePath);
     auto parent = outputPath.parent_path();
     if(!filesystem::exists(parent)) {
         filesystem::create_directories(parent);
     }
 
-    
-
     const vector<string> files = Utils::getDirectoryFiles("../assets/");
-    string newWritePath = getValidated(writePath,files,encrypted);
+    string newWritePath = getValidated(updatedWritePath,files,encrypted);
     
-    // cout << newWritePath << endl;
+    cout << newWritePath << endl;
     if(!cv::imwrite(newWritePath,img)) {
         throw runtime_error("Failed to write the image on path: " + newWritePath);
     }

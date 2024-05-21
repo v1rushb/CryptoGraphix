@@ -272,12 +272,30 @@ void MainMenu() {
                                 }
                     } else if(choice == 2) {
                         colorEnc:
-                            Utils::print("1. Grey scale image","Magnetta");
+                            Utils::Clear();
+                            Utils::print("1. Gray scale image","Magnetta");
                             Utils::print("2. Colored image","Magnetta");
                             cin >> choice;
                             Utils::Clear();
-                            Utils::print("Enter the width and height respectively.","Magnetta");
+                            int imgChannels = 1;
+                            if(choice == 1) {
+                                imgChannels = 1;
+                            } else if(choice == 2) {
+                                imgChannels = 3;
+                            } else {
+                                try {
+                                    throw CustomException("Invalid option.");
+                                } catch(const CustomException &ex) {
+                                    Utils::print(string(ex.what()),"Red");
+                                    LOG_ERROR("USER ERROR:" + string(ex.what()));
+                                    Utils::DelaySeconds(2);
+                                    Utils::Clear();
+                                    goto colorEnc;
+                                }
+                            }
                             mathEnc:
+                                Utils::Clear();
+                                Utils::print("Enter the width and height respectively.","Magnetta");
                                 ll width, height; cin >> width >> height;
                                 if(width <= 0 || height <=0) {
                                     try {
@@ -290,23 +308,48 @@ void MainMenu() {
                                         goto mathEnc;
                                     }
                                 }
-                            if(choice == 1) {
-                                img = Utils::GenerateRandomImage(width,height);
-                                Utils::print("Your Grey scale image has been generated.","Yellow");
-                            } else if(choice == 2) {
-                                img = Utils::GenerateRandomImage(width,height,3);
-                                Utils::print("Your colored image has been generated.","Yellow");
-                            } else {
+                            Utils::Clear();
+                            Utils::print("Please choose a pattern.", "Yellow");
+                            Utils::print("1. Gradient", "Magnetta");
+                            Utils::print("2. Shapes", "Magnetta");
+                            Utils::print("3. Noise With Patterns", "Magnetta");
+                            Utils::print("4. Pure Noise", "Magnetta");
+                            cin >> choice;
+                            patternEnc:
+                                Utils::Clear();
+                                string pattern,IMGTYPE = (imgChannels == 1? "Grey scale" : "Colored");
                                 try {
-                                    throw CustomException("Invalid option.");
+                                    if(choice == 1) {
+                                        pattern = "Gradient";
+                                        img = Utils::GenerateGradientImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 2) {
+                                        pattern = "Shapes";
+                                        img = Utils::GenerateShapeImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 3) {
+                                        pattern = "Noise With Patterns";
+                                        img = Utils::GenerateNoisePatternImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 4) {
+                                        pattern = "Pure Noise";
+                                        img = Utils::GenerateRandomImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else {
+                                        throw CustomException("Invalid Option");
+                                    }
                                 } catch(const CustomException &ex) {
-                                    cerr << ex.what() << endl;
                                     Utils::print(string(ex.what()),"Red");
+                                    LOG_ERROR("USER ERROR:" + string(ex.what()));
                                     Utils::DelaySeconds(2);
                                     Utils::Clear();
-                                    goto colorEnc;
+                                    goto patternEnc;
                                 }
-                            }
+                                Utils::Clear();
+                                writer.WriteImage(_DEFAULT_PATH, img);
+                                Utils::print("Image has been printed.","Yellow");
+                                Utils::DelaySeconds(2);
+                                Utils::Clear();
                     }
                     else if(choice == 3) {
                         Utils::Clear();
@@ -528,12 +571,31 @@ void MainMenu() {
                                 }
                     } else if(choice == 2) {
                         colorDec:
+                            Utils::Clear();
                             Utils::print("1. Gray scale image","Magnetta");
                             Utils::print("2. Colored image","Magnetta");
                             cin >> choice;
                             Utils::Clear();
-                            Utils::print("Enter the width and height respectively.","Magnetta");
+                            int imgChannels = 1;
+                            if(choice == 1) {
+                                imgChannels = 1;
+                            } else if(choice == 2) {
+                                imgChannels = 3;
+                            } else {
+                                try {
+                                    throw CustomException("Invalid option.");
+                                } catch(const CustomException &ex) {
+                                    Utils::print(string(ex.what()),"Red");
+                                    LOG_ERROR("USER ERROR:" + string(ex.what()));
+                                    Utils::DelaySeconds(2);
+                                    Utils::Clear();
+                                    goto colorDec;
+                                }
+                            }
+
                             mathDec:
+                                Utils::Clear();
+                                Utils::print("Enter the width and height respectively.","Magnetta");
                                 ll width, height; cin >> width >> height;
                                 if(width <= 0 || height <=0) {
                                     try {
@@ -546,23 +608,49 @@ void MainMenu() {
                                         goto mathDec;
                                     }
                                 }
-                            if(choice == 1) {
-                                img = Utils::GenerateRandomImage(width,height);
-                                Utils::print("Your Grey scale image has been generated.","Yellow");
-                            } else if(choice == 2) {
-                                img = Utils::GenerateRandomImage(width,height,3);
-                                Utils::print("Your colored image has been generated.","Magnetta");
-                            } else {
+                            Utils::DelaySeconds(2);
+                            Utils::Clear();
+                            Utils::print("Please choose a pattern.", "Yellow");
+                            Utils::print("1. Gradient", "Magnetta");
+                            Utils::print("2. Shapes", "Magnetta");
+                            Utils::print("3. Noise With Patterns", "Magnetta");
+                            Utils::print("4. Pure Noise", "Magnetta");
+                            cin >> choice;
+                            patternDec:
+                                Utils::Clear();
+                                string pattern,IMGTYPE = (imgChannels == 1? "Grey scale" : "Colored");
                                 try {
-                                    throw CustomException("Invalid option.");
+                                    if(choice == 1) {
+                                        pattern = "Gradient";
+                                        img = Utils::GenerateGradientImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 2) {
+                                        pattern = "Shapes";
+                                        img = Utils::GenerateShapeImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 3) {
+                                        pattern = "Noise With Patterns";
+                                        img = Utils::GenerateNoisePatternImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 4) {
+                                        pattern = "Pure Noise";
+                                        img = Utils::GenerateRandomImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else {
+                                        throw CustomException("Invalid Option");
+                                    }
                                 } catch(const CustomException &ex) {
                                     Utils::print(string(ex.what()),"Red");
                                     LOG_ERROR("USER ERROR:" + string(ex.what()));
                                     Utils::DelaySeconds(2);
                                     Utils::Clear();
-                                    goto colorDec;
+                                    goto patternDec;
                                 }
-                            }
+                                Utils::Clear();
+                                writer.WriteImage(_DEFAULT_PATH, img);
+                                Utils::print("Image has been printed.","Yellow");
+                                Utils::DelaySeconds(2);
+                                Utils::Clear();
                     } else if(choice == 3) {
                         Utils::Clear();
                         caseTwo5:
