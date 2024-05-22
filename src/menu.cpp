@@ -314,6 +314,10 @@ void MainMenu() {
                             Utils::print("2. Shapes", "Magnetta");
                             Utils::print("3. Noise With Patterns", "Magnetta");
                             Utils::print("4. Pure Noise", "Magnetta");
+                            Utils::print("5. Perlin Noise", "Magnetta");
+                            Utils::print("6. Fractal", "Magnetta");
+                            Utils::print("7. Marble", "Magnetta");
+                            Utils::print("8. Combination", "Magnetta");
                             cin >> choice;
                             patternEnc:
                                 Utils::Clear();
@@ -335,7 +339,24 @@ void MainMenu() {
                                         pattern = "Pure Noise";
                                         img = Utils::GenerateRandomImage(width,height,imgChannels);
                                         Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
-                                    } else {
+                                    } else if(choice == 5) {
+                                        pattern = "Perlin Noise";
+                                        img = Utils::GeneratePerlinNoiseImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 6) {
+                                        pattern = "Fractal";
+                                        img = Utils::GenerateMandelbrotImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 7) {
+                                        pattern = "Marble";
+                                        img = Utils::GenerateMarbleTextureImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 8) {
+                                        pattern = "Combination";
+                                        img = Utils::GenerateCombinedPatternImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    }
+                                    else {
                                         throw CustomException("Invalid Option");
                                     }
                                 } catch(const CustomException &ex) {
@@ -636,7 +657,24 @@ void MainMenu() {
                                         pattern = "Pure Noise";
                                         img = Utils::GenerateRandomImage(width,height,imgChannels);
                                         Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
-                                    } else {
+                                    } else if(choice == 5) {
+                                        pattern = "Perlin Noise";
+                                        img = GraphicsUtils::GeneratePerlinNoiseImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 6) {
+                                        pattern = "Fractal";
+                                        img = Utils::GenerateMandelbrotImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 7) {
+                                        pattern = "Marble";
+                                        img = Utils::GenerateMarbleTextureImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    } else if(choice == 8) {
+                                        pattern = "Combination";
+                                        img = Utils::GenerateCombinedPatternImage(width,height,imgChannels);
+                                        Utils::print("Your Grey " + IMGTYPE + " has been generated. \n Pattern: " + pattern,"Yellow");
+                                    }
+                                    else {
                                         throw CustomException("Invalid Option");
                                     }
                                 } catch(const CustomException &ex) {

@@ -4,11 +4,11 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <vector>
-#include <random>
 #include <chrono>
 #include <functional>
 #include <random>
 #include <thread>
+#include <cmath>
 #include "../src/ErrorHandler.cpp"
 #include <cryptopp/base64.h>
 #include <cryptopp/secblock.h>
@@ -16,12 +16,15 @@
 #include <cryptopp/sha.h>
 #include "../src/ErrorHandler.cpp"
 #include "../src/FileLister.cpp"
+#include "GraphicsUtils.hpp"
 
 using namespace std;
 
 #define ll long long int
 
 class Utils {
+    private:
+
     public:
         static vector<int> Vectorize(const cv::Mat &img) {
             vector<int> buffer;
@@ -156,8 +159,95 @@ class Utils {
             return image;
         }
 
+        static cv::Mat GeneratePerlinNoiseImage(long int rows, long int cols, int channels = 1) {
+            cv::Mat image(rows, cols, CV_8UC(channels));
+            for (long int o = 0; o < rows; o++) {
+                for (long int i = 0; i < cols; i++) {
+                    float value = GraphicsUtils::PerlinNoise(o * 0.1, i * 0.1) * 255;
+                    if (channels == 1) {
+                        image.at<uchar>(o, i) = static_cast<uchar>(value);
+                    } else if (channels == 3) {
+                        cv::Vec3b& pixel = image.at<cv::Vec3b>(o, i);
+                        pixel[0] = static_cast<uchar>(value);
+                        pixel[1] = static_cast<uchar>(value);
+                        pixel[2] = static_cast<uchar>(value);
+                    }
+                }
+            }
+            return image;
+        }
 
 
+        static cv::Mat GenerateMandelbrotImage(long int rows, long int cols, int channels = 3) {
+            cv::Mat image(rows, cols, CV_8UC3);
+            for (long int y = 0; y < rows; y++) {
+                for (long int x = 0; x < cols; x++) {
+                    double real = (x - cols / 2.0) * 4.0 / cols;
+                    double imag = (y - rows / 2.0) * 4.0 / rows;
+                    complex<double> c(real, imag);
+                    complex<double> z = c;
+                    int iterations = 0;
+                    const int max_iterations = 1000;
+                    while (abs(z) < 2.0 && iterations < max_iterations) {
+                        z = z * z + c;
+                        iterations++;
+                    }
+                    uchar color = static_cast<uchar>(255 * iterations / max_iterations);
+                    if (channels == 1) {
+                        image.at<uchar>(y, x) = color;
+                    } else if (channels == 3) {
+                        cv::Vec3b& pixel = image.at<cv::Vec3b>(y, x);
+                        pixel[0] = color;
+                        pixel[1] = color;
+                        pixel[2] = color;
+                    }
+                }
+            }
+            return image;
+        }
+
+        static cv::Mat GenerateMarbleTextureImage(long int rows, long int cols, int channels = 3) {
+            cv::Mat image(rows, cols, CV_8UC3);
+            for (long int y = 0; y < rows; y++) {
+                for (long int x = 0; x < cols; x++) {
+                    float xyValue = x * 0.05 + y * 0.05 + 10 * GraphicsUtils::PerlinNoise(x * 0.1, y * 0.1);
+                    float sineValue = 128.0f * abs(sin(xyValue));
+                    uchar color = static_cast<uchar>(sineValue);
+                    if (channels == 1) {
+                        image.at<uchar>(y, x) = color;
+                    } else if (channels == 3) {
+                        cv::Vec3b& pixel = image.at<cv::Vec3b>(y, x);
+                        pixel[0] = color;
+                        pixel[1] = color;
+                        pixel[2] = color;
+                    }
+                }
+            }
+            return image;
+        }
+
+        static cv::Mat GenerateCombinedPatternImage(long int rows, long int cols, int channels = 3) {
+            cv::Mat image(rows, cols, CV_8UC(channels));
+            cv::Mat mandelbrotImage = GenerateMandelbrotImage(rows, cols, 1);
+
+            for (long int y = 0; y < rows; y++) {
+                for (long int x = 0; x < cols; x++) {
+                    float perlinValue = GraphicsUtils::PerlinNoise(x * 0.1, y * 0.1) * 255;
+                    float mandelbrotValue = (mandelbrotImage.at<uchar>(y, x) / 255.0) * 255;
+                    uchar color = static_cast<uchar>((perlinValue + mandelbrotValue) / 2);
+                    if (channels == 1) {
+                        image.at<uchar>(y, x) = color;
+                    } else if (channels == 3) {
+                        cv::Vec3b& pixel = image.at<cv::Vec3b>(y, x);
+                        pixel[0] = color;
+                        pixel[1] = color;
+                        pixel[2] = color;
+                    }
+                }
+            }
+
+            return image;
+        }
 
         static vector<ll> getFreq(const cv::Mat &img) {
             vector<ll> freq(256,0);
@@ -221,9 +311,9 @@ class Utils {
             return CryptoPP::SecByteBlock(digest, CryptoPP::SHA256::DIGESTSIZE);
         }
 
-        static int GenerateARandomInteger() {
+        static int GenerateARandomInteger(const int limit = 550) {
             mt19937 gen(static_cast<unsigned int>(time(nullptr))); 
-            uniform_int_distribution<> distr(1, 550);
+            uniform_int_distribution<> distr(1, limit);
             return distr(gen);
         }
 
