@@ -92,7 +92,7 @@ public:
         string consoleMessage = timestamp + " " + coloredLogLevelString + " " + message;
         string fileMessage = timestamp + " " + logLevelString + " " + message;
 
-        // cout << consoleMessage << endl;
+        //   << consoleMessage << endl;
         logFile << fileMessage << endl;
     }
 };

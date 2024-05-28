@@ -6,11 +6,11 @@
 #include <vector>
 #include <stdexcept>
 #include <numeric>
+#include "Utils.hpp"
 
 using namespace std;
 
 #define ll long long int
-// #define all(d) d.begin(),d.end()
 
 class ChiSquareTest : public ITest {
     private:
@@ -36,9 +36,9 @@ class ChiSquareTest : public ITest {
         void runTest() const override {
             try {
                 auto result = CalculateChiSquare();
-                cout << "ChiSquare Test Result: " << result.first << (result.second? " Uniform\n" : " Not uniform\n");
+                  Utils::print("ChiSquare Test Result: " + to_string(result.first) + (result.second? " Uniform\n" : " Not uniform\n"),"Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during ChiSquare Test: " << ex.what() << endl;
+                  Utils::print("An error occurred during ChiSquare Test: " + string(ex.what()),"Red");
             }
         }
 };

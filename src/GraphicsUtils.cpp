@@ -1,6 +1,7 @@
 #include "GraphicsUtils.hpp"
 #include <random>
 #include "Utils.hpp"
+#include <vector>
 
 vector<int> GraphicsUtils::p = []{
     vector<int> p(256);

@@ -21,10 +21,10 @@ public:
     void run(const string& testName) const {
         auto it = tests.find(testName);
         if (it != tests.end()) {
-            cout << "Running test: " << testName << endl;
+            Utils::print("Running test: " + testName, "Yellow");
             it->second->runTest();
         } else {
-            cout << "Test '" << testName << "' not found." << endl;
+              Utils::print("Test '" + testName + "' not found.","Red");
         }
     }
 };

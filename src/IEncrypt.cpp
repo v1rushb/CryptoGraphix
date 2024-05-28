@@ -3,7 +3,6 @@
 #include "Utils.hpp"
 #include <vector>
 #include <iostream>
-// #include "Macros.h"
 
 using namespace std;
 using namespace CryptoPP;
@@ -118,8 +117,6 @@ cv::Mat IEncrypt::Encrypt(const cv::Mat &img) {
 
 cv::Mat IEncrypt::Decrypt(const cv::Mat &encryptedImg) {
     vector<int> encryptedData = Utils::Vectorize(encryptedImg);
-    // LOG_INFO("SIZE: " + to_string(encryptedData.size()));
-    // LOG_INFO(("size " +  to_string(encryptedData.size())));
     Utils::print(to_string(encryptedData.size()),"Red");
 
     vector<CryptoPP::byte> output = Utils::IntVectorToByte(encryptedData);
@@ -128,8 +125,6 @@ cv::Mat IEncrypt::Decrypt(const cv::Mat &encryptedImg) {
 
     Metadata metadata = metadataManager.getMetadata(res);
 
-    // cv::Mat socImage = 
-    //
     vector<CryptoPP::byte> decryptedData = strategy->Decrypt(metadata.encrypted);
     // vector<CryptoPP::byte> decryptedData = strategy->Decrypt(output);
 

@@ -5,9 +5,11 @@
 #include <cmath>
 #include <opencv2/opencv.hpp>
 
+using namespace std;
+
 class GraphicsUtils {
 private:
-    static std::vector<int> p;
+    static vector<int> p;
 
     static float fade(float t);
     static float lerp(float t, float a, float b);
@@ -18,4 +20,4 @@ public:
     static cv::Mat GeneratePerlinNoiseImage(long int rows, long int cols, int channels = 1);
 };
 
-#endif // GRAPHICSUTILS_HPP
+#endif

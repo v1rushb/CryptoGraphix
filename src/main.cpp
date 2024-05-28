@@ -11,24 +11,19 @@
 #include "ImageReader.h"
 #include "ImageWriter.h"
 #include <iostream>
-// #include "AESImageEncryptor.h"
 #include "IEncrypt.hpp"
 #include <cryptopp/osrng.h>
 #include <vector>
 #include <utility>
-#include <iostream>
-#include <vector>
 #include <fstream>
 #include <filesystem>
 #include <cryptopp/aes.h>
 #include <cryptopp/filters.h>
 #include <cryptopp/modes.h>
-#include <cryptopp/osrng.h>
 #include <algorithm>
 #include <numeric>
 #include <cryptopp/hex.h>
 #include <cryptopp/cryptlib.h>
-#include <cryptopp/hex.h>
 #include <cryptopp/ccm.h>
 #include <cryptopp/base64.h>
 #include <opencv2/opencv.hpp>
@@ -48,7 +43,9 @@
 #include <string>
 #include "UnitTest.hpp"
 #include "PrepareTesting.cpp"
-// #include "LogMacros.h"
+#include "menu.cpp"
+
+
 #include "menu.cpp"
 
 using namespace std;

@@ -20,7 +20,6 @@ public:
 
     void embedMessage(cv::Mat& img, const string& message, bool useEncryption = 0) {
         string newMessage = message;
-        cout << typeid(newMessage).name() << endl;
         if(useEncryption && encryptor) {
             vector<CryptoPP::byte> encrypted = encryptor->Encrypt(Utils::StringToByteVector(message));
             newMessage =  Utils::ByteVectorToString(encrypted);

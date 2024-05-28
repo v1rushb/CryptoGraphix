@@ -38,9 +38,9 @@ class InformationEntropyTest : public ITest {
         void runTest() const override {
             try {
                 long double result = CalculateInformationEntropy(img);
-                cout << "Information Entropy Test Result: " << result << endl;
+                Utils::print("Information Entropy Test Result: " + to_string(result),"Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during Information Entropy Test: " << ex.what() << endl;
+                Utils::print("An error occurred during Information Entropy Test: " + string(ex.what()),"Red");
             }
         }
 };

@@ -35,7 +35,7 @@ public:
     void GnerateRandomKey(CryptoPP::SecByteBlock &key, const short &choice);
 
     string GetKeyBase64() const;
-    string GetIVBase64() const; //199 10 26 4 222 223 161 16 73 155 204 218 251 132 34 209
+    string GetIVBase64() const;
 };
 
 #endif

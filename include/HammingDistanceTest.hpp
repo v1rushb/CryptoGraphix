@@ -8,8 +8,6 @@
 
 using namespace std;
 
-#define ll long long int
-
 class HammingDistanceTest : public ITest {
     private:
         vector<int> img1;
@@ -39,9 +37,9 @@ class HammingDistanceTest : public ITest {
         void runTest() const override {
             try {
                 double result = CalculateHammingDistance();
-                cout << "Hamming Distance Test Result: " << result << '%' << endl;
+                Utils::print("Hamming Distance Test Result: " + to_string(result) + "%","Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during Hamming Distance Test: " << ex.what() << endl;
+                Utils::print("An error occurred during Hamming Distance Test: " + string(ex.what()) ,"Red");
             }
         }
 };

@@ -34,9 +34,9 @@ class NPCRTest : public ITest {
         void runTest() const override {
             try {
                 double result = CalculateNPCR();
-                cout << "NPCR Test Result: " << result << '%' << endl;
+                Utils::print("NPCR Test Result: "  + to_string(result) + "%","Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during NPCR Test: " << ex.what() << endl;
+                Utils::print("An error occurred during NPCR Test: " + string(ex.what()),"Red");
             }
         }
 };

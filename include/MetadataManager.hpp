@@ -19,8 +19,8 @@ private:
     map<string, Metadata> metadataMap;
 
 public:
-    string SHA256HashString(const std::string& input) {
-        std::string output;
+    string SHA256HashString(const string& input) {
+        string output;
 
         CryptoPP::SHA256 hash;
 
@@ -34,28 +34,11 @@ public:
 
         return output;
     }
-    // void storeMetadata(Metadata& metadata, const string &encryptedDataString) {
-    //     // string encryptedDataString(encryptedData.begin(),encryptedData.end());
-    //     string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
-    //     cout << hashedEncryptedDataString << endl;
-    //     metadataMap[hashedEncryptedDataString] = metadata;
-    // }
 
     void storeMetadata(Metadata &metadata, const string &encryptedDataString) {
         string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
-        cout << "Hashed Encrypted Data String: " << hashedEncryptedDataString << endl;
         metadataMap[hashedEncryptedDataString] = metadata;
     }
-
-    // Metadata getMetadata(const string &encryptedDataString) {
-    //     // string encryptedDataString (encryptedData.begin(),encryptedData.end());
-    //     cout << encryptedDataString[234] << endl;
-    //     string hashedEncryptedDataString = SHA256HashString(encryptedDataString);
-    //     cout << hashedEncryptedDataString << endl;
-    //     for(auto &el : metadataMap)
-    //         cout << el.second.width <<endl;
-    //     return metadataMap[hashedEncryptedDataString];
-    // }
 
     Metadata getMetadata(const string &encryptedDataString) {
         string hashedEncryptedDataString = SHA256HashString(encryptedDataString);

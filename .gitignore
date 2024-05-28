@@ -1,6 +1,0 @@
-.vscode
-.env
-*.txt
-assets/
-scripts/script.sh
-build/*

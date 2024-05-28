@@ -30,9 +30,9 @@ class TimePerformanceTest : public ITest {
         void runTest() const override {
             try {
                 double result = CalculateExecutionTime();
-                cout << "Time Performance Test Result: " << result << " Seconds" << endl;
+                Utils::print("Time Performance Test Result: " + to_string(result) + " Seconds","Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during UACI Test: " << ex.what() << endl;
+                Utils::print("An error occurred during UACI Test: " + string(ex.what()),"Red");
             }
         }
 };

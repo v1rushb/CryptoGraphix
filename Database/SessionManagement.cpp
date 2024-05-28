@@ -5,6 +5,7 @@
 #include <mysql/mysql.h>
 #include "DatabaseConnection.cpp"
 #include <memory>
+#include "Utils.hpp"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ public:
                throw runtime_error(mysql_error(dbConnection.getConnection()));
             }
         } catch(const exception &ex) {
-            cout << ex.what() << endl;
+            Utils::print(string(ex.what()),"Red");
             return false;
         }
         return true;
@@ -34,7 +35,7 @@ public:
         string query = "SELECT session_id FROM Session WHERE user_id = " + to_string(userID) + 
                        " AND TIMESTAMPDIFF(MINUTE, start_time, NOW()) < 1";
         if (mysql_query(dbConnection.getConnection(), query.c_str())) {
-            cout << "SQL Query Error: " << mysql_error(dbConnection.getConnection()) << endl;
+            Utils::print("SQL Query Error: " + string(mysql_error(dbConnection.getConnection())),"Red");
             return false;
         }
 
@@ -50,7 +51,7 @@ public:
             cerr << "SQL Query Error: " << mysql_error(dbConnection.getConnection()) << endl;
             return false;
         }
-        cout << "All sessions cleared.\n";
+        Utils::print("All sessions cleared.","Yellow");
         return true;
     }
 };

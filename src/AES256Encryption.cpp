@@ -125,17 +125,6 @@ string DecodeBase64(const string& base64Input) {
 
 //CTR
 vector<CryptoPP::byte> AES256Encryption::Encrypt(const vector<CryptoPP::byte>& plain) {
-    cout <<"Key" << endl;
-        for(auto &el : key_) {
-            cout << (int)el << ' ';
-        }
-        cout << endl;
-        cout << "IV" << endl;
-        // cout << (int)iv_ << endl;
-        for(auto &el : iv_) {
-            cout << (int)el << ' ';
-        }
-        cout << endl;
         vector<CryptoPP::byte> cipher;
         try {
             CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption encryption;

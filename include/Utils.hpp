@@ -28,7 +28,6 @@ class Utils {
     public:
         static vector<int> Vectorize(const cv::Mat &img) {
             vector<int> buffer;
-            // cout << "DEBUGGING: " << img.channels() << endl;
             buffer.reserve(img.total() * img.channels());
             if (img.channels() == 1) {
                 for (int o = 0; o < img.rows; o++) {
@@ -339,42 +338,6 @@ class Utils {
         static void Clear() {
             system("clear");
         }
-        // static string SecByteBlockIntoString(CryptoPP::SecByteBlock blk) {
-        //     string ansHex;
-        //     CryptoPP::HexEncoder encoder;
-        //     encoder.Attach(new CryptoPP::StringSink(ansHex));
-        //     encoder.Put(blk, blk.size());
-        //     encoder.MessageEnd();
-        //     return ansHex;
-        // }
-        
-        // static std::string SecByteBlockToBase64String(const CryptoPP::SecByteBlock& block) {
-        //     std::string base64;
-        //     CryptoPP::Base64Encoder encoder(new CryptoPP::StringSink(base64), /* newline= */ false);
-        //     encoder.Put(block, block.size());
-        //     encoder.MessageEnd();
-        //     return base64;
-        // }
-
-        // static vector<pair<char,bool>> SecByteBlockIntoCharVector(const CryptoPP::SecByteBlock & block) {
-        //     vector<pair<char,bool>> og;
-        //     for(auto el : block) {
-        //         if(el - 129 < 0) {
-        //             og.push_back({(char)el,false});
-        //         } else {
-        //             og.push_back({(char) (el-129),true});
-        //         }
-        //     }
-        //     return og;
-        // }
-        // static string SecByteBlockIntoString(const CryptoPP::SecByteBlock &key) {
-        //     vector<pair<char,bool>> og = SecByteBlockIntoCharVector(key);
-        //     string ans ="";
-        //     for(auto el : og) {
-        //         ans+=el.first;
-        //     }
-        //     return ans;
-        // }
         
         static void print(const string &prompt, const string chosenColor = "White",const bool &special = false) {
             unordered_map<string,string> color = {
@@ -395,7 +358,7 @@ class Utils {
                 for(auto &el : prompt) {
                     cout << color[colorKeys[Utils::GenerateARandomInteger()%8]] << el;
                 }
-                return void(cout<<"\033[0m" <<endl);
+                return void( cout <<"\033[0m" <<endl);
             } 
             cout << color[chosenColor] << prompt;
             cout << "\033[0m" << endl; 

@@ -34,9 +34,9 @@ class UACITest : public ITest {
         void runTest() const override {
             try {
                 double result = CalculateUACI();
-                cout << "UACI Test Result: " << result << '%' << endl;
+                Utils::print("UACI Test Result: " + to_string(result) + "%","Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during UACI Test: " << ex.what() << endl;
+                Utils::print("An error occurred during UACI Test: " + string(ex.what()),"Red");
             }
         }
 };

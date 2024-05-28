@@ -11,8 +11,6 @@
 using namespace std;
 
 #define ll long long int
-// #define all(d) d.begin(),d.end()
-
 class EncryptionQualityTest : public ITest {
     private:
         cv::Mat img1,img2;
@@ -35,9 +33,9 @@ class EncryptionQualityTest : public ITest {
         void runTest() const override {
             try {
                 long double result = CalculateEncryptionQuality(img1,img2);
-                cout << "Encryption Quality Test Result: " << result << endl;
+                Utils::print("Encryption Quality Test Result: " + to_string(result),"Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during Encryption Quality Test: " << ex.what() << endl;
+                Utils::print("An error occurred during Encryption Quality Test: " + string(ex.what()),"Yellow");
             }
         }
 };

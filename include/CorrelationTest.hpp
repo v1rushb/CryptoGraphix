@@ -96,9 +96,9 @@ class CorrelationTest : public ITest {
         void runTest() const override {
             try {
                 double result = CalculateCorrelation(img);
-                cout << "Correlation Test Result: " << result << endl;
+                Utils::print("Correlation Test Result: " + to_string(result),"Yellow");
             } catch(const exception &ex) {
-                cout << "An error occurred during Correlation Test: " << ex.what() << endl;
+                Utils::print("An error occurred during Correlation Test: " + string(ex.what()),"Red");
             }
         }
 };

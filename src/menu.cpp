@@ -10,7 +10,6 @@
 #include "../Database/UserManagement.cpp"
 #include "../Database/SessionManagement.cpp"
 #include <mysql/mysql.h>
-// #include <dotenv.h>
 
 
 string _DEFAULT_PATH = "../assets/";
@@ -81,11 +80,6 @@ void displayKeyOptions(CryptoPP::SecByteBlock &key) {
                 LOG_ERROR("User entered an invalid number.");
                 throw CustomException("Invalid choice."); 
             }
-            //used for printing the key. delete.
-            for (size_t i = 0; i < key.size(); ++i) {
-                cout << key[i];
-            }
-            cout << endl;
         }
         catch(const CustomException &ex ) {
             Utils::print(string(ex.what()),"Red");
@@ -146,11 +140,6 @@ void AuthMenu() {
                     Utils::DelaySeconds(3);
                     Utils::Clear();
                     return;
-                    // if (ManageSession.IsValidSession(*user_id)) {
-                    //     cout << "Session is valid.\n";
-                    // } else {
-                    //     cout << "Session is invalid.\n";
-                    // }
                 } else {
                     LOG_ERROR("Failed to create the session");
                     Utils::print("Failed to create session.","Red");
@@ -186,16 +175,6 @@ void MainMenu() {
     IHide service(lsb, iHideEncryptor);
 
     IEncrypt iEncrypt(make_unique<AES256Encryption>());
-
-
-
-
-    // auto aesenc = make_unique<AES256Encryption>();
-    // auto iEncryptptr = make_shared<AES256Encryption>();
-    // IHide service(lsb,iEncryptptr);
-    // IEncrypt iHideEncryption(iEncryptptr);
-    // IEncrypt iEncrypt(make_unique<AES256Encryption>()); // as we're just interested in the AES encryption.
-    // cout << IEncrypt::checkIsInstantiated() << endl;
     Utils::Clear();
     while (true) {
         Utils::print("1. Encrypt image");
@@ -205,7 +184,6 @@ void MainMenu() {
         Utils::print("5. Retrieve info from the image");
         Utils::print("6. Exit");
         
-        // cin >> choice;
         try {
             choice = Utils::getValidChoice(6);
         } catch(const CustomException &ex) {
@@ -217,7 +195,6 @@ void MainMenu() {
             continue;
         }
         Utils::Clear();
-        // IHide service(make_shared<LSB>());
         switch(choice) {
             case 1: {
                 caseOne1:
@@ -427,8 +404,6 @@ void MainMenu() {
                 if(choice == 1) {
                 makeKey2:
                     Utils::print("Kindly, input your key.","Magnetta");
-                    // LOG_WARNING("Kindly, input your key.");
-                    // cin >> key;
                     try {
                         displayKeyOptions(key);
                     } catch(const CustomException &ex){
@@ -468,10 +443,6 @@ void MainMenu() {
                                 throw CustomException("Invalid choice."); 
                             }
                         }
-                    // LOG_INFO("Key has been generated");
-                    // LOG_INFO(Utils::SecByteBlockToBase64String(iEncrypt.getKey()));
-                    // LOG_INFO(Utils::testBlock(iEncrypt.getKey()));
-                    // cout << "Key has been generated\n You can see the key in the logs.\n";
         catch(const CustomException &ex ) {
             Utils::print(string(ex.what()),"Red");
             Utils::DelaySeconds(3);
@@ -484,22 +455,19 @@ void MainMenu() {
                     Utils::Clear();
                 }
                 else {
-                    // LOG_ERROR("Invalid option. A key has been generated.");
                     LOG_ERROR("USER ERROR: invalid input, a key has been generated.");
                     Utils::Clear();
                     Utils::print("Invalid option. A key has been generated.","Yellow");
                     Utils::DelaySeconds(3);
                     Utils::Clear();
                 }
-                // Utils::Clear();
                 dist3:
                     Utils::print("Wish to modify the image? (change one bit)","Magnetta");
                     Utils::print("1. Yes.\n2. No","Magnetta");
-                    // cin >> choice;
                     string newChoice; cin >> newChoice;
                     Utils::Clear();
                     if(newChoice == "1" || newChoice == "Yes") {
-                        Utils::ModifyImage(img); //og img
+                        Utils::ModifyImage(img);
                         Utils::print("Image has been modified.","Yellow");
                         Utils::DelaySeconds(3);
                         Utils::Clear();
@@ -531,7 +499,6 @@ void MainMenu() {
                             Utils::print("Invalid option.","Red");
                             Utils::DelaySeconds(3);
                             Utils::Clear();
-                            //delay here.
                             goto dist4;
                         }
                     
@@ -697,9 +664,7 @@ void MainMenu() {
                             for(const auto &el : filteredFiles) {
                                 cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
                             }
-                            // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
                             Utils::print("Enter which file you want.","Magnetta");
-                            // string imagePath; cin >> imagePath;
                             try {
                                 choice = Utils::getValidChoice(filteredFiles.size());
                             } catch(const CustomException &ex) {
@@ -747,8 +712,6 @@ void MainMenu() {
                         dist:
                             makeKey:
                                 Utils::print("Kindly, input your key.","Magnetta");
-                            // LOG_WARNING("Kindly, input your key.");
-                                // cin >> key;
                                 try {
                                     displayKeyOptions(key);
                                 } catch(const CustomException &ex){
@@ -762,8 +725,6 @@ void MainMenu() {
                             iEncrypt.changeKey(key);
                     }
                     else if(choice == 2) {
-                        // generateKey(key);
-                        // LOG_INFO("Key has been generated");
                         if(IEncrypt::checkIsInstantiated()) {
                             if(iEncrypt.isNotCached()) {
                                 Utils::print("No work has been cached. Please enter a key.","Red");
@@ -772,12 +733,8 @@ void MainMenu() {
                                 goto dist;
                             }
                         }
-                        // Utils::print("Key has been generated.","Yellow");
                     }
                     else {
-                        // generateKey(key);
-                        // LOG_ERROR("Invalid option. A key has been generated.");
-                        // cout <<"Invalid option. A key has been generated." << endl;
                         try {
                             throw CustomException("Invalid Option.");
                         } catch(const CustomException &ex) {
@@ -812,10 +769,6 @@ void MainMenu() {
                         }
                     }
                     Utils::Clear();
-                    // Utils::print("Kindly, provide us with the paths of these respectively:\n - Non-Encrypted Image \n - Encrypted Version of the same Image.","Magnetta");
-                    // string path1,path2; cin >> path1 >> path2;
-                    // cv::Mat image1 = reader.ReadImage("../assets/BaboonRGB.bmp"); 
-                    // cv::Mat image2 = reader.ReadImage("../assets/EncryptedImage.bmp"); // change into path
                     caseThree1:
                         Utils::print("Please choose 2 files maximum to perform the tests on.", "Magnetta");
                         auto filteredFiles = FileLister::listFilesInDirectory(_DEFAULT_PATH);
@@ -823,9 +776,7 @@ void MainMenu() {
                         for(const auto &el : filteredFiles) {
                             cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
                         }
-                            // cout << "Enter which file you want.\n"; // name of the file only. other could be handled but meeeh
                             Utils::print("Enter which file you want.","Magnetta");
-                            // string imagePath; cin >> imagePath;
                             ll choice1,choice2;
                                 try {
                                 Utils::print("Number of the first file:","Yellow");
@@ -840,22 +791,6 @@ void MainMenu() {
                                 Utils::Clear();
                                 goto caseThree1;
                             }
-
-                            // Utils::print("Number of the first file:","Yellow");
-                            // cin >> choice1;
-                            // Utils::print("Number of the second file:","Yellow");
-                            // cin >> choice2;
-                            // try {
-                            //     if((choice1 > filteredFiles.size() && choice1 > 0) || (choice2 > filteredFiles.size() && choice2 > 0)) {
-                            //         throw CustomException("Please use a valid number.");
-                            //     }
-                            // } catch(const CustomException &ex) {
-                            //     Utils::print(string(ex.what()),"Red");
-                            //     LOG_ERROR("User has given an out of bound number.");
-                            //     Utils::DelaySeconds(2);
-                            //     Utils::Clear();
-                            //     goto caseThree1;
-                            // }
                             auto it1 = filteredFiles.begin() + (choice1-1);
                             auto it2 = filteredFiles.begin() + (choice2-1);
                         try {
@@ -927,7 +862,7 @@ void MainMenu() {
                     auto filteredFiles = FileLister::listFilesInDirectory(_DEFAULT_PATH);
                     ll o(0);
                     for(const auto &el : filteredFiles) {
-                        cout << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
+                        cout  << "\033[33m" << ++o << ". " << "\033[31m" <<el << endl << "\033[35m"; 
                     }
                         Utils::print("Enter which file you want.","Magnetta");
                         try {
@@ -957,10 +892,7 @@ void MainMenu() {
                     string msg;
                     cout << "Kindly, enter the msg to be embedded into the image:";
                     getline(cin, msg);
-                    cout << '\n';
-                // auto lsb = make_shared<LSB>();
-                // auto aesenc = make_shared<AES256Encryption>();
-                // const string msg = "God Bless Gaza";
+                    cout  << '\n';
                 EncryptionOptions:
                     Utils::Clear();
                     Utils::print("Please choose your text's condition.");
@@ -1049,8 +981,6 @@ void MainMenu() {
                     Utils::DelaySeconds(3);
                     Utils::Clear();
                 }
-
-                // cout << service.retrieveMessage(img,msg.length()) << endl;
                 break;
             }
             case 5: {
@@ -1085,7 +1015,7 @@ void MainMenu() {
                         goto caseFive1;
                     }
                     Utils::Clear();
-                    cout << "Kindly, enter the msg size to be retrieved from the image:";
+                    Utils::print("Kindly, enter the msg size to be retrieved from the image:","Magnetta");
                     ll msgLength; cin >> msgLength;
                     cout << '\n';
                     Utils::Clear();
@@ -1123,8 +1053,6 @@ void MainMenu() {
                                     StegoDist:
                                         inputKey:
                                             Utils::print("Kindly, input your key.","Magnetta");
-                                        // LOG_WARNING("Kindly, input your key.");
-                                            // cin >> key;
                                             try {
                                                 displayKeyOptions(key);
                                             } catch(const CustomException &ex){
@@ -1139,19 +1067,12 @@ void MainMenu() {
                                 }
                                 else if(choice == 2) {
                                     if(IEncrypt::checkIsInstantiated()) {
-                                        // if(IEncrypt::getIntancesCount() < 1) {
-                                        //     // throw CustomException("Something went wrong.");
-                                        //     Utils::print("Something went wrong.", "Red");
-                                        //     Utils::DelaySeconds(3);
-                                        //     Utils::Clear();
-                                        //     goto StegoDist;
-                                        // }
-                                            if(iHideEncryptor->isNotCached()) {
-                                                Utils::print("No work has been cached. Please enter a key.","Red");
-                                                Utils::DelaySeconds(3);
-                                                Utils::Clear();
-                                                goto StegoDist;
-                                            }
+                                        if(iHideEncryptor->isNotCached()) {
+                                            Utils::print("No work has been cached. Please enter a key.","Red");
+                                            Utils::DelaySeconds(3);
+                                            Utils::Clear();
+                                            goto StegoDist;
+                                        }
                                     }
                                 }
                                 else {
